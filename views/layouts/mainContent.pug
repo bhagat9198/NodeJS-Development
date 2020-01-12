@@ -1,13 +1,19 @@
+//- as we have same content of navbar over multiple pages, so we can create one seprate file where all the common code is present.
+//- whenever we need this file, we will extend it to that file
+
 <!DOCTYPE html>
 html(lang="en")
   head
     meta(charset="UTF-8")
     meta(name="viewport", content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    //- adding title of the page as per value of argument passed
     title #{pageTitle}
     //- indentation is very important in pug
     //- css file path will be the same
     link(rel="stylesheet", href="/css/main.css")
+
+    //- "block style" means that we have to add any other style(content) in any other file, where we are importing. we can use "block style" and add the content
     block style
     
   body
@@ -16,6 +22,7 @@ html(lang="en")
       nav.main-header__nav
         ul.main-header__item-list
           li.main-header__item
+            //- its is JS code (path === '/' ? 'active' : '') within the parenthese and assigning class "active" or not based on ternery opertaion result
             a(href="/", class=(path === '/' ? 'active' : '')) Shop
           li.main-header__item
             a(href="/admin/add-product", class=(path === 'admin/add-product' ? 'active' : '')) Add Product
