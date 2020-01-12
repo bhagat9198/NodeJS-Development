@@ -1,0 +1,17 @@
+// installing 3rd party modules
+npm install packageName --save         //production
+                        --save-dev     //development
+                        -g             //globaly
+
+    
+"nodemon": "^2.0.2"
+"^" means that its a latest version and can be upgraded to latest version when
+npm install
+command will be run
+
+
+npm start
+its a special script in npm, which allows us to run the server
+
+npm run start-server
+to use any any other script in npm, we have to use "run" keyword
