@@ -29,3 +29,10 @@ we need to serve files statically and stically simply means that its not handles
 router or expressjs or any other middleware.
 but should be directly forwarded to file sysytem
 
+
+installing templating engines
+npm install --save ejs pug express-handlebars
+
+
+pug: 
+html syntax is different but if we inspect page, it will shows us proper html code

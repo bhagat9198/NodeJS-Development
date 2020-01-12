@@ -1,98 +1,3 @@
-/************************************************************************************
-
-// no need of this as express internally creating server for us
-// const http = require('http');
-
-// importing 3rd party module
-const express = require('express');
-
-// creating the express application by exporting express as a function
-const app = express();
-
-app.use((req,res,next) => {
-  console.log('middleware');
-  // will call next middleware if present
-  // if response is send in present middleware, then it will no go to next middleware
-  next();
-});
-
-
-// use method will help us add middlewares
-// 'next' is function, thus function is passed in function argument
-app.use((req,res,next) => {
-  // console.log(req);
-  console.log('another middleware');
-
-  // no need to write this as 'send' method by default will put this haeder
-  // res.setHeader('context-type', 'text/html');
-  // res.write('<html><head><title>App</title></head><body>hello world</body></html>');
-  // res.end();
-
-  // check on github for internal working ->lib
-  res.send('<h1>Hello World</h1>');
-});
-
-// 'app' is valid request handler ie will take request and give out response
-// thus no need to create seprate request handler function
-// const server = http.createServer(app);
-
-
-// check on github for internal working ->appliaction.js
-// 'listen' fuction will create server internally, thus no need to create explictly
-app.listen(3000);
-
-
-********************************************************************************************/
-
-
-/****************************************************************************************
-const express = require('express');
-const bodyParser = require('body-parser');
-
-const app = express();
-
-// by default it will have use method i.e, (req,res,next) => {}
-//            and next() will be pass it another middleware below it
-// app.use(bodyParser.urlencoded());
-
-// we have use the config option, otherwise it will show warning
-// extended: flase means that it should able to parse non-default features 
-app.use(bodyParser.urlencoded({extended : true}));
-
-// in 'use' function we can specify the path,
-// express goes from top to down for middlewares
-app.use('/add-products', (req, res, next) => {
-  // res.send('this is product page');
-  res.send('<form action="/products" method="POST"><input type="text" name="title"><button type="submit">Add</button></form>');
-  // next();
-});
-
-// "next" can be omiited as it is last arugument and it will not disturb other argument arrangement
-//        and if you are not planning to use next middleware
-//        but its good practice to use even if you are not using
-
-// "use" method works with get and post request
-// "get" method works only with get request
-// "post" method works only with post request
-// there are other methods also "put","delete",etc..
-// accourding to our logic we only need post request to pass through
-app.post('/products', (req, res, next) => {
-  console.log(req.body);
-  res.redirect('/');
-});
-
-app.use('/', (req, res, next) => {
-  // we have to write full html syntax
-  // res.send('This is home page');
-  res.send('<html><head><title>Main App</title></head><body><h1>Home Page</h1></body></html>')
-});
-
-
-app.listen(3000);
-
-
-****************************************************************************************/
-
 const path =  require('path');
 
 const express = require('express');
@@ -104,8 +9,23 @@ const rootDir = require('./util/path');
 
 const app = express();
 
-app.use(bodyParser.urlencoded({extended : true}));
+// using "pug" templating engine with help of express, not node as its feature of express
+// app.set(key,value): helps in setting global configration value
+// to define key, value : we have few predefined keys for which we can set value
+// "view engine" : tells express about out templating engine
+// "views" tells where to find these dynamic html content files
 
+// we cant use any value, but we have installed pug and it auto regisred with express,
+// express knows about the pug
+app.set('view engine', 'pug');
+
+// we tell where to find our html files, bydefault it will search in "./views" folder(views folder in main project directory), but we can explicitly tell the path
+// first "views" is the key
+// second "views" is the value, as out html pages is in views folder itself, thus same name
+app.set('views', 'views');
+
+
+app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(path.join(rootDir, 'public')));
 
 app.use('/admin',adminData.routes);
