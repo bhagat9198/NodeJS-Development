@@ -7,15 +7,12 @@ const adminData = require('./admin');
 const routes = express.Router();
 
 routes.get('/', (req, res, next) => {
-  // we dont have to static html file, but a dynamic html pug file
-  // res.sendFile(path.join(__dirname, '..', 'views', 'shope.html'));
+  // we are rendering html pages but pages are not dynamic as we are not passing any values to them
+  // res.render('shop');
 
-  // in "app.js" we just told to use pug as our templating engine but didnt use till now
-  // to display pug file
-  
-  // render() : given by express engine, use default templating whicgh we have specified and then return that template
-  // thus, just giving the file name, not need to write ".pug" at the end of file
-  res.render('shop');
+  // to pass value to html pages, pass the value in 2nd argument
+  // we passing value as an object
+  res.render('shop', {pageTitle: 'Shop', prods : adminData.productArr, path : '/'});
   console.log('shope.js ', adminData.productArr);
 });
 

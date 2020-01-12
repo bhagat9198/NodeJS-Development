@@ -1,20 +1,30 @@
-<!DOCTYPE html>
-html(lang="en")
-  head
-    meta(charset="UTF-8")
-    meta(name="viewport", content="width=device-width, initial-scale=1.0")
-    meta(http-equiv="X-UA-Compatible", content="ie=edge")
-    title My Shope
-    //- indentation is very important in pug
-    //- css file path will be the same
-    link(rel="stylesheet", href="/css/main.css")
-    link(rel="stylesheet", href="/css/product.css")
-  body
-    //-<header class="main-header"> 
-    header.main-header
-      nav.main-header__nav
-        ul.main-header__item-list
-          li.main-header__item
-            a.active(href="/") Shop
-          li.main-header__item
-            a(href="/admin/add-product") Add Product
+extends layouts/mainContent.pug
+
+block style
+  link(rel="stylesheet", href="/css/product.css")
+
+block content
+  main
+    h1 My Products
+    p List of products
+
+    if prods.length > 0
+      //- if element is "div", no need to specify as by default, it takes "div" as a container
+      .grid
+        each product in prods
+          //- if there are mutilple classes then write class next to each other, putting "." operator in between the classes names 
+          article.card.product-item
+            header.card__header
+              h1.product__title #{product.title}
+            .card__image
+              //- where there are multiple attributes, seprate then with ","(comma)
+              //- eg: src="", alt=""
+              img(src="https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png", alt="A Book")
+            .card__content
+              h2.product__price $19.99
+              p.product__description A very interesting book about so many even more interesting things!
+            .card__actions
+              button.btn Add to Cart 
+    else
+      h1 No Products
+            
