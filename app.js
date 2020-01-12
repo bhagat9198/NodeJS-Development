@@ -98,7 +98,7 @@ const path =  require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const adminRoutes = require('./routes/admin');
+const adminData = require('./routes/admin');
 const shopeRoutes = require('./routes/shope');
 const rootDir = require('./util/path');
 
@@ -106,25 +106,14 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended : true}));
 
-// craeting the static path to "public folder"
-// we can have mutiple static, then file which match first will be rendered to file which is requesting
-// app.use(express.static(path.join(rootDir, 'public', 'css')));
 app.use(express.static(path.join(rootDir, 'public')));
-//Eg:  app.use(express.static(path.join(rootDir, 'publics')));
 
-
-// we just need to pass the router variable and no need to call it
-// now all the webpages starting with "/admin", will go through adminRoutes
-app.use('/admin',adminRoutes);
+app.use('/admin',adminData.routes);
 app.use(shopeRoutes);
 
 app.use((req, res, next) => {
   res.status(404);
   res.setHeader('Content-type','text/html');
-  // res.send('<h1>Page not found</h1>');
-  // res.sendFile(path.join(__dirname, 'views', '404.html'));
-
-  // using much clearner way to specify path
   res.sendFile(path.join(rootDir, 'views', '404.html'));
 });
 
