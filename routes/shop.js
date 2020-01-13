@@ -7,13 +7,12 @@ const adminData = require('./admin');
 const routes = express.Router();
 
 routes.get('/', (req, res, next) => {
-  // we are rendering html pages but pages are not dynamic as we are not passing any values to them
-  // res.render('shop');
+  // "layout: false" is speacial keyword which is understood by handlerbars which tells us that we are not using anhy layouts. thus no error regarding layouts will pop up.
+  // res.render('shop', {pageTitle: 'Shop', prods : adminData.productArr, path : '/', hasProducts : adminData.productArr.length > 0, layout: false});
 
-  // to pass value to html pages, pass the value in 2nd argument
-  // we passing value as an object
-  res.render('shop', {pageTitle: 'Shop', prods : adminData.productArr, path : '/'});
-  console.log('shope.js ', adminData.productArr);
+  res.render('shop', {pageTitle: 'Shop', prods : adminData.productArr, path : '/', hasProducts : adminData.productArr.length > 0, activeShop: true, productCSS: true});
+
+  console.log('shop.js ', adminData.productArr);
 });
 
 module.exports = routes;

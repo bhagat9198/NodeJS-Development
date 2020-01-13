@@ -1,0 +1,69 @@
+
+{{!-- no need of this, as we are using layouts --}}
+
+{{!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{pageTitle}}</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/product.css">
+</head>
+
+<body>
+    <header class="main-header">
+        <nav class="main-header__nav">
+            <ul class="main-header__item-list">
+                <li class="main-header__item"><a class="active" href="/">Shop</a></li>
+                <li class="main-header__item"><a href="/admin/add-product">Add Product</a></li>
+            </ul>
+        </nav>
+    </header> --}}
+
+<main>
+  <h1>My Products</h1>
+  <p>List of all the products...</p>
+  {{!-- to use block statements ie,rendering the content based on condition or loop. we have to use'#'in starting --}}
+  {{!-- every block statement which is opened needed to be closed --}}
+  {{!-- this condtion will not work as handbars just evalutes on true/false conditins--}}
+  {{!-- tis is good as all our logic will not be in .js file and not in web page --}}
+  {{!-- {{#if prods.length > 0}} --}}
+
+  {{#if hasProducts}}
+    <div class="grid">
+      {{!-- for loop --}}
+      {{#each prods}}
+        <article class="card product-item">
+          <header class="card__header">
+            {{!-- "this" keyword will reffers to the current array index, which keeps changing --}}
+            <h1 class="product__title">{{this.title}}</h1>
+          </header>
+          <div class="card__image">
+            <img src="https://cdn.pixabay.com/photo/2016/03/31/20/51/book-1296045_960_720.png" alt="A Book">
+          </div>
+          <div class="card__content">
+            <h2 class="product__price">$19.99</h2>
+            <p class="product__description">A very interesting book about so many even more interesting things!</p>
+          </div>
+          <div class="card__actions">
+            <button class="btn">Add to Cart</button>
+          </div>
+        </article>
+      {{!-- closing each loop --}}
+      {{/each}}
+    </div>
+  {{!-- else is not block statement, thus no '#' before 'else' --}}
+  {{else}}
+    <h1>No Products</h1>
+  {{!-- closing IF --}}
+  {{/if}}
+</main>
+
+
+
+{{!-- </body>
+
+</html> --}}
