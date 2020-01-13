@@ -1,0 +1,6 @@
+node_modules
+.jshintrc
+package-lock.json
+3.basics/node_modules
+3.basics/.jshintrc
+3.basics/package-lock.json
