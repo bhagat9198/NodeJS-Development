@@ -13,24 +13,24 @@ exports.getProduct = (req, res, next) => {
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
   console.log(productID);
-  Product.findById(productID, pro => {
-    console.log(pro);
+  Product.findById(productID, product => {
+    // console.log(product);
+    res.render('shop/product-detail', { pageTitle: product.title, product: product, path: '/products' });
   });
-  res.redirect('/');
 
 };
 
 exports.getCart = (req, res, next) => {
   res.render('shop/cart', {
-    pageTitle : 'Cart',
-    path : '/cart'
+    pageTitle: 'Cart',
+    path: '/cart'
   });
 };
 
 exports.getOrders = (req, res, next) => {
   res.render('shop/orders', {
-    pageTitle : 'Orders',
-    path : '/orders'
+    pageTitle: 'Orders',
+    path: '/orders'
   });
 };
 

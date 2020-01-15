@@ -45,13 +45,13 @@ module.exports = class Product {
   };
 
   static findById(id, cb) {
-    getProductsFromFile(prod => {
+    getProductsFromFile(products => {
       // thus, we will have array of objects and each object will have an id
       // "find" method will recieve a function, which will get an product which it currently looking at and then check its id with id we passed. if id got matched, that product is retured
-      const ppp = prod.find(p => p.id === id);
-      console.log(ppp);
+      const product = products.find(p => p.id === id);
+      // console.log(product);
       // thus, afterwards calling a callback with that product(from above statement)
-      cb(ppp);
+      cb(product);
     });
   };
 };
