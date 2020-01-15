@@ -11,11 +11,9 @@
     </div>
     <h2><%= product.price %></h2>
     <p><%= product.description %></p>
-
-    <!-- adding add to cart button -->
-    <form action="/cart" method="POST">
-      <button type="submit" class="btn">Add To Cart </button>
-    </form>
+    
+    <!-- as "add to cart" code is same for all  3 files (product-details, index, products-list), we have created one include file. thus accessing whenever nessary  -->
+    <%- include('../includes/add-to-cart.ejs') %>
   </main>
 
 <%- include('../includes/end.ejs') %>
