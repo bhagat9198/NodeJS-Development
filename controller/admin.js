@@ -8,17 +8,18 @@ exports.getAddProduct = (req, res, next) => {
 };
 
 // creating variable, which can store a number
-let numID = 0;
+// let numID = 0;
 
 exports.postAddProduct = (req, res, next) => {
+  // let numID = Math.random();
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
   // numID will be incremented by one, whenever new product will be added
-  numID = numID + 1;
+  // numID = numID + 1;
 
-  const product = new Product(title, imageUrl, description, price,numID);
+  const product = new Product(title, imageUrl, description, price);
   
   product.save();
   res.redirect("/");

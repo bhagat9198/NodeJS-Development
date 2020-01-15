@@ -11,13 +11,13 @@ exports.getProduct = (req, res, next) => {
 };
 
 exports.getDetails = (req, res, next) => {
-  // we can access productID because of "params" object which express gives on the request
-  // "productID" is same give in "routes" folder of "shop". both the same should be same, to access that property
-  const productId = req.params.productID;
-  console.log(productId);
-  // redirecting the result
+  const productID = req.params.productId;
+  console.log(productID);
+  Product.findById(productID, pro => {
+    console.log(pro);
+  });
   res.redirect('/');
-  //  we not only store the productID, but we can use it to do other work
+
 };
 
 exports.getCart = (req, res, next) => {
