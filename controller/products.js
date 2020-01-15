@@ -18,10 +18,21 @@ exports.postAddProduct = (req, res, next) => {
   res.redirect("/");
 };
 
-exports.getproduct = (req, res, next) => {
-  const products = Product.fetchAll();
-  res.render("shop", {
-    pageTitle: "Shop",
-    prods: products, path: "/"
-  });
+// no we will pass our fuction, where we will get our product
+exports.getProduct = (req, res, next) => {
+  // no need to store, as fetchAll will not return anything
+  // const products = Product.fetchAll();
+
+  Product.fetchAll((products) => {
+    // instead of that, we will crete our own callback process, and we render in that function, where we pass it to fetchAll().
+    // once i know that fetching all the product is done, and we recieve the product here because that is exactly the argument, we passed to callback.
+
+    // "cb" argument will reffer to this anonmous function
+    res.render("shop", {
+      pageTitle: "Shop",
+      prods: products, path: "/"
+    });
+  })
 };
+
+// expaliation: we have fetchAll() which takes function as an argument, which should executes once it done. once it done, it will get a product  and then we render our response with taht product
