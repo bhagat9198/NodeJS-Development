@@ -17,6 +17,13 @@ exports.getCart = (req, res, next) => {
   });
 };
 
+exports.getOrders = (req, res, next) => {
+  res.render('shop/orders', {
+    pageTitle : 'Orders',
+    path : '/orders'
+  });
+};
+
 exports.getIndex = (req, res, next) => {
   Product.fetchAll((products) => {
     res.render("shop/index", {

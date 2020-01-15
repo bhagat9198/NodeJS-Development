@@ -12,7 +12,6 @@ routes.get('/products', shopController.getProduct);
 
 routes.get('/cart', shopController.getCart);
 
-// routes.get('/', shopController.getProduct);
-
+routes.get('/orders', shopController.getOrders);
 
 module.exports = routes;
