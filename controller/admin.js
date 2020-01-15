@@ -19,9 +19,11 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  res.render("admin/products", {
-    prods: Product,
-    path: "/admin/products",
-    pageTitle: "Admin Add Products",
-  });
+  Product.fetchAll((products) => {
+    res.render("admin/products", {
+      path: "/admin/products",
+      pageTitle: "Admin Add Products",
+      prods: products,
+    });
+  })
 };
