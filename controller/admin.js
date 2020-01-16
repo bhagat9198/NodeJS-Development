@@ -14,7 +14,8 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
 
-  const product = new Product(title, imageUrl, description, price);
+  // passing null value in id parameter of constructor of a class
+  const product = new Product(null, title, imageUrl, description, price);
   
   product.save();
   res.redirect("/");
@@ -39,7 +40,15 @@ exports.getEditProduct = (req, res, next) => {
 };
 
 exports.postEditProduct = (req, res, next) => {
-  res.redirect('/');
+  const productID = req.body.productID;
+  const updatedTitle = req.body.title;
+  const updatedImageUrl = req.body.imageUrl;
+  const updatedPrice = req.body.price;
+  const upadatedDesciption = req.body.description;
+
+  const updatedProduct = new Product(productID, updatedTitle, updatedImageUrl, upadatedDesciption, updatedPrice);
+  updatedProduct.save();
+  res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {

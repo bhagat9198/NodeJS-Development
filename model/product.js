@@ -18,7 +18,9 @@ const getProductsFromFile = cb => {
 
 module.exports = class Product {
   
-  constructor(title, imageUrl, description, price) {
+  constructor(id,title, imageUrl, description, price) {
+    // it will a null value here
+    this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
     this.description = description;
@@ -26,13 +28,31 @@ module.exports = class Product {
   }
 
   save() {
-    this.id = Math.random().toString();
     getProductsFromFile((products) => {
-      products.push(this);
-  
-      fs.writeFile(p, JSON.stringify(products), (err) => {
-        console.log(err);
-      });
+      // if id is defined. tis will be true only if we are editing product
+      if(this.id) {
+        const existingProductIndex = products.findIndex(prods => prods.id === this.id);
+        const updatedProduct = [...products];
+        // "this" inside of this class is an updated product because we have imagined that we have created a new product instance. and we populate exisiting product by the newly created product instance. 
+        updatedProduct[existingProductIndex] = this;
+
+        // writing it to the file
+        // "updatedProduct" we have to save to the file as it contain edit product info
+        fs.writeFile(p, JSON.stringify(updatedProduct), (err) => {
+          // console.log(err);
+
+        });
+      } else {
+        // if the productID is "null" ie, we are creating new product instance and not editing 
+        this.id = Math.random().toString();
+
+        products.push(this);
+    
+        fs.writeFile(p, JSON.stringify(products), (err) => {
+          console.log(err);
+        });
+      }
+      
     });
   };
 
