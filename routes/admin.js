@@ -10,5 +10,7 @@ routes.get('/add-product', adminController.getAddProduct);
 
 routes.post('/add-product', adminController.postAddProduct);
 
+routes.get('/edit-product/:productID', adminController.getEditProduct);
+
 routes.get('/products',adminController.getProducts)
 module.exports = routes;
