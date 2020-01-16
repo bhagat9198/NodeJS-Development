@@ -36,3 +36,16 @@ npm install --save ejs pug express-handlebars
 
 pug: 
 html syntax is different but if we inspect page, it will shows us proper html code
+
+
+<!-- as we are passing editing value, we can use it to display different html content based on condition. -->
+<!-- syntax:  <% if(condition)
+                    {%> htmlContent 
+                    <%= renderingDynamicValue %>
+                    <%}
+                    else
+                    {%> htmlContent
+                    <%= renderingDynamicValue %>
+                    <%}
+                %>
+-->

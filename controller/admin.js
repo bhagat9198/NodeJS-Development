@@ -26,10 +26,7 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/');
   }
 
-  // taking out productID from the dynamic parameters which we are passing in url
   const productID = req.params.productID;
-  // console.log(productID);
-
   Product.findById(productID, product => {
     res.render("admin/edit-product", {
       path: "/admin/edit-product",
@@ -39,6 +36,10 @@ exports.getEditProduct = (req, res, next) => {
     });
   });
   
+};
+
+exports.postEditProduct = (req, res, next) => {
+  res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
