@@ -1,4 +1,5 @@
-const Product = require("../model/product");
+const Product = require('../model/product');
+const Cart = require('../model/cart');
 
 exports.getProduct = (req, res, next) => {
   Product.fetchAll((products) => {
@@ -29,7 +30,11 @@ exports.getCart = (req, res, next) => {
 exports.postCart = (req, res, next) => {
   // as request was "POST", so it contains the productID as agrument within the url of "form" 
   // "productID" is the name given to the value ID, in the form field.
-  console.log(req.body.productID);
+  const productID = req.body.productID
+  console.log(productID);
+  Product.findById(productID, product => {
+    Cart.addProduct(productID, product.price);
+  })
   res.redirect('/');
 }
 
