@@ -42,6 +42,11 @@ module.exports = class Cart {
       }
       const updatedProduct = { ...JSON.parse(fileContent) };
       const product = updatedProduct.products.find(prods => prods.id === id);
+      // if we delete a product from admin page and that product is not inn the cart, then it will give us error.
+      // SOLUTION:- to delete, we first need to check if the given product is in cart, if it is not there then we simply need to return . we dont want to try to edit it as it is not there.
+      if(!product) {
+        return;
+      }
       const productQty = product.qty;
       updatedProduct.products = updatedProduct.products.filter(prods => prods.id !== id);
       updatedProduct.totalPrice = updatedProduct - (productPrice * productQty);
@@ -52,17 +57,10 @@ module.exports = class Cart {
     });
   }
 
-  // we will return the entire cart in the callback
-  // we add a callback so that we can call it once we get all the id's which are present in cart
   static getCart(cb) {
     fs.readFile(p, (err, fileContent) => {
-      // converting JSON to JS data
       const cart = JSON.parse(fileContent);
-      // this will fail, if we got an error, thus checking for error
-      // cb(cart);
-
       if(err) {
-        // if no items are present in the cart
         cb(null);
       } else {
         cb(cart);

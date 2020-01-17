@@ -56,7 +56,6 @@ module.exports = class Product {
 
       fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
         if(!err) {
-          // if no error occurs then we have to delete that element from that cart too, as if product doesnt exists then its no use of product to be in cart
           Cart.deleteProduct(id, productPrice);
         }
       });
