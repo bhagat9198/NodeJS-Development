@@ -6,12 +6,14 @@
 <main>
   <% if (products.length > 0 ) { %>
     <ul>
-      <!-- interating over products array with help og forEach method, which take current item as product -->
       <% products.forEach(p => { %>
-        <!-- outputting the product info -->
-        <!-- refference: cartProducts.push({productData: product, qty: CartproductData.qty}); -->
-        <!-- output: book (2) -->
-        <li><%= p.productData.title %> (<%= p.qty %>)</li>
+        <li>
+          <p><%= p.productData.title %> (<%= p.qty %>)</p>
+          <form action="/cart-delete-item" method="POST">
+            <button type="submit" class="btn">Delete</button>
+            <input type="hidden" name="productID" value="<%= p.productData.id %>">
+          </form>
+        </li>
       <% }) %>
     </ul>
   <% } else { %>
