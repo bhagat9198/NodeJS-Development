@@ -53,6 +53,9 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const productID = req.body.productID;
+  // Product.deleteById(productID);
+
+  // it will be better if we have callback to this, so that it should redirect, once it is done.
   Product.deleteById(productID);
   res.redirect('/admin/products');
 };

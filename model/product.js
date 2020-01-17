@@ -2,6 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const rootDir = require('../util/path');
+const Cart = require('./cart');
 
 const p = path.join(rootDir, 'data', 'products.json');
 
@@ -48,22 +49,15 @@ module.exports = class Product {
   };
 
   static deleteById(id) {
-    // first of all we need to know which product to delete and then update rest of the products so that we can write back to the file
     getProductsFromFile(products => {
-      // const productIndex = products.findIndex(prod => prod.id === id);
-      // now we get to know the index of product which we want to remove. and then afterwards removing, save rest of the products back to the file. 
-
-      // but,there is another function(inbuild), which will help us much better way
-      // "filter" also is anonymous function and will return all elements as part of new array that do match the condition
-      // const updatedProducts = products.filter(prods => prods.id  === id);
-
-      // but we only need elements whos id is not equal to the passed id so,
+    
       const updatedProducts = products.filter(prods => prods.id  !== id);
+      const productPrice = (products.find(prods => prods.id === id)).price;
 
-      // saving to the file
       fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
         if(!err) {
           // if no error occurs then we have to delete that element from that cart too, as if product doesnt exists then its no use of product to be in cart
+          Cart.deleteProduct(id, productPrice);
         }
       });
     });
