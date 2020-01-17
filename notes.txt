@@ -49,3 +49,13 @@ html syntax is different but if we inspect page, it will shows us proper html co
                     <%}
                 %>
 -->
+
+<ul>
+      <!-- interating over products array with help og forEach method, which take current item as product -->
+      <% products.forEach(p => { %>
+        <!-- outputting the product info -->
+        <!-- refference: cartProducts.push({productData: product, qty: CartproductData.qty}); -->
+        <!-- output: book (2) -->
+        <li><%= p.productData.title %> (<%= p.qty %>)</li>
+      <% }) %>
+    </ul>

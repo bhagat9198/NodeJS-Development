@@ -38,24 +38,35 @@ module.exports = class Cart {
   static deleteProduct(id, productPrice) {
     fs.readFile(p, (err, fileContent) => {
       if (err) {
-        // if there is nothing in cart, we can get a error as there is nothing to delete.
-        // so we will return the cart as it is
         return;
       }
-      // if no error occurs, then we will delete the product from the cart and reduce the total price
-      // we are in readFile(), so instead of accessing "cart", we have to access "fileContent" which contain all cart products
-      // fileContent is in JSON formate, so we have convert it back to the JS formate
       const updatedProduct = { ...JSON.parse(fileContent) };
       const product = updatedProduct.products.find(prods => prods.id === id);
       const productQty = product.qty;
       updatedProduct.products = updatedProduct.products.filter(prods => prods.id !== id);
-      // const updatedTotalPrice = product.totalPrice - (productPrice * productQty);
       updatedProduct.totalPrice = updatedProduct - (productPrice * productQty);
 
-      // once everything is updated after deleting, storing it back to the file
       fs.writeFile(p, JSON.stringify(updatedProduct), (err) => {
         console.log(err);
       });
+    });
+  }
+
+  // we will return the entire cart in the callback
+  // we add a callback so that we can call it once we get all the id's which are present in cart
+  static getCart(cb) {
+    fs.readFile(p, (err, fileContent) => {
+      // converting JSON to JS data
+      const cart = JSON.parse(fileContent);
+      // this will fail, if we got an error, thus checking for error
+      // cb(cart);
+
+      if(err) {
+        // if no items are present in the cart
+        cb(null);
+      } else {
+        cb(cart);
+      }
     });
   }
 
