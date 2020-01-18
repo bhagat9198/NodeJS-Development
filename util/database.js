@@ -19,7 +19,7 @@ const pool = mysql.createPool({
   // passing database name as database will have multiple schemas within it
   database: 'nodeapp',
   // passing password of database
-  password: 'toor'
+  password: 'root'
 });
 
 // after creating a pool, we can export it
