@@ -4,3 +4,8 @@ npm install --save mysql2
 
 util/database.js
 app.js
+
+10.137
+add the item in product table of database
+app.js
+https://dictionary.cambridge.org/images/full/book_noun_001_01679.jpg?version=5.0.65

@@ -17,16 +17,9 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));
 
-// EG: using the connection pool, 
-// both commands will execute query but execute is bit safer
-// db.execute() db.query()
-// we have to end our connection also when our appliaction shuts down
-// db.end(); 
-// but we will not shut our appliaction down. 
-
-// within execute('') we can write down our sql command
-// creating the table 'products' tabel in our database and writing down entries
-db.execute('SELECT * FROM products');
+// as we have exported promises along with pool from "database.js". 
+// so when we execute queries, we will get promise which contain the response
+db.execute('SELECT * FROM products').then().cath();
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
