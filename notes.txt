@@ -17,6 +17,8 @@ controller/admin.js : getProducts
 11.155
 controller/admin.js
 
+11.156
+controller/admin.js : delete
 
 
 

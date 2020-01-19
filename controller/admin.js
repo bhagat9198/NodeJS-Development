@@ -21,9 +21,9 @@ exports.postAddProduct = (req, res, next) => {
     description: description
   })
   .then(result => {
-    console.log(result);
+    // console.log(result);
     console.log('product saved ');
-    
+    res.redirect('/admin/products');
   })
   .catch(err => {
     console.log(err);
@@ -48,19 +48,6 @@ exports.getEditProduct = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
-
-  // older with SQL
-  // Product.findById(productID)
-  // .then(([row]) => {
-  //   res.render("admin/edit-product", {
-  //     path: "/admin/edit-product",
-  //     pageTitle: "Edit Products",
-  //     editing: editMode,
-  //     product: row
-  //   });
-  // })
-  // .catch(err => console.log(err));
-  
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -72,32 +59,44 @@ exports.postEditProduct = (req, res, next) => {
 
   Product.findByPk(productID)
   .then(product => {
-    // updating oder values with new values
     product.title = updatedTitle;
     product.imageUrl = updatedImageUrl;
     product.price = updatedPrice;
     product.description = upadatedDesciption;
 
-    // "save()" is inbuild method provided by sequelize which will update values in database by taking updated values from JS
-    // if the product does not exist, it will creat a new product else if it is there, it will update existing one.
     product.save()
   })
-  // this ".then()" is for save() mthod
   .then(() => {
     res.redirect('/admin/products');  
   })
   .catch(err => console.log(err));
-
-  // older
-  // const updatedProduct = new Product(productID, updatedTitle, updatedImageUrl, upadatedDesciption, updatedPrice);
-  // updatedProduct.save();
-  // res.redirect('/admin/products');
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const productID = req.body.productID;
-  Product.deleteById(productID);
-  res.redirect('/admin/products');
+  
+  // 1st method : we passing product model. so we have pass the query to tell which product to delete
+  // Product.destroy(where : {product.id = productID});
+  // Product.destroy(); //error, as no condition will pass
+
+  // 2nd method
+  Product.findByPk(productID)
+  .then(product => {
+    // here we are passing product object, thus it will get deleted
+    product.destroy()
+
+    // or
+    // return product.destroy()
+  })
+  .then(() => {
+    res.redirect('/admin/products');
+  })
+  .catch(err => console.log(err));
+
+  
+  // older
+  // Product.deleteById(productID);
+  // res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {
