@@ -33,12 +33,12 @@ app.use(express.static(path.join(rootDir, 'public')));
   // first array is the result from database and second array hold the metadata 
 
 // thus extrating seprately
-db.execute('SELECT * FROM products')
-  .then((result) => {
-    console.log(result[0]);
-    console.log(result[1]);
-  })
-  .catch(err => console.log(err));
+// db.execute('SELECT * FROM products')
+//   .then((result) => {
+//     console.log(result[0]);
+//     console.log(result[1]);
+//   })
+//   .catch(err => console.log(err));
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);

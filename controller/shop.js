@@ -2,13 +2,16 @@ const Product = require('../model/product');
 const Cart = require('../model/cart');
 
 exports.getProduct = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/product-list", {
-      pageTitle: "Shop Products",
-      prods: products,
-      path: "/products"
-    });
-  })
+  Product.fetchAll()
+    .then(([rows, fieldsData]) => {
+      console.log(rows);
+      res.render("shop/product-list", {
+        pageTitle: "Shop Products",
+        prods: rows,
+        path: "/products"
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getDetails = (req, res, next) => {
@@ -50,13 +53,8 @@ exports.postCart = (req, res, next) => {
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
-  // while deleting, we have delete product only from the cart and not product as a whole from everywhere
-  // getting the productID which we get it from post request while deleting the item
   const productID = req.body.productID;
-  // finding the product
   Product.findById(productID, product => {
-    // after getting the product, we will get to know the product price, which can be sent to cart to delete an item.
-    // we can even directly send product price along with productID from the form. but its a good practice.thus using " Product.findById" method to extract product details
     Cart.deleteProduct(productID, product.price);
     res.redirect('/cart');
   });
@@ -69,14 +67,26 @@ exports.getOrders = (req, res, next) => {
   });
 };
 
+// using the same approach as used in getProduct()
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll((products) => {
-    res.render("shop/index", {
-      pageTitle: "Shop",
-      prods: products,
-      path: "/"
-    });
-  })
+  // Product.fetchAll((products) => {
+  //   res.render("shop/index", {
+  //     pageTitle: "Shop",
+  //     prods: products,
+  //     path: "/"
+  //   });
+  // })
+
+  Product.fetchAll()
+    // we only need first sub array so we can only destructure by provinding only one value, which will take first sub array 
+    .then(([rows]) => {
+      res.render("shop/index", {
+        pageTitle: "Shop",
+        prods: rows,
+        path: "/"
+      });
+    })
+    .catch (err => console.log(err));
 };
 
 
