@@ -26,10 +26,6 @@ exports.getDetails = (req, res, next) => {
     res.render(
       'shop/product-detail',
       { pageTitle: product.title,
-        // it will give us error, as we are passing an array but according to setup, we have to pass the array.
-        // within the array, we got our product which we need at first index. 
-        // product: product,
-        // so, sepicify the object index
         product: product[0], 
         path: '/products' 
       }

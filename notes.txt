@@ -1,13 +1,13 @@
 
-10.140
-controller/shop
+11.147
+npm install --save sequelize
+to work with sequelize, u should install "mysql2"
+npm install --save mysql2
+util/database.js
 
-10.141
-model/product.js
-controller/admin.js
 
-10.142
-model/products.js
+
+
 
 
 

@@ -19,7 +19,6 @@ exports.postAddProduct = (req, res, next) => {
   
   product.save()
     .then(() => {
-      // as we are inserting, we dont need agruments
       res.redirect("/");
     })
     .catch(err => console.log(err));

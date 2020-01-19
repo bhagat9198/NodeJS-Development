@@ -1,27 +1,40 @@
-// we have set the connection between our app and sql database. so we can pass queries from our app and get the results from the database.
+// const mysql = require('mysql2');
 
-const mysql = require('mysql2');
+// const pool = mysql.createPool({
+//   host: 'localhost',
+//   user: 'root',
+//   database: 'nodeapp',
+//   password: 'root'
+// });
 
-// we have 2 ways of connecting to database
-// 1. we set up connection which we can use to run queries and we should always close the connection once we are done with the query. DOWNSIDE: we need to re-execute the code to create the connection for every new query and there will be lot of queries because we will fetch data, delete data, write data. so creating a new connections all the times becomes inefficient both in our code and also regarding the connection to the database which is establish and the performance this may cost. 
-    // mysql.createConnection
+// module.exports = pool.promise();
 
-// 2. create a connection pool (can read in documents of mysql2) 
-// creating pool of connections which will always reach out to it whenever we have query to run and then we get new connection from that pool which manage multiple connections so that we can run multiple queries simultaneously because earch query needs its own connection  and once query is done, connecttion will be handed back to the pool and its avaliable for new query. pool will be finished once our application finishes/shuts down.
-// const pool = mysql.createPool()
 
-// we need to pass JS object within it with some info about our database engine with whom we are connecting.
-const pool = mysql.createPool({
-  // passing server name/ip address
-  host: 'localhost',
-  // passing username, by default username is root while configering database
-  user: 'root',
-  // passing database name as database will have multiple schemas within it
-  database: 'nodeapp',
-  // passing password of database
-  password: 'root'
+
+
+// first step is to craete a model with sequlize and connect with database
+// deleting other tables in database if there (because we want sequlize to manage our tables) 
+// connecting to database 
+// even though we are not importing mysql but it uses mysql behind the sceans
+
+const Sequelize = require('sequelize');
+// "Sequelize" is constructor function... its a class
+
+// creating the new instance of Sequelize
+// Sequelize() accepts numbers of paramerters username, password,database, password
+// 1: database name
+// 2: username
+// 3. password
+// 4: option objects {}
+// dialect: tells which database we are using . this is nessary as different sql databases have littel different sql syntax
+// host: by default it will use localhost, but we set explicitly
+const sequelize = new Sequelize('nodeapp', 'root', 'root', {
+  dialect: 'mysql',
+  host: 'localhost' 
 });
 
-// after creating a pool, we can export it
-// we are exporting it in different way ie with promise() method. as this will allow us to use promises when working with pool connections which handles asynchronous data. we are not using callbacks, because promises allow us to write code in bit more structured way.[ no need of nested callabcks but we can have promise chain]
-module.exports = pool.promise();
+// thus, this will create connection pool with sequelize object
+module.exports = sequelize;
+
+
+
