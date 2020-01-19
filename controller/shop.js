@@ -2,16 +2,26 @@ const Product = require('../model/product');
 const Cart = require('../model/cart');
 
 exports.getProduct = (req, res, next) => {
-  Product.fetchAll()
-  .then(([rows, fieldsData]) => {
-    console.log(rows);
+  Product.findAll()
+  .then(products => {
     res.render("shop/product-list", {
       pageTitle: "Shop Products",
-      prods: rows,
+      prods: products,
       path: "/products"
     });
   })
   .catch(err => console.log(err));
+
+  // Product.fetchAll()
+  // .then(([rows, fieldsData]) => {
+  //   console.log(rows);
+  //   res.render("shop/product-list", {
+  //     pageTitle: "Shop Products",
+  //     prods: rows,
+  //     path: "/products"
+  //   });
+  // })
+  // .catch(err => console.log(err));
 };
 
 exports.getDetails = (req, res, next) => {
@@ -78,16 +88,35 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
-  .then(([rows]) => {
+  // "findAll()" is inbuild mathod in sequelise which gives all the data which is stored in model
+  // we can restrict elements which are retrived by giving conditions
+  // EG:
+  // Product.findAll({where: <condition>})
+  // thus, findAll can accepts number of arugumets within it.
+
+  Product.findAll()
+  .then(products => {
     res.render("shop/index", {
       pageTitle: "Shop",
-      prods: rows,
+      prods: products,
       path: "/"
     });
   })
-  .catch (err => console.log(err));
+  .catch(err => console.log(err));
+  
+  // as there is no "fetchAll()", this will not run
+  // Product.fetchAll()
+  // .then(([rows]) => {
+  //   res.render("shop/index", {
+  //     pageTitle: "Shop",
+  //     prods: rows,
+  //     path: "/"
+  //   });
+  // })
+  // .catch (err => console.log(err));
 };
+
+
 
 
 
