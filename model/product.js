@@ -1,91 +1,10 @@
-/*************************************************************
-
-// const fs = require('fs');
-// const path = require('path');
-
-// const rootDir = require('../util/path');
-const Cart = require('./cart');
-
-// const p = path.join(rootDir, 'data', 'products.json');
-
-// const getProductsFromFile = cb => {
-//   fs.readFile(p, (err, fileContent) => {
-//     if(err) {
-//       cb([]);  
-//     } else {
-//       cb(JSON.parse(fileContent));
-//     }
-//   });
-// }
-
-
-module.exports = class Product {
-  
-  constructor(id,title, imageUrl, description, price) {
-    this.id = id;
-    this.title = title;
-    this.imageUrl = imageUrl;
-    this.description = description;
-    this.price = price;
-  }
-
-  save() {
-    // getProductsFromFile((products) => {
-    //   if(this.id) {
-    //     const existingProductIndex = products.findIndex(prods => prods.id === this.id);
-    //     const updatedProduct = [...products];
-    //     updatedProduct[existingProductIndex] = this;
-
-    //     fs.writeFile(p, JSON.stringify(updatedProduct), (err) => {
-    //     });
-    //   } else {
-    //     this.id = Math.random().toString();
-    //     products.push(this);
-    
-    //     fs.writeFile(p, JSON.stringify(products), (err) => {
-    //       console.log(err);
-    //     });
-    //   }
-      
-    // });
-  };
-
-  static deleteById(id) {
-    // getProductsFromFile(products => {
-    
-    //   const updatedProducts = products.filter(prods => prods.id  !== id);
-    //   const productPrice = (products.find(prods => prods.id === id)).price;
-
-    //   fs.writeFile(p, JSON.stringify(updatedProducts), (err) => {
-    //     if(!err) {
-    //       Cart.deleteProduct(id, productPrice);
-    //     }
-    //   });
-    // });
-  };
-
-  static fetchAll() {
-    // getProductsFromFile(cb);
-  };
-
-  static findById(id) {
-  //   getProductsFromFile(products => {
-  //     const product = products.find(p => p.id === id);
-  //     cb(product);
-  //   });
-  // };
-};
-
-
-***********************************************************************/
-
 const db = require('../util/database');
 
 const Cart = require('./cart');
 
 module.exports = class Product {
-  
-  constructor(id,title, imageUrl, description, price) {
+
+  constructor(id, title, imageUrl, description, price) {
     this.id = id;
     this.title = title;
     this.imageUrl = imageUrl;
@@ -94,7 +13,13 @@ module.exports = class Product {
   }
 
   save() {
-
+    // to prevent sql injection (attack in which user enter code instaed of data which can be used to hack the database), we will put "?" instaed of directly putting values.
+    // thus, second argument will take the values and put them as data inplace of "?".
+    // this is extra security feature
+    // "title, imageUrl, price, description" should have the same names of the fields in table 'products'
+    // db.execute() is a method which will give out promise. so we will return it to the fuction which is calling this function. hence using "return"
+    return db.execute('INSERT INTO products(title, imageUrl, price, description) VALUES (?,?,?,?)',
+    [this.title, this.imageUrl, this.price, this.description]);
   };
 
   static deleteById(id) {

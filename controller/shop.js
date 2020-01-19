@@ -67,18 +67,8 @@ exports.getOrders = (req, res, next) => {
   });
 };
 
-// using the same approach as used in getProduct()
 exports.getIndex = (req, res, next) => {
-  // Product.fetchAll((products) => {
-  //   res.render("shop/index", {
-  //     pageTitle: "Shop",
-  //     prods: products,
-  //     path: "/"
-  //   });
-  // })
-
   Product.fetchAll()
-    // we only need first sub array so we can only destructure by provinding only one value, which will take first sub array 
     .then(([rows]) => {
       res.render("shop/index", {
         pageTitle: "Shop",

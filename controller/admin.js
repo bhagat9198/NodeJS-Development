@@ -17,8 +17,12 @@ exports.postAddProduct = (req, res, next) => {
   // passing null value in id parameter of constructor of a class
   const product = new Product(null, title, imageUrl, description, price);
   
-  product.save();
-  res.redirect("/");
+  product.save()
+    .then(() => {
+      // as we are inserting, we dont need agruments
+      res.redirect("/");
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getEditProduct = (req, res, next) => {
