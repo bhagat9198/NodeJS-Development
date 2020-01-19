@@ -3,23 +3,39 @@ const Cart = require('../model/cart');
 
 exports.getProduct = (req, res, next) => {
   Product.fetchAll()
-    .then(([rows, fieldsData]) => {
-      console.log(rows);
-      res.render("shop/product-list", {
-        pageTitle: "Shop Products",
-        prods: rows,
-        path: "/products"
-      });
-    })
-    .catch(err => console.log(err));
+  .then(([rows, fieldsData]) => {
+    console.log(rows);
+    res.render("shop/product-list", {
+      pageTitle: "Shop Products",
+      prods: rows,
+      path: "/products"
+    });
+  })
+  .catch(err => console.log(err));
 };
 
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
-  Product.findById(productID, product => {
-    res.render('shop/product-detail', { pageTitle: product.title, product: product, path: '/products' });
-  });
+  // Product.findById(productID, product => {
+  //   res.render('shop/product-detail', { pageTitle: product.title, product: product, path: '/products' });
+  // });
 
+  Product.findById(productID)
+  .then(([product]) => {
+    console.log(product);
+    res.render(
+      'shop/product-detail',
+      { pageTitle: product.title,
+        // it will give us error, as we are passing an array but according to setup, we have to pass the array.
+        // within the array, we got our product which we need at first index. 
+        // product: product,
+        // so, sepicify the object index
+        product: product[0], 
+        path: '/products' 
+      }
+    );
+  })
+  .catch(err => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
@@ -37,10 +53,8 @@ exports.getCart = (req, res, next) => {
         path: '/cart',
         products: cartProducts
       });
-    }); 
-    
-  });
-  
+    });     
+  }); 
 };
 
 exports.postCart = (req, res, next) => {
@@ -69,14 +83,14 @@ exports.getOrders = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
   Product.fetchAll()
-    .then(([rows]) => {
-      res.render("shop/index", {
-        pageTitle: "Shop",
-        prods: rows,
-        path: "/"
-      });
-    })
-    .catch (err => console.log(err));
+  .then(([rows]) => {
+    res.render("shop/index", {
+      pageTitle: "Shop",
+      prods: rows,
+      path: "/"
+    });
+  })
+  .catch (err => console.log(err));
 };
 
 

@@ -32,14 +32,26 @@ exports.getEditProduct = (req, res, next) => {
   }
 
   const productID = req.params.productID;
-  Product.findById(productID, product => {
-    res.render("admin/edit-product", {
-      path: "/admin/edit-product",
-      pageTitle: "Edit Products",
-      editing: editMode,
-      product: product
-    });
-  });
+  // Product.findById(productID, product => {
+    // res.render("admin/edit-product", {
+    //   path: "/admin/edit-product",
+    //   pageTitle: "Edit Products",
+    //   editing: editMode,
+    //   product: product
+    // });
+  // });
+
+  // done in advance
+  Product.findById(productID)
+    .then(([row]) => {
+      res.render("admin/edit-product", {
+        path: "/admin/edit-product",
+        pageTitle: "Edit Products",
+        editing: editMode,
+        product: row
+      });
+    })
+    .catch(err => console.log(err));
   
 };
 

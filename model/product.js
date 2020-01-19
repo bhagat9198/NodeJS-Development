@@ -13,11 +13,6 @@ module.exports = class Product {
   }
 
   save() {
-    // to prevent sql injection (attack in which user enter code instaed of data which can be used to hack the database), we will put "?" instaed of directly putting values.
-    // thus, second argument will take the values and put them as data inplace of "?".
-    // this is extra security feature
-    // "title, imageUrl, price, description" should have the same names of the fields in table 'products'
-    // db.execute() is a method which will give out promise. so we will return it to the fuction which is calling this function. hence using "return"
     return db.execute('INSERT INTO products(title, imageUrl, price, description) VALUES (?,?,?,?)',
     [this.title, this.imageUrl, this.price, this.description]);
   };
@@ -31,6 +26,7 @@ module.exports = class Product {
   };
 
   static findById(id) {
+    return db.execute('SELECT * FROM products WHERE products.id = ?', [id]);
   }
 };
 
