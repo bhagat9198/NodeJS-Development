@@ -5,6 +5,9 @@ to work with sequelize, u should install "mysql2"
 npm install --save mysql2
 util/database.js
 
+11.148
+model/products.js
+
 
 
 
