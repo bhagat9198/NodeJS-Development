@@ -1,3 +1,5 @@
+// There will be one dummy user who can add items in cart and later can checkout. 
+
 const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
