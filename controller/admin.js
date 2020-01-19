@@ -76,27 +76,18 @@ exports.postDeleteProduct = (req, res, next) => {
   const productID = req.body.productID;
   
   // 1st method : we passing product model. so we have pass the query to tell which product to delete
-  // Product.destroy(where : {product.id = productID});
+  // Product.destroy({<condition>});
   // Product.destroy(); //error, as no condition will pass
 
   // 2nd method
   Product.findByPk(productID)
   .then(product => {
-    // here we are passing product object, thus it will get deleted
     product.destroy()
-
-    // or
-    // return product.destroy()
   })
   .then(() => {
     res.redirect('/admin/products');
   })
   .catch(err => console.log(err));
-
-  
-  // older
-  // Product.deleteById(productID);
-  // res.redirect('/admin/products');
 };
 
 exports.getProducts = (req, res, next) => {

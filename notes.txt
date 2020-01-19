@@ -1,26 +1,8 @@
-
-11.153
-product-detal.ejs : added class="image"
-main.css : 
-      .image {
-      height: 20rem;
-    }
-
-    .image img {
-      height: 100%;
-    }
-controller/shop.js
-
-11.154
-controller/admin.js : getProducts
-
-11.155
-controller/admin.js
-
 11.156
 controller/admin.js : delete
 
-
+11.157
+model/user.js
 
 
 
