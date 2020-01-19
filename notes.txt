@@ -11,6 +11,17 @@ controller/admin.js
 11.152
 controller/shop.js
 
+11.153
+product-detal.ejs : added class="image"
+main.css : 
+      .image {
+      height: 20rem;
+    }
+
+    .image img {
+      height: 100%;
+    }
+controller/shop.js
 
 
 

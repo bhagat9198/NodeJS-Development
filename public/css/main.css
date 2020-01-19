@@ -197,6 +197,14 @@ form {
   text-align: center;
 }
 
+.image {
+  height: 20rem;
+}
+
+.image img {
+  height: 100%;
+}
+
 @media (min-width: 768px) {
   .main-header__nav {
     display: flex;

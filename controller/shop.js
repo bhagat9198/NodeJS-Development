@@ -11,37 +11,62 @@ exports.getProduct = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
-
-  // Product.fetchAll()
-  // .then(([rows, fieldsData]) => {
-  //   console.log(rows);
-  //   res.render("shop/product-list", {
-  //     pageTitle: "Shop Products",
-  //     prods: rows,
-  //     path: "/products"
-  //   });
-  // })
-  // .catch(err => console.log(err));
 };
 
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
-  // Product.findById(productID, product => {
-  //   res.render('shop/product-detail', { pageTitle: product.title, product: product, path: '/products' });
-  // });
 
-  Product.findById(productID)
-  .then(([product]) => {
-    console.log(product);
+  // "findByPk" is also inbuild function. Pk:primary key
+  // It will gives us one single element object (not array)
+
+  // Product.findByPk(productID)
+  // .then(product => {
+  //   console.log(product);
+  //   res.render(
+  //     'shop/product-detail',
+  //     { pageTitle: product.title,
+  //       product: product, 
+  //       path: '/products' 
+  //     }
+  //   );
+  // })
+  // .catch(err => console.log(err));
+
+  // or 
+  // using findAll() method
+  // it will give us result in array formate, so we have to specifu the array index ie "0" as there will be only one product with unique Pk.
+  Product.findAll({where : 
+    {id: productID}
+  })
+  .then(product => {
+    // console.log(product[0]);
     res.render(
-      'shop/product-detail',
-      { pageTitle: product.title,
-        product: product[0], 
-        path: '/products' 
-      }
-    );
+        'shop/product-detail',
+        { 
+          // specifying the index
+          pageTitle: product[0].title,
+          // specifying the index
+          product: product[0], 
+          path: '/products' 
+        }
+      );
   })
   .catch(err => console.log(err));
+
+
+  // orlder way
+  // Product.findById(productID)
+  // .then(([product]) => {
+  //   console.log(product);
+  //   res.render(
+  //     'shop/product-detail',
+  //     { pageTitle: product.title,
+  //       product: product[0], 
+  //       path: '/products' 
+  //     }
+  //   );
+  // })
+  // .catch(err => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
@@ -88,12 +113,6 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.getIndex = (req, res, next) => {
-  // "findAll()" is inbuild mathod in sequelise which gives all the data which is stored in model
-  // we can restrict elements which are retrived by giving conditions
-  // EG:
-  // Product.findAll({where: <condition>})
-  // thus, findAll can accepts number of arugumets within it.
-
   Product.findAll()
   .then(products => {
     res.render("shop/index", {
@@ -103,17 +122,6 @@ exports.getIndex = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
-  
-  // as there is no "fetchAll()", this will not run
-  // Product.fetchAll()
-  // .then(([rows]) => {
-  //   res.render("shop/index", {
-  //     pageTitle: "Shop",
-  //     prods: rows,
-  //     path: "/"
-  //   });
-  // })
-  // .catch (err => console.log(err));
 };
 
 
