@@ -14,14 +14,39 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
 
-  // passing null value in id parameter of constructor of a class
-  const product = new Product(null, title, imageUrl, description, price);
+  // const product = new Product(null, title, imageUrl, description, price);
   
-  product.save()
-    .then(() => {
-      res.redirect("/");
-    })
-    .catch(err => console.log(err));
+  // product.save()
+  //   .then(() => {
+  //     res.redirect("/");
+  //   })
+  //   .catch(err => console.log(err));
+
+
+  // as we are using sequlize, we will add product by help of sequlize
+
+  // "create()" creates a new element based on the model and immmeditely saves it to db. so, first we get object in JS first then it gets saved automatiavlly.
+  // "build()" also creates new object based on the model but only in JS and then we manually need to save it.
+  
+  // "create()" will take number of arguments which are to be stored in model
+  Product.create({
+    // key:value
+    // we have created same constants above.
+    title: title,
+    imageUrl: imageUrl,
+    price: price,
+    description: description
+  })
+  // it will return a promise
+  .then(result => {
+    console.log(result);
+    console.log('product saved ');
+    
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
 };
 
 exports.getEditProduct = (req, res, next) => {
