@@ -36,18 +36,30 @@ exports.getEditProduct = (req, res, next) => {
   if(!editMode) {
     res.redirect('/');
   }
-
   const productID = req.params.productID;
-  Product.findById(productID)
-    .then(([row]) => {
-      res.render("admin/edit-product", {
-        path: "/admin/edit-product",
-        pageTitle: "Edit Products",
-        editing: editMode,
-        product: row
-      });
-    })
-    .catch(err => console.log(err));
+
+  Product.findByPk(productID)
+  .then(product => {
+    res.render("admin/edit-product", {
+      path: "/admin/edit-product",
+      pageTitle: "Edit Products",
+      editing: editMode,
+      product: product
+    });
+  })
+  .catch(err => console.log(err));
+
+  // older with SQL
+  // Product.findById(productID)
+  // .then(([row]) => {
+  //   res.render("admin/edit-product", {
+  //     path: "/admin/edit-product",
+  //     pageTitle: "Edit Products",
+  //     editing: editMode,
+  //     product: row
+  //   });
+  // })
+  // .catch(err => console.log(err));
   
 };
 
@@ -58,9 +70,28 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
 
-  const updatedProduct = new Product(productID, updatedTitle, updatedImageUrl, upadatedDesciption, updatedPrice);
-  updatedProduct.save();
-  res.redirect('/admin/products');
+  Product.findByPk(productID)
+  .then(product => {
+    // updating oder values with new values
+    product.title = updatedTitle;
+    product.imageUrl = updatedImageUrl;
+    product.price = updatedPrice;
+    product.description = upadatedDesciption;
+
+    // "save()" is inbuild method provided by sequelize which will update values in database by taking updated values from JS
+    // if the product does not exist, it will creat a new product else if it is there, it will update existing one.
+    product.save()
+  })
+  // this ".then()" is for save() mthod
+  .then(() => {
+    res.redirect('/admin/products');  
+  })
+  .catch(err => console.log(err));
+
+  // older
+  // const updatedProduct = new Product(productID, updatedTitle, updatedImageUrl, upadatedDesciption, updatedPrice);
+  // updatedProduct.save();
+  // res.redirect('/admin/products');
 };
 
 exports.postDeleteProduct = (req, res, next) => {
@@ -81,12 +112,4 @@ exports.getProducts = (req, res, next) => {
   .catch(err => {
     console.log(err);
   });
-  
-  // Product.fetchAll((products) => {
-  //   res.render("admin/products", {
-  //     path: "/admin/products",
-  //     pageTitle: "Admin Add Products",
-  //     prods: products,
-  //   });
-  // })
 };
