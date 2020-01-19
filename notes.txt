@@ -1,16 +1,4 @@
 
-11.148
-model/products.js
-
-11.149
-app.js
-
-11.150
-controller/admin.js
-
-11.152
-controller/shop.js
-
 11.153
 product-detal.ejs : added class="image"
 main.css : 
@@ -23,6 +11,8 @@ main.css :
     }
 controller/shop.js
 
+11.154
+controller/admin.js : getProducts
 
 
 

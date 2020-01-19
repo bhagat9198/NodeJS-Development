@@ -16,9 +16,6 @@ exports.getProduct = (req, res, next) => {
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
 
-  // "findByPk" is also inbuild function. Pk:primary key
-  // It will gives us one single element object (not array)
-
   // Product.findByPk(productID)
   // .then(product => {
   //   console.log(product);
@@ -33,40 +30,21 @@ exports.getDetails = (req, res, next) => {
   // .catch(err => console.log(err));
 
   // or 
-  // using findAll() method
-  // it will give us result in array formate, so we have to specifu the array index ie "0" as there will be only one product with unique Pk.
+
   Product.findAll({where : 
     {id: productID}
   })
   .then(product => {
-    // console.log(product[0]);
     res.render(
         'shop/product-detail',
         { 
-          // specifying the index
           pageTitle: product[0].title,
-          // specifying the index
           product: product[0], 
           path: '/products' 
         }
       );
   })
   .catch(err => console.log(err));
-
-
-  // orlder way
-  // Product.findById(productID)
-  // .then(([product]) => {
-  //   console.log(product);
-  //   res.render(
-  //     'shop/product-detail',
-  //     { pageTitle: product.title,
-  //       product: product[0], 
-  //       path: '/products' 
-  //     }
-  //   );
-  // })
-  // .catch(err => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
