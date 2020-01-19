@@ -4,7 +4,8 @@ const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const User = sequelize.define(user, {
+// table name will be inside single quotes
+const User = sequelize.define('user', {
   id : {
     primaryKey: true,
     allowNull: false,
