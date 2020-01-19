@@ -74,12 +74,6 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const productID = req.body.productID;
-  
-  // 1st method : we passing product model. so we have pass the query to tell which product to delete
-  // Product.destroy({<condition>});
-  // Product.destroy(); //error, as no condition will pass
-
-  // 2nd method
   Product.findByPk(productID)
   .then(product => {
     product.destroy()

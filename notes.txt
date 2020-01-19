@@ -1,15 +1,8 @@
-11.156
-controller/admin.js : delete
-
-11.157
- There will be one dummy user who can add items in cart and later can checkout. 
-model/user.js
-
 11.158
 app.js
 
-
-
+11.159
+app.js
 
 
 
