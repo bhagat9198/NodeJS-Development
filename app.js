@@ -108,6 +108,7 @@ app.use(bodyParser.urlencoded({extended : true}));
 
 app.use(express.static(path.join(rootDir, 'public')));
 
+// adminData.routes
 app.use('/admin',adminData.routes);
 app.use(shopeRoutes);
 

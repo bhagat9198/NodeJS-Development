@@ -1,3 +1,8 @@
+6.077
+routes/admin.js 
+app.js
+routes/shope.js
+
 express js is all about middleware
 ie, incoming request will passthrough bunch of functions
 thus, there will be more than request handler.

@@ -26,5 +26,6 @@ routes.post('/add-product', (req, res, next) => {
   res.redirect('/');
 });
 
+// making 2 different routes
 module.exports.routes = routes;
 module.exports.productArr = products;
