@@ -1,38 +1,13 @@
-express js is all about middleware
-ie, incoming request will passthrough bunch of functions
-thus, there will be more than request handler.
-    it helps in code segreation
+11.158
+app.js
+
+11.159
+app.js
 
 
 
-we can have same url for more then one webpage till the time method ccessing that webpages are different
-eg: /admin/add-products => GET
-    /admin/add-products => POST
-    routes.get('/add-products', (req, res, next) => {
-    routes.post('/add-products', (req, res, next) => {
 
 
 
-res.sendFile('/views/addProducts.html'); 
-this will cause error, as node will check for a file from root directory of and not from 
-root directory of the project
-thus, "path" module will be used to specify the path to html files.
 
 
-
-<link rel="stylesheet" href="/public/css/main.css">
-this will not work as node will not allow us to acces us the internal files on the browser
-ie, localhost:300/public/css/main.css
-
-to access these static files, we have to modify our main app.js file
-we need to serve files statically and stically simply means that its not handles by 
-router or expressjs or any other middleware.
-but should be directly forwarded to file sysytem
-
-
-installing templating engines
-npm install --save ejs pug express-handlebars
-
-
-pug: 
-html syntax is different but if we inspect page, it will shows us proper html code

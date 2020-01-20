@@ -1,30 +1,57 @@
-const path =  require('path');
+const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const adminData = require('./routes/admin');
+const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const rootDir = require('./util/path');
+const errorController = require('./controller/error');
+const sequelize = require('./util/database');
+
+// requiring both the models
+const Product = require('./model/product');
+const User = require('./model/user');
 
 const app = express();
 
-// no need to register the engin, as exoress auto register it
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
-app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));
 
-app.use('/admin',adminData.routes);
+app.use((req, res, next) => {
+  User.findByPk(1)
+  .then((user) => {
+    req.user = user;
+    next();
+  })
+  .catch(err => console.log(err));
+}); 
+
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-  res.status(404);
-  res.setHeader('Content-type','text/html');
-  // passing the argument to templating engine doesnt change, it remains the same
-  // "path: 'Error'" we passed becasue ejs engin will check "path" argument in naviagation bar logic of template. if we will not provide, we will get an error
-  res.render('404', {pageTitle: "404", path: 'Error'});
-});
+app.use(errorController.get404);
 
-app.listen(3000);
+Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
+User.hasMany(Product);
+ 
+sequelize.sync()
+.then(result => {
+  return User.findByPk(1)
+})
+.then( user => {
+  if(!user) {
+    return User.create({name: 'max', email: 'test@t.com'});
+  }
+  return user;
+})
+.then(user => {
+  console.log(user);
+  app.listen(3000);  
+})
+.catch(err => {
+  console.log('err', err);
+});

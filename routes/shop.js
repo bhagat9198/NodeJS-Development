@@ -2,18 +2,22 @@ const path = require('path');
 
 const express = require('express');
 
-const adminData = require('./admin');
+const shopController = require('../controller/shop');
 
 const routes = express.Router();
 
-routes.get('/', (req, res, next) => {
-  // "layout: false" is speacial keyword which is understood by handlerbars which tells us that we are not using anhy layouts. thus no error regarding layouts will pop up.
-  // res.render('shop', {pageTitle: 'Shop', prods : adminData.productArr, path : '/', hasProducts : adminData.productArr.length > 0, layout: false});
+routes.get('/', shopController.getIndex);
 
-  res.render('shop', {pageTitle: 'Shop', prods : adminData.productArr, path : '/', hasProducts : adminData.productArr.length > 0, activeShop: true, productCSS: true});
+routes.get('/products', shopController.getProduct);
 
-  console.log('shop.js ', adminData.productArr);
-});
+routes.get('/products/:productId', shopController.getDetails);
+
+routes.get('/cart', shopController.getCart);
+
+routes.post('/cart', shopController.postCart);
+
+routes.post('/cart-delete-item', shopController.postCartDeleteProduct);
+
+routes.get('/orders', shopController.getOrders);
 
 module.exports = routes;
-

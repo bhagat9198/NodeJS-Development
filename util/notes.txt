@@ -1,4 +1,0 @@
-util folder is nothing but a helper folder
-it means that it contains a helper file ie, it will help other files
-
-path.js file is helping other js files in setting up path more easilt and efficently
