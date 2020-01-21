@@ -38,14 +38,8 @@ exports.getEditProduct = (req, res, next) => {
   }
   const productID = req.params.productID;
 
-  // Product.findByPk(productID)
-  // if we only need to get the edit for the currently logged in user only
   req.user.getProducts({where: {id: productID}})
-  // by this we will see empty form when we click 'edit'. this is because above code works (can be in terminal, sql command being run). 
-  // "getProducts" will give us an array not a product in single object.
   .then(products => {
-    // as result is in form of array, extraction the first element which contain our result
-    // console.log(products);
     const product = products[0];
     res.render("admin/edit-product", {
       path: "/admin/edit-product",
@@ -92,8 +86,6 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  // Product.findAll()
-  // if we have to find all the products for particual user only
   req.user.getProducts()
   .then(products => {
     console.log(products);
