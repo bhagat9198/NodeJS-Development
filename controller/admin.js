@@ -14,12 +14,34 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
 
-  Product.create({
+  // 2nd method: setting up userId automatiacally when product is added
+  // createProduct method is in sequelize which comes handy while we are dealing with associations
+  // as we are using "belongsTo", sequelize gives us "createProduct()" which helps us to create new associated object. 
+  // so since user has many products or many products are belongs to a user as we defined in app.js ie, "Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});"
+  // "createProduct" because our model is names 'Product' and 'create' is automatiaclly added to 'product'
+  // req.user.createProduct(<passing the object product which is to be craeted);
+
+  req.user.createProduct({
     title: title,
     imageUrl: imageUrl,
     price: price,
     description: description
   })
+  // Product.create({
+  //   // as we have set the association that all the products are related to customers
+  //   title: title,
+  //   imageUrl: imageUrl,
+  //   price: price,
+  //   description: description
+
+  //   // 1st way: setting up user id
+  //   // setting up user id
+  //   // req.user is sequelize user object which holds both user database and and helper methods.
+  //   // this will create a new project with that user being associated to it.
+  //   // "userId" is the field created in the "products" table. 
+  //   // userId : req.user.id
+  //   // this is the not elegant way of setting up userId as we are doing it manually.
+  // })
   .then(result => {
     // console.log(result);
     console.log('product saved ');
