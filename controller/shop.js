@@ -3,90 +3,108 @@ const Cart = require('../model/cart');
 
 exports.getProduct = (req, res, next) => {
   Product.findAll()
-  .then(products => {
-    res.render("shop/product-list", {
-      pageTitle: "Shop Products",
-      prods: products,
-      path: "/products"
-    });
-  })
-  .catch(err => console.log(err));
+    .then(products => {
+      res.render("shop/product-list", {
+        pageTitle: "Shop Products",
+        prods: products,
+        path: "/products"
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
-  Product.findAll({where : 
-    {id: productID}
+  Product.findAll({
+    where:
+      { id: productID }
   })
-  .then(product => {
-    res.render(
+    .then(product => {
+      res.render(
         'shop/product-detail',
-        { 
+        {
           pageTitle: product[0].title,
-          product: product[0], 
-          path: '/products' 
+          product: product[0],
+          path: '/products'
         }
       );
-  })
-  .catch(err => console.log(err));
+    })
+    .catch(err => console.log(err));
 };
 
 exports.getCart = (req, res, next) => {
-
-  // we want to use the cart which is associated with the existing user to get all the products in it and render it to screen
-  // console.log(req.user.cart); //undefined
-  // thus, we cant access the cart like this
-  
-  // but we can get the cart, using the sequelize function
-  // req.user.getCart()
-  // .then((cart) => {
-  //   console.log(cart); //null
-    // thus, now we can access. but we dont have any cart with the user. hence 'null'
-    // creating the cart for the user in app.js
-    // thus, after creating the cart, we cab see some output in console by re-running same command
-
-    // after getting the cart, we have to get the products and display it
   req.user.getCart()
-  .then(cart => {
-    return cart.getProducts()
-  })
-  .then((products) => {
-    res.render('shop/cart', {
-      pageTitle: 'Cart',
-      path: '/cart',
-      products: products
-    });
-  })
-  .catch(err => console.log(err));
-  // thus, it wil display "no products" as user has not added any products in cart.
-  // but, after adding products also, we will get same output.
-  
-
-  // Cart.getCart(cart => {
-  //   Product.fetchAll(products => {
-  //     const cartProducts = [];
-  //     for(product of products) {
-  //       const CartproductData = cart.products.find(prod => prod.id === product.id)
-  //       if(CartproductData) {
-  //         cartProducts.push({productData: product, qty: CartproductData.qty});
-  //       }
-  //     }
-  //     res.render('shop/cart', {
-  //       pageTitle: 'Cart',
-  //       path: '/cart',
-  //       products: cartProducts
-  //     });
-  //   });     
-  // }); 
+    .then(cart => {
+      return cart.getProducts()
+    })
+    .then((products) => {
+      res.render('shop/cart', {
+        pageTitle: 'Cart',
+        path: '/cart',
+        products: products
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 exports.postCart = (req, res, next) => {
   const productID = req.body.productID
-  console.log(productID);
-  Product.findById(productID, product => {
-    Cart.addProduct(productID, product.price);
-  })
-  res.redirect('/');
+
+  let fetchedCart;
+
+  // to add the cart, we have to modify this function
+  // getting the cart
+  req.user.getCart()
+    .then(cart => {
+      fetchedCart = cart;
+      // once we fetched the cart, we have to check if that product is alraedy in the cart. 
+      // if cart is already there then just increase the quantity
+      // else add the new product to the cart
+      return cart.getProducts({ where: { id: productID } });
+    })
+    // getting the products array which are in cart
+    .then(products => {
+      let product;
+      if (products.length > 0) {
+        // if product alraedy exists, then taking the product at 0th index
+        product = products[0];
+      }
+      let newQuantity = 1;
+
+      // if product is there already
+      if (product) {
+        // we have to get the old quantity value 
+        // ... code(afterwards)
+      }
+
+      // if product does not exists before
+      // finding the product info which is stored in db
+      return Product.findByPk(productID)
+        // doing nested promises
+        .then(product => {
+          // once we get the product, we can add it to cart
+          // "addProduct()" is again the inbuild command of sequelize
+          // "product" which was retrived
+          // 2nd argument(extra): as in "cart-item" we have quantity field, so we have to specify the value.
+            //thus, passing object to object 
+          return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+          // check the database
+        })
+        .catch(err => console.log(err));
+    })
+    // once the product has been added, redirecting the page
+    .then(() => {
+      // this wil gives us an error regarding html page layouts
+      res.redirect('/cart');
+    })
+    .catch(err => console.log(err));
+
+
+  // console.log(productID);
+  // Product.findById(productID, product => {
+  //   Cart.addProduct(productID, product.price);
+  // })
+  // res.redirect('/');
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
@@ -106,14 +124,14 @@ exports.getOrders = (req, res, next) => {
 
 exports.getIndex = (req, res, next) => {
   Product.findAll()
-  .then(products => {
-    res.render("shop/index", {
-      pageTitle: "Shop",
-      prods: products,
-      path: "/"
-    });
-  })
-  .catch(err => console.log(err));
+    .then(products => {
+      res.render("shop/index", {
+        pageTitle: "Shop",
+        prods: products,
+        path: "/"
+      });
+    })
+    .catch(err => console.log(err));
 };
 
 
