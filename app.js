@@ -12,8 +12,6 @@ const Product = require('./model/product');
 const User = require('./model/user');
 const Cart = require('./model/cart');
 const CartItem = require('./model/cart-items');
-
-// importing models
 const Order = require('./model/order');
 const OrderItem = require('./model/order-item');
 
@@ -46,7 +44,7 @@ Cart.belongsTo(User);
 Cart.belongsToMany(Product, {through: CartItem});
 Product.belongsToMany(Cart, {through: CartItem});
 User.hasMany(Order);
-Order.belongsTo(User); //inverse of above
+Order.belongsTo(User);
 Order.belongsToMany(Product, {through: OrderItem});
 
 sequelize.sync()
@@ -61,12 +59,13 @@ sequelize.sync()
   return user;
 })
 .then(user => {
-  // creating the cart for the user
-  return user.createCart();
+  if(!user.createCart) {
+    return user.createCart();
+  }
+  return user;
 })
-.then(cart => {
-  app.listen(3000);  
-  
+.then(() => {
+  app.listen(3000);   
 })
 .catch(err => {
   console.log('err', err);
