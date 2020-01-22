@@ -47,8 +47,11 @@ Cart.belongsToMany(Product, {through: CartItem});
 Product.belongsToMany(Cart, {through: CartItem});
 
 // associations
+// user can do many orders
 User.hasMany(Order);
-Order.belongsTo(User);
+// but order will belong to only one user
+Order.belongsTo(User); //inverse of above
+// diffrent orders can have differnt products. thus many to many
 Order.belongsToMany(Product, {through: OrderItem});
 
 // sequelize.sync()
