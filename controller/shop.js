@@ -133,8 +133,8 @@ exports.postOrder = (req, res, next) => {
 
       // we can do with help of map function, which takes an array and gives out new array based on argument function
       // "products" as passed by above .then() block which contains all the products in an array
-      return order.addProduct(products.map(product => {
-        // "orderItem" is the name of the table. name is importatnt
+      return order.addProducts(products.map(product => {
+        // "orderItem" is the name of the table. name is importatnt   
         // so in this we will pass an object containing quantity of that product
         product.orderItem = {
           // quantity: req.user.cartItem.quantity //not valid
