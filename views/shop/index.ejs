@@ -21,8 +21,10 @@
                             <h2 class="product__price">$<%= product.price %></h2>
                             <p class="product__description"><%= product.description %></p>
                         </div>
-                        <!-- to use local variables in another incluse file, we need to pass them along with file path as an object(key: value) -->
-                        <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                        <div class="card__actions">
+                                <a href="/products/<%= product.id %>" class="btn">Details</a>
+                            <%- include('../includes/add-to-cart.ejs', {product: product}) %>
+                        </div>
                     </article>
                 <% } %>
             </div>

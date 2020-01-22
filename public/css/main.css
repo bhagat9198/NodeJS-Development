@@ -19,6 +19,10 @@ form {
   display: inline;
 }
 
+.centered {
+  text-align: center;
+}
+
 .main-header {
   width: 100%;
   height: 3.5rem;
@@ -193,16 +197,15 @@ form {
   color: white;
 }
 
-.centered {
-  text-align: center;
+.btn.danger {
+  color: red;
+  border-color: red;
 }
 
-.image {
-  height: 20rem;
-}
-
-.image img {
-  height: 100%;
+.btn.danger:hover,
+.btn.danger:active {
+  background: red;
+  color: white;
 }
 
 @media (min-width: 768px) {

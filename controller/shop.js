@@ -48,63 +48,58 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
-  const productID = req.body.productID
+  const productID = req.body.productId
 
+  // so that both the variables be accessed by all the methods within the function
   let fetchedCart;
+  let newQuantity = 1;
 
-  // to add the cart, we have to modify this function
-  // getting the cart
   req.user.getCart()
     .then(cart => {
       fetchedCart = cart;
-      // once we fetched the cart, we have to check if that product is alraedy in the cart. 
-      // if cart is already there then just increase the quantity
-      // else add the new product to the cart
       return cart.getProducts({ where: { id: productID } });
     })
-    // getting the products array which are in cart
     .then(products => {
       let product;
       if (products.length > 0) {
-        // if product alraedy exists, then taking the product at 0th index
         product = products[0];
       }
-      let newQuantity = 1;
-
-      // if product is there already
+      
       if (product) {
         // we have to get the old quantity value 
         // ... code(afterwards)
-      }
+        // as "cartItem" is intermidiate tabel, sequelize gives us option to use it
 
-      // if product does not exists before
-      // finding the product info which is stored in db
+        // reason for commint: this will give correct result but we want to avoid nested ".then()" then we can do it another way
+
+        // const oldQunatity = product.cartItem.quantity;
+        // newQuantity = oldQunatity + 1;
+        // return fetchedCart.addProduct(product, { through: { quantity: newQuantity } })
+        // .then(() => {
+        //   res.redirect('/cart');
+        // })
+
+        // but, id product is alreadythere then, pass the new qunatity
+        const oldQunatity = product.cartItem.quantity;
+        newQuantity = oldQunatity + 1;
+        // atlast returning the product which already exists
+        return product;
+      }
       return Product.findByPk(productID)
-        // doing nested promises
-        .then(product => {
-          // once we get the product, we can add it to cart
-          // "addProduct()" is again the inbuild command of sequelize
-          // "product" which was retrived
-          // 2nd argument(extra): as in "cart-item" we have quantity field, so we have to specify the value.
-            //thus, passing object to object 
-          return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
-          // check the database
-        })
-        .catch(err => console.log(err));
+      //no need as below .then() block is expecting product data which will add it to cart 
+        // .then(product => {
+        //   return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+        // })
+        // .catch(err => console.log(err));
     })
-    // once the product has been added, redirecting the page
+    // above will give us product data (new or already exsisted)
+    .then(product => {
+      return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
+    })
     .then(() => {
-      // this wil gives us an error regarding html page layouts
       res.redirect('/cart');
     })
     .catch(err => console.log(err));
-
-
-  // console.log(productID);
-  // Product.findById(productID, product => {
-  //   Cart.addProduct(productID, product.price);
-  // })
-  // res.redirect('/');
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
