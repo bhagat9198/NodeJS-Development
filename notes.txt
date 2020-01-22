@@ -9,4 +9,69 @@ views/shop/cart : added button- ordernow
 routes/shop.js
 controller/shop.js
 
+11.169
+views/order.ejs
+controller/shop.js
 
+
+
+//1. this will not work
+
+<% if(orders.length <= 0) { %>
+  <h1>Nothing there!</h1>
+<% } else { %>
+  <ul>
+    // looping through all the orders with forEach. forEach takes annomous fuction which takes every order.
+    <% orders.forEach(order => { %>
+    <li>
+      // every order will have coupe of products that belong to order
+      <h1>#<%= order.id %></h1>
+      <ul>
+        // looping through the products belonging to the order
+        // "orderItem" is the connected model, that will list all the realated items
+        <% orders.orderItem.forEach(item => { %>
+          <li>
+            // "item" is the product, so it will hace title 
+            <%= item.title %>(<%= item.quantity %>)
+          </li>
+        <% }); %>
+      </ul>
+    </li>
+    <% }); %>
+  </ul>
+<% } %>
+
+//above code will not work because of "orders.orderItem.forEach".
+TypeError: Cannot read property 'getOrders' of undefined
+
+to understand this, go to controller/shop.js
+after doing including 'products'
+makes changes in cart.ejs
+
+<main>
+  <% if (orders.length <= 0) { %>
+    <h1>Nothing there!</h1>
+  <% } else { %>
+    <ul>
+      <% orders.forEach(order => { %>
+      <li>
+        <h1>#<%= order.id %></h1>
+        <ul>
+          //<% order.orderItem.forEach(item => { %> 
+
+            // we will now have products array as we have included
+            <% order.products.forEach(product => { %>
+            <li>
+              //product will have title 
+              //but it will not have quantity field, but it will have 'orderItem' key which then stores the quantity for that product
+              //<%= product.title %>(<%= product.quantity %>)
+
+              <%= product.title %>(<%= product.orderItem.quantity %>)
+            </li>
+          <% }); %>
+        </ul>
+      </li>
+      <% }); %>
+    </ul>
+  <% } %>
+</main>

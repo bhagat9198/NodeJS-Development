@@ -1,10 +1,5 @@
 const Product = require('../model/product');
 
-// we are not using Cart model directly as we doing it with the help of users. hence no need to import it
-// const Cart = require('../model/cart');
-// same goes to Order
-// const Order = require('../model/order';)
-
 exports.getProduct = (req, res, next) => {
   Product.findAll()
     .then(products => {
@@ -99,58 +94,84 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  res.render('shop/orders', {
-    pageTitle: 'Orders',
-    path: '/orders'
-  });
+  // displaying the orders products on the webpage
+  // getting the orders first
+  // req.user.getOrders()
+  // .then(orders => {
+  //   console.log(orders);
+  //   /****
+  //     order {
+  //     dataValues: {
+  //     id: 4,
+  //     createdAt: 2020-01-22T08:15:18.000Z,
+  //     updatedAt: 2020-01-22T08:15:18.000Z,
+  //     userId: 1
+  //   },
+  //    */
+  //   // thus we can see that there is no orderItem key
+  //   res.render('shop/orders', {
+  //     pageTitle: 'Orders',
+  //     path: '/orders',
+  //     // passing orders to web page to display it
+  //     orders: orders
+  //   });
+
+    // thus, if we want to fetch related products to an order, we have to pass an object. where we set:
+    // "products" : in app.js we associate our 'order' to many 'product' && in models, we create our table 'product'. thus sequelise pluralizes this and then we can us e the concept called "eager loading".
+    // "eager loading": in this we instruct sequelise that , we are fetching all the orders than fetch all the related products it and give back one array of orders taht also includes the products per order
+    // this only works because we have realations between the orders and products as we set up in 'app.js' and so we can load both together
+    // still, it will not make our temaplate work, now we get orders with more data in them. each order will have product array. with that, go to views  
+    req.user.getOrders({include: ['products']})
+    .then(orders => {
+    console.log(orders);
+    res.render('shop/orders', {
+      pageTitle: 'Orders',
+      path: '/orders',
+      orders: orders
+    });
+  })
+  .catch(err => console.log(err));
+
+
+  // res.render('shop/orders', {
+  //   pageTitle: 'Orders',
+  //   path: '/orders'
+  // });
 };
 
 exports.postOrder = (req, res, next) => {
-  // take all the cart items ans move them in to the orders and claer the cart
+  // after products reaches to order page successfully, we have to delete the cart items
+
+  // making global variable with the function
+  let fetchCart;
+
   req.user.getCart()
-  // after getting all teh cart items
   .then(cart => {
-    // aftre getting access to cart, we can get access to products
+    // once we get the cart products
+    fetchCart = cart;
     return cart.getProducts();
   })
   .then(products => {
-    // thus we will get all the products details which are in cart
-    // same we can check with console.log
-    // console.log(products); 
-    // console.log(products.cartItem); //undefined
-
-    // now we need our cart model to store all the products which are in cart along eith quantity
-
-    // calling create order to that user
-    // it will give us the order, but now we have to asscoiate products to that order
     return req.user.createOrder()
     .then(order => {
-      // associating product to the order now
-      // there will be different orders and all the orders can have different quantity, thus we to specify correct quantity to each product
-      // order.addProducts(products, {through: {quantity: <value>}})
-      // hence, we cant do like this. 
-      // each product we pass, shoild have speacial key which tells the quantity
-
-      // we can do with help of map function, which takes an array and gives out new array based on argument function
-      // "products" as passed by above .then() block which contains all the products in an array
       return order.addProduct(products.map(product => {
-        // "orderItem" is the name of the table. name is importatnt
-        // so in this we will pass an object containing quantity of that product
         product.orderItem = {
-          // quantity: req.user.cartItem.quantity //not valid
-          // product is related to cartItem, so we can get the quantity field
           quantity: product.cartItem.quantity
         }
-        // we will get modified product with quantity field
         return product;
       }))
     })
     .catch(err => console.log(err));
   })
-  // form internal promises, we will get the final result
   .then(result => {
+    // once products are stored in order-item table, remove the elment from cart
+    // 2nd method, other the destroy()
+    return fetchCart.setProducts(null);
+    // res.redirect('/orders');
+  })
+  // when above promise is done
+  .then(() => {
     res.redirect('/orders');
-    // nothing will be displayed as we have not created html page 
   })
   .catch(err => console.log(err));
 };
