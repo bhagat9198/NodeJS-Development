@@ -1,20 +1,11 @@
 
-11.164
-controller/shop.js
-
 11.165
 views/shop/cart
 controller/shop
 
-(error solution):views/cart
-(productID  -> productId)
+11.166
+controller/shop
 
-<!-- "p.productData.title" will not work as earlier we were extracting data from nested object. but sequelize gives us direct product data -->
-<!-- <h1><%= p.productData.title %></h1> -->
 
-<!-- "p.qty" was in one same array. but accrding to our assoctaions, quantity is stored in 'cartItem' which is realeted to cart and product as we have defined in our realations -->
-<!-- <h2>Quantity: <%= p.qty %></h2> -->
-<!-- "quauntity" is the name given in table -->
 
-<!-- same here -->
-<!-- <input type="hidden" value="<%= p.productData.id %>" name = "productId"> -->
+

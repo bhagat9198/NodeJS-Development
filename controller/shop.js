@@ -49,8 +49,6 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const productID = req.body.productId
-
-  // so that both the variables be accessed by all the methods within the function
   let fetchedCart;
   let newQuantity = 1;
 
@@ -66,33 +64,12 @@ exports.postCart = (req, res, next) => {
       }
       
       if (product) {
-        // we have to get the old quantity value 
-        // ... code(afterwards)
-        // as "cartItem" is intermidiate tabel, sequelize gives us option to use it
-
-        // reason for commint: this will give correct result but we want to avoid nested ".then()" then we can do it another way
-
-        // const oldQunatity = product.cartItem.quantity;
-        // newQuantity = oldQunatity + 1;
-        // return fetchedCart.addProduct(product, { through: { quantity: newQuantity } })
-        // .then(() => {
-        //   res.redirect('/cart');
-        // })
-
-        // but, id product is alreadythere then, pass the new qunatity
         const oldQunatity = product.cartItem.quantity;
         newQuantity = oldQunatity + 1;
-        // atlast returning the product which already exists
         return product;
       }
       return Product.findByPk(productID)
-      //no need as below .then() block is expecting product data which will add it to cart 
-        // .then(product => {
-        //   return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
-        // })
-        // .catch(err => console.log(err));
     })
-    // above will give us product data (new or already exsisted)
     .then(product => {
       return fetchedCart.addProduct(product, { through: { quantity: newQuantity } });
     })
@@ -103,11 +80,30 @@ exports.postCart = (req, res, next) => {
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
-  const productID = req.body.productID;
-  Product.findById(productID, product => {
-    Cart.deleteProduct(productID, product.price);
-    res.redirect('/cart');
-  });
+  const productID = req.body.productId;
+
+  // getting the cart
+  req.user.getCart()
+  .then(cart => {
+    // after getting the cart, finding the correct item which is to be deleted
+    return cart.getProducts({where: {id: productID}})
+  })
+  .then(products => {
+    // "getProducts" will pass an array, on the 0th index. it will contain the product details
+    const product = products[0];
+    // we only have to delete the product in cartItem table and not product as a whole.
+    // this will delete product as a whole, which we dont want
+    // return product.destroy() 
+    // so, using sequelize property
+    return product.cartItem.destroy();
+  })
+  .then(() => res.redirect('/cart'))
+  .catch(err => console.log(err));
+
+  // Product.findById(productID, product => {
+  //   Cart.deleteProduct(productID, product.price);
+  //   res.redirect('/cart');
+  // });
 };
 
 exports.getOrders = (req, res, next) => {
