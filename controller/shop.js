@@ -123,7 +123,7 @@ exports.getOrders = (req, res, next) => {
     // still, it will not make our temaplate work, now we get orders with more data in them. each order will have product array. with that, go to views  
     req.user.getOrders({include: ['products']})
     .then(orders => {
-    console.log(orders);
+    // console.log(orders);
     res.render('shop/orders', {
       pageTitle: 'Orders',
       path: '/orders',
@@ -154,7 +154,7 @@ exports.postOrder = (req, res, next) => {
   .then(products => {
     return req.user.createOrder()
     .then(order => {
-      return order.addProduct(products.map(product => {
+      return order.addProducts(products.map(product => {
         product.orderItem = {
           quantity: product.cartItem.quantity
         }
