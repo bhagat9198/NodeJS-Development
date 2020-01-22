@@ -82,28 +82,16 @@ exports.postCart = (req, res, next) => {
 exports.postCartDeleteProduct = (req, res, next) => {
   const productID = req.body.productId;
 
-  // getting the cart
   req.user.getCart()
   .then(cart => {
-    // after getting the cart, finding the correct item which is to be deleted
     return cart.getProducts({where: {id: productID}})
   })
   .then(products => {
-    // "getProducts" will pass an array, on the 0th index. it will contain the product details
     const product = products[0];
-    // we only have to delete the product in cartItem table and not product as a whole.
-    // this will delete product as a whole, which we dont want
-    // return product.destroy() 
-    // so, using sequelize property
     return product.cartItem.destroy();
   })
   .then(() => res.redirect('/cart'))
   .catch(err => console.log(err));
-
-  // Product.findById(productID, product => {
-  //   Cart.deleteProduct(productID, product.price);
-  //   res.redirect('/cart');
-  // });
 };
 
 exports.getOrders = (req, res, next) => {

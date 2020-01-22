@@ -1,11 +1,8 @@
-// cart-item should belong to single user but holds many products
-// cart model will contain different carts for differnt users
-
 const Sequelize = require('sequelize');
 
 const sequelize = require('../util/database');
 
-const Cart = sequelize.define('cart', {
+const Order = sequelize.define('order', {
   id: {
     type: Sequelize.INTEGER,
     allowNull: false,
@@ -13,5 +10,5 @@ const Cart = sequelize.define('cart', {
     autoIncrement: true
   }
 });
-
-module.exports = Cart;
+// order can have other fields also such as address, phone no
+module.exports = Order;
