@@ -1,22 +1,12 @@
 
-11.169
-views/order.ejs
-controller/shop.js
-
-
-12.176
-npm install --save mongodb
-util/database
-app.js
-
-12.177
-app.js
-routes/admin
-controller/admin
-model/product
-util/database
-
 12.178
 util/database
 app.js
 model/product.js
+
+
+12.179
+model/product.js
+controller/admin
+routes/admin
+app.js

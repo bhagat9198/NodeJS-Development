@@ -8,7 +8,8 @@ const adminRoutes = require('./routes/admin');
 // const shopRoutes = require('./routes/shop');
 const rootDir = require('./util/path');
 const errorController = require('./controller/error');
-const mongoConnect = require('./util/database');
+// specifying the export to require
+const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();
 
@@ -38,7 +39,6 @@ app.use(errorController.get404);
 
 // thus, now we will not get any callback arugumet result as we are not returning any more in 'util.database'
 mongoConnect(() => {
-  console.log(client);
   app.listen(3000);
 })
 

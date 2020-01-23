@@ -31,71 +31,74 @@ exports.postAddProduct = (req, res, next) => {
 
 };
 
-exports.getEditProduct = (req, res, next) => {
-  const editMode = req.query.edit
-  if(!editMode) {
-    res.redirect('/');
-  }
-  const productID = req.params.productID;
 
-  req.user.getProducts({where: {id: productID}})
-  .then(products => {
-    const product = products[0];
-    res.render("admin/edit-product", {
-      path: "/admin/edit-product",
-      pageTitle: "Edit Products",
-      editing: editMode,
-      product: product
-    });
-  })
-  .catch(err => console.log(err));
-};
+// all this code uses sequelize, thus not needed right now
 
-exports.postEditProduct = (req, res, next) => {
-  const productID = req.body.productID;
-  const updatedTitle = req.body.title;
-  const updatedImageUrl = req.body.imageUrl;
-  const updatedPrice = req.body.price;
-  const upadatedDesciption = req.body.description;
+// exports.getEditProduct = (req, res, next) => {
+//   const editMode = req.query.edit
+//   if(!editMode) {
+//     res.redirect('/');
+//   }
+//   const productID = req.params.productID;
 
-  Product.findByPk(productID)
-  .then(product => {
-    product.title = updatedTitle;
-    product.imageUrl = updatedImageUrl;
-    product.price = updatedPrice;
-    product.description = upadatedDesciption;
+//   req.user.getProducts({where: {id: productID}})
+//   .then(products => {
+//     const product = products[0];
+//     res.render("admin/edit-product", {
+//       path: "/admin/edit-product",
+//       pageTitle: "Edit Products",
+//       editing: editMode,
+//       product: product
+//     });
+//   })
+//   .catch(err => console.log(err));
+// };
 
-    product.save()
-  })
-  .then(() => {
-    res.redirect('/admin/products');  
-  })
-  .catch(err => console.log(err));
-};
+// exports.postEditProduct = (req, res, next) => {
+//   const productID = req.body.productID;
+//   const updatedTitle = req.body.title;
+//   const updatedImageUrl = req.body.imageUrl;
+//   const updatedPrice = req.body.price;
+//   const upadatedDesciption = req.body.description;
 
-exports.postDeleteProduct = (req, res, next) => {
-  const productID = req.body.productID;
-  Product.findByPk(productID)
-  .then(product => {
-    product.destroy()
-  })
-  .then(() => {
-    res.redirect('/admin/products');
-  })
-  .catch(err => console.log(err));
-};
+//   Product.findByPk(productID)
+//   .then(product => {
+//     product.title = updatedTitle;
+//     product.imageUrl = updatedImageUrl;
+//     product.price = updatedPrice;
+//     product.description = upadatedDesciption;
 
-exports.getProducts = (req, res, next) => {
-  req.user.getProducts()
-  .then(products => {
-    console.log(products);
-    res.render("admin/products", {
-      path: "/admin/products",
-      pageTitle: "Admin Add Products",
-      prods: products,
-    });
-  })
-  .catch(err => {
-    console.log(err);
-  });
-};
+//     product.save()
+//   })
+//   .then(() => {
+//     res.redirect('/admin/products');  
+//   })
+//   .catch(err => console.log(err));
+// };
+
+// exports.postDeleteProduct = (req, res, next) => {
+//   const productID = req.body.productID;
+//   Product.findByPk(productID)
+//   .then(product => {
+//     product.destroy()
+//   })
+//   .then(() => {
+//     res.redirect('/admin/products');
+//   })
+//   .catch(err => console.log(err));
+// };
+
+// exports.getProducts = (req, res, next) => {
+//   req.user.getProducts()
+//   .then(products => {
+//     console.log(products);
+//     res.render("admin/products", {
+//       path: "/admin/products",
+//       pageTitle: "Admin Add Products",
+//       prods: products,
+//     });
+//   })
+//   .catch(err => {
+//     console.log(err);
+//   });
+// };
