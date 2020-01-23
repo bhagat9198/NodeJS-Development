@@ -1,3 +1,4 @@
+// here we are importing Products model which is dependentent on sequelize, going to that model
 const Product = require("../model/product");
 
 exports.getAddProduct = (req, res, next) => {

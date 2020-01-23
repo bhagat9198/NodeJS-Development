@@ -9,5 +9,11 @@ npm install --save mongodb
 util/database
 app.js
 
+12.177
+app.js
+routes/admin
+controller/admin
+model/product
+util/database
 
 
