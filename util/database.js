@@ -4,7 +4,7 @@ const MongodbClient = mongodb.MongoClient;
 // "_" before the variable means that this variable will be used internally ie within thi file
 let _db;
 
-const mongoConnect = client => {
+const mongoConnect = callback => {
   // mongodb+srv://nodeApp:nodeApp@nodeapp-oke9f.mongodb.net/test?retryWrites=true&w=majority: in this "test" means that we are connecting to test database by default. 
   // MongodbClient.connect('mongodb+srv://nodeApp:nodeApp@nodeapp-oke9f.mongodb.net/test?retryWrites=true&w=majority',{ useUnifiedTopology: true })
 
