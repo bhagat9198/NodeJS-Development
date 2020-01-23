@@ -31,7 +31,13 @@ app.use('/admin', adminRoutes);
 // app.use(shopRoutes);
 app.use(errorController.get404);
 
-mongoConnect(client => {
+// mongoConnect(client => {
+//   console.log(client);
+//   app.listen(3000);
+// })
+
+// thus, now we will not get any callback arugumet result as we are not returning any more in 'util.database'
+mongoConnect(() => {
   console.log(client);
   app.listen(3000);
 })
