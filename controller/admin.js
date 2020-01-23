@@ -14,20 +14,33 @@ exports.postAddProduct = (req, res, next) => {
   const description = req.body.description;
   const price = req.body.price;
 
-  req.user.createProduct({
-    title: title,
-    imageUrl: imageUrl,
-    price: price,
-    description: description
-  })
-  .then(result => {
-    // console.log(result);
-    console.log('product saved ');
+  // creating a new object
+  const product = new Product(title, imageUrl, price, description);
+  // passing product object to save method
+  product.save()
+  // as save() method of product class is rerturning the object whhich is saved, we will get product in promise
+  .then(product => {
+    console.log(product);
     res.redirect('/admin/products');
   })
-  .catch(err => {
-    console.log(err);
-  });
+  .catch(err => console.log(err));
+  // every product which is saved in db will have an arrribute "_id" which will autogenerate if not speacified.
+
+
+  // req.user.createProduct({
+  //   title: title,
+  //   imageUrl: imageUrl,
+  //   price: price,
+  //   description: description
+  // })
+  // .then(result => {
+  //   // console.log(result);
+  //   console.log('product saved ');
+  //   res.redirect('/admin/products');
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  // });
 
 };
 
