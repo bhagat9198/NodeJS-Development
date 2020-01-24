@@ -8,3 +8,14 @@ model/product
 controller/shop
 routes/shop
 app.js
+
+12.183
+views/shop/product
+views/shop/index
+model/product
+controller/product
+routes/shop
+
+changing "product.id" to "product._id", mongo stores id as "_id" bydefault
+<a href="/products/<%= product._id %>" class="btn">Details</a>
+<%- include('../includes/add-to-cart.ejs', {product: product}) %>
