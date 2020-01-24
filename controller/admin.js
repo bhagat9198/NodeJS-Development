@@ -80,17 +80,29 @@ exports.postAddProduct = (req, res, next) => {
 //   .catch(err => console.log(err));
 // };
 
-// exports.getProducts = (req, res, next) => {
-//   req.user.getProducts()
-//   .then(products => {
-//     console.log(products);
-//     res.render("admin/products", {
-//       path: "/admin/products",
-//       pageTitle: "Admin Add Products",
-//       prods: products,
-//     });
-//   })
-//   .catch(err => {
-//     console.log(err);
-//   });
-// };
+exports.getProducts = (req, res, next) => {
+
+  Product.fetchAll()
+  .then(products => {
+    res.render("admin/products", {
+      path: "/admin/products",
+      pageTitle: "Admin Add Products",
+      prods: products,
+    });
+  })
+  .catch(err => console.log(err));
+
+  // req.user.getProducts()
+  // .then(products => {
+  //   console.log(products);
+  //   res.render("admin/products", {
+  //     path: "/admin/products",
+  //     pageTitle: "Admin Add Products",
+  //     prods: products,
+  //   });
+  // })
+  // .catch(err => {
+  //   console.log(err);
+  // });
+  
+};

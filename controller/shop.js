@@ -27,7 +27,6 @@ exports.getProduct = (req, res, next) => {
 
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
-
   Product.findById(productID)
   .then(product => {
     res.render(
@@ -40,21 +39,6 @@ exports.getDetails = (req, res, next) => {
     );
   })
   .catch(err => console.log(err));
-  // Product.findAll({
-  //   where:
-  //     { id: productID }
-  // })
-  //   .then(product => {
-  //     res.render(
-  //       'shop/product-detail',
-  //       {
-  //         pageTitle: product[0].title,
-  //         product: product[0],
-  //         path: '/products'
-  //       }
-  //     );
-  //   })
-  //   .catch(err => console.log(err));
 };
 
 // exports.getCart = (req, res, next) => {
