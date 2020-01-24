@@ -12,9 +12,9 @@ routes.post('/add-product', adminController.postAddProduct);
 
 routes.get('/products',adminController.getProducts)
 
-// routes.get('/edit-product/:productID', adminController.getEditProduct);
+routes.get('/edit-product/:productID', adminController.getEditProduct);
 
-// routes.post('/edit-product', adminController.postEditProduct);
+routes.post('/edit-product', adminController.postEditProduct);
 
 // routes.post('/delete-product', adminController.postDeleteProduct);
 

@@ -13,3 +13,9 @@ views/admin/add-products
 controller/admin
 routes/admin
 
+12.185
+routes/admin
+controller/admin
+model/product
+
+
