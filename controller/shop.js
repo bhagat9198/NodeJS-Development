@@ -22,17 +22,27 @@ exports.getIndex = (req, res, next) => {
 };
 
 
-// exports.getProduct = (req, res, next) => {
-//   Product.findAll()
-//     .then(products => {
-//       res.render("shop/product-list", {
-//         pageTitle: "Shop Products",
-//         prods: products,
-//         path: "/products"
-//       });
-//     })
-//     .catch(err => console.log(err));
-// };
+exports.getProduct = (req, res, next) => {
+  Product.fetchAll()
+    .then(products => {
+      res.render("shop/product-list", {
+        pageTitle: "Shop Products",
+        prods: products,
+        path: "/products"
+      });
+    })
+    .catch(err => console.log(err));
+
+    // Product.findAll()
+    // .then(products => {
+    //   res.render("shop/product-list", {
+    //     pageTitle: "Shop Products",
+    //     prods: products,
+    //     path: "/products"
+    //   });
+    // })
+    // .catch(err => console.log(err));
+};
 
 // exports.getDetails = (req, res, next) => {
 //   const productID = req.params.productId;
