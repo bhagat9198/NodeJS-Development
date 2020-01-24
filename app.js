@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 // seting up admin routes
 const adminRoutes = require('./routes/admin');
-// const shopRoutes = require('./routes/shop');
+const shopRoutes = require('./routes/shop');
 const rootDir = require('./util/path');
 const errorController = require('./controller/error');
 // specifying the export to require
@@ -29,7 +29,7 @@ app.use(express.static(path.join(rootDir, 'public')));
 // }); 
 
 app.use('/admin', adminRoutes);
-// app.use(shopRoutes);
+app.use(shopRoutes);
 app.use(errorController.get404);
 
 // mongoConnect(client => {

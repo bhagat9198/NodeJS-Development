@@ -1,17 +1,10 @@
-12.178
-util/database
-app.js
-model/product.js
-
-
-12.179
-model/product.js
-controller/admin
-routes/admin
-app.js
 
 12.180
 controller/admin
 model/product
 
-
+12.182
+model/product
+controller/shop
+routes/shop
+app.js
