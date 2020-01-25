@@ -1,12 +1,4 @@
 
-12.186
-controller/admin
-views/admin/edit-product.ejs
-
-12.187
-controller/admin
-model/product
-
 12.188
 model/product
 controller/admin
@@ -15,3 +7,7 @@ routes/admin
 
 12.189
 model/product
+
+12.190
+model/users
+app.js
