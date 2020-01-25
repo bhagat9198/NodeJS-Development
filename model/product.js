@@ -12,25 +12,25 @@ class Product {
 
   save() {
     const db = getDb();
-    let dpOp;
-
+    let dbOp;
+    console.log(this._id)
     if(this._id) {
-      // updateMany: will update many products at once
-      // updateOne({},{}) : 1st argument will take the 'id' where we have to update. 2nd argument will take the data which should be updated over exisiting data.both the agruments will be passed as JS object
-      // 2nd argument will specify how to update. thus is now not a new object so we cant specifiy "this"
-      // "dpOp =  db.collection('products').updateOne({_id: mongodb.ObjectId(this._id)}, this)" : this means that finding the existing document and replace is with new object which we passed with 'this' keyword. UpdateOne does not rerplace, instead we have to describe the opearation.
-      // describing the operations is done with specaial property name which is understood by mongodb as a reserve name "$set"
-      // "$set: {}" will again take object as a value and there we describe the changes we want to make to the exisiting document which we found. updating the values more verbosly
-      // "dpOp =  db.collection('products').updateOne({_id: mongodb.ObjectId(this._id)}, {$set: {title: this.title, price: this.price}})"
+      console.log(this._id)
+      
+      dbOp =  db.collection('products').updateOne({ _id : new mongodb.ObjectId(this._id) }, { $set: {title: this.title, price: this.price}});
+      // dbOp = db.collection('products').updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: this})
+      console.log(this._id)
 
-      // "{$set: this}" here saying "this" means that we instruct simply take key value pairs of constructor of the class to the document found in database. as we are reaplacing all the fields so 'this' will reaplace the all
-      dpOp =  db.collection('products').updateOne({_id: mongodb.ObjectId(this._id)}, {$set: this})
+
     } else {
-      dpOp =  db.collection('products').insertOne(this)
+      console.log(this._id)
+      dbOp =  db.collection('products').insertOne(this)
     }
-    return dpOp
+    return dbOp
     .then(result => {
-      console.log(result); 
+
+      // console.log(result); 
+      // return result;
     })
     .catch(err => console.log(err));
   }
@@ -39,7 +39,7 @@ class Product {
     const db = getDb();
     return db.collection('products').find().toArray()
     .then(products => {
-      console.log(products);
+      // console.log(products);
       return products;
     })
     .catch(err => console.log(err));
@@ -51,7 +51,7 @@ class Product {
     .find({_id: new mongodb.ObjectId(productId)})
     .next()
     .then(product => {
-      console.log(product);
+      // console.log(product);
       return product;
     })
     .catch(err => console.log(err));
@@ -59,3 +59,8 @@ class Product {
 } 
 
 module.exports = Product;
+
+
+
+
+
