@@ -2,12 +2,15 @@ const mongodb = require('mongodb');
 const getDb = require('../util/database').getDb;
 
 class Product {
-  constructor(title, imageUrl, price, description, id) {
+  constructor(title, imageUrl, price, description, id, userId) {
     this.title = title;
     this.imageUrl = imageUrl;
     this.price = price;
     this.description= description;
     this._id = id ? mongodb.ObjectId(id) : null;
+    // adding userId to the constructor so that userId automatically get inserted when creating or editing product
+    // no need of puttig id in mongodb.ObjectId as we are simply storing id as a string for refference
+    this.userId = userId;
   }
 
   save() {

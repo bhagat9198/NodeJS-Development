@@ -8,7 +8,6 @@ const shopRoutes = require('./routes/shop');
 const rootDir = require('./util/path');
 const errorController = require('./controller/error');
 const mongoConnect = require('./util/database').mongoConnect;
-
 const User = require('./model/user');
 
 const app = express();
@@ -20,12 +19,9 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, 'public')));
 
 app.use((req, res, next) => {
-  // passing the pain id number
   User.findbyId('5e2bd8cb5df89909f06af4a4')
   .then((user) => {
-    // adding the user property to req object
     req.user = user;
-    // console.log(req.user);
     next();
   })
   .catch(err => console.log(err));

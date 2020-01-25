@@ -1,13 +1,23 @@
 
-12.188
-model/product
+12.191
 controller/admin
-views/admin/product : hint
-routes/admin
+where we will use the user object?
+1. when creating a new product
+2. saving the product, it should refferenece to user
+3. embidding whole user data
 
-12.189
-model/product
 
-12.190
-model/users
-app.js
+
+
+
+
+
+
+
+
+
+
+
+
+
+
