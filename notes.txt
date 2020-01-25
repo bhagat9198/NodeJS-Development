@@ -1,23 +1,8 @@
 
-
-12.183
-views/shop/product
-views/shop/index
-model/product
-controller/product
-routes/shop
-
-
-12.184
-views/admin/add-products
-controller/admin
-routes/admin
-
-12.185
-routes/admin
-controller/admin
-model/product
-
 12.186
 controller/admin
 viers/admin/edii-product.ejs
+
+12.187
+controller/admin
+model/product

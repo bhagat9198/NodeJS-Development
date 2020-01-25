@@ -1,6 +1,6 @@
-const mongodb = require('mongodb');
+// const mongodb = require('mongodb');
 const Product = require("../model/product");
-const ObjectId = mongodb.ObjectID;
+// const ObjectId = mongodb.ObjectID;
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -31,8 +31,7 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/');
   }
   const productID = req.params.productID;
-  console.log(mongodb.ObjectId(productID))
-
+  // console.log(mongodb.ObjectId(productID))
   Product.findById(productID)
   .then(product => {
     res.render("admin/edit-product", {
@@ -52,29 +51,14 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
 
-  console.log(mongodb.ObjectId(productID));
-  // only passing  "productID" will not work
-  const updatedProduct = new Product(updatedTitle, updatedImageUrl, updatedPrice, upadatedDesciption,  ObjectId(productID));
+  // console.log(mongodb.ObjectId(productID));
+  // passing plain 'id' without wrapping in "ObjectId()" 
+  const updatedProduct = new Product(updatedTitle, updatedImageUrl, updatedPrice, upadatedDesciption,productID);
   updatedProduct.save()
   .then(() => {
     res.redirect('/admin/products');
   })
   .catch(err => console.log(err));
-
-
-  // Product.findByPk(productID)
-  // .then(product => {
-  //   product.title = updatedTitle;
-  //   product.imageUrl = updatedImageUrl;
-  //   product.price = updatedPrice;
-  //   product.description = upadatedDesciption;
-
-  //   product.save()
-  // })
-  // .then(() => {
-  //   res.redirect('/admin/products');  
-  // })
-  // .catch(err => console.log(err));
 };
 
 // exports.postDeleteProduct = (req, res, next) => {

@@ -7,30 +7,24 @@ class Product {
     this.imageUrl = imageUrl;
     this.price = price;
     this.description= description;
-    this._id = id;
+    // as constructor will get plain 'id; so it nessary to warap it with "objectId()" before we compare
+    this._id = mongodb.ObjectId(id);
   }
 
   save() {
     const db = getDb();
     let dbOp;
-    console.log(this._id)
+    // console.log(this._id)
     if(this._id) {
-      console.log(this._id)
-      
-      dbOp =  db.collection('products').updateOne({ _id : new mongodb.ObjectId(this._id) }, { $set: {title: this.title, price: this.price}});
-      // dbOp = db.collection('products').updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: this})
-      console.log(this._id)
-
-
+      // console.log(this._id)
+      dbOp = db.collection('products').updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: this})
     } else {
-      console.log(this._id)
+      // console.log(this._id)
       dbOp =  db.collection('products').insertOne(this)
     }
     return dbOp
     .then(result => {
-
-      // console.log(result); 
-      // return result;
+      // console.log(result);
     })
     .catch(err => console.log(err));
   }
