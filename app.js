@@ -3,12 +3,10 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
-// seting up admin routes
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const rootDir = require('./util/path');
 const errorController = require('./controller/error');
-// specifying the export to require
 const mongoConnect = require('./util/database').mongoConnect;
 
 const app = express();

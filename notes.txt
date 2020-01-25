@@ -1,7 +1,7 @@
 
 12.186
 controller/admin
-views/admin/edii-product.ejs
+views/admin/edit-product.ejs
 
 12.187
 controller/admin
@@ -11,3 +11,7 @@ model/product
 model/product
 controller/admin
 views/admin/product : hint
+routes/admin
+
+12.189
+model/product
