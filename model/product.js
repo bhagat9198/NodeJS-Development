@@ -8,8 +8,6 @@ class Product {
     this.price = price;
     this.description= description;
     this._id = id ? mongodb.ObjectId(id) : null;
-    // adding userId to the constructor so that userId automatically get inserted when creating or editing product
-    // no need of puttig id in mongodb.ObjectId as we are simply storing id as a string for refference
     this.userId = userId;
   }
 

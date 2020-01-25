@@ -41,6 +41,7 @@ exports.getDetails = (req, res, next) => {
   .catch(err => console.log(err));
 };
 
+
 // exports.getCart = (req, res, next) => {
 //   req.user.getCart()
 //     .then(cart => {
@@ -55,6 +56,9 @@ exports.getDetails = (req, res, next) => {
 //     })
 //     .catch(err => console.log(err));
 // };
+
+
+
 
 // exports.postCart = (req, res, next) => {
 //   const productID = req.body.productId

@@ -6,8 +6,8 @@ where we will use the user object?
 2. saving the product, it should refferenece to user
 3. embidding whole user data
 
-
-
+12.192
+model/user
 
 
 
