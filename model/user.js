@@ -22,7 +22,7 @@
 
 const mongodb = require('mongodb');
 const getDb = require('../util/database').getDb;
-class Users {
+class User {
   constructor(username, email) {
     this.username = username;
     this.email = email
@@ -50,4 +50,4 @@ class Users {
   }
 }
 
-module.exports = Users;
+module.exports = User;

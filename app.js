@@ -9,7 +9,7 @@ const rootDir = require('./util/path');
 const errorController = require('./controller/error');
 const mongoConnect = require('./util/database').mongoConnect;
 
-const Users = require('./model/user');
+const User = require('./model/user');
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(express.static(path.join(rootDir, 'public')));
 
 app.use((req, res, next) => {
   // passing the pain id number
-  Users.findbyId('5e2bd8cb5df89909f06af4a4')
+  User.findbyId('5e2bd8cb5df89909f06af4a4')
   .then((user) => {
     // adding the user property to req object
     req.user = user;
