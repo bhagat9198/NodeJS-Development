@@ -1,8 +1,13 @@
 
 12.186
 controller/admin
-viers/admin/edii-product.ejs
+views/admin/edii-product.ejs
 
 12.187
 controller/admin
 model/product
+
+12.188
+model/product
+controller/admin
+views/admin/product : hint

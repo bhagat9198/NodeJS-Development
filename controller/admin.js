@@ -1,6 +1,4 @@
-// const mongodb = require('mongodb');
 const Product = require("../model/product");
-// const ObjectId = mongodb.ObjectID;
 
 exports.getAddProduct = (req, res, next) => {
   res.render("admin/edit-product", {
@@ -19,7 +17,6 @@ exports.postAddProduct = (req, res, next) => {
 
   product.save()
   .then(product => {
-    console.log(product);
     res.redirect('/admin/products');
   })
   .catch(err => console.log(err));
@@ -31,7 +28,6 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/');
   }
   const productID = req.params.productID;
-  // console.log(mongodb.ObjectId(productID))
   Product.findById(productID)
   .then(product => {
     res.render("admin/edit-product", {
@@ -51,8 +47,6 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
 
-  // console.log(mongodb.ObjectId(productID));
-  // passing plain 'id' without wrapping in "ObjectId()" 
   const updatedProduct = new Product(updatedTitle, updatedImageUrl, updatedPrice, upadatedDesciption,productID);
   updatedProduct.save()
   .then(() => {
@@ -61,17 +55,25 @@ exports.postEditProduct = (req, res, next) => {
   .catch(err => console.log(err));
 };
 
-// exports.postDeleteProduct = (req, res, next) => {
-//   const productID = req.body.productID;
-//   Product.findByPk(productID)
-//   .then(product => {
-//     product.destroy()
-//   })
-//   .then(() => {
-//     res.redirect('/admin/products');
-//   })
-//   .catch(err => console.log(err));
-// };
+exports.postDeleteProduct = (req, res, next) => {
+  const productID = req.body.productID;
+  // Product.findByPk(productID)
+  // .then(product => {
+  //   product.destroy()
+  // })
+  // .then(() => {
+  //   res.redirect('/admin/products');
+  // })
+  // .catch(err => console.log(err));
+
+  Product.deleteById(productID)
+  .then(() => {
+    res.redirect('/admin/products');
+  })
+  .catch(err => {
+    console.log(err);
+  })
+};
 
 exports.getProducts = (req, res, next) => {
 

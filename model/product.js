@@ -14,12 +14,9 @@ class Product {
   save() {
     const db = getDb();
     let dbOp;
-    // console.log(this._id)
     if(this._id) {
-      // console.log(this._id)
       dbOp = db.collection('products').updateOne({_id: new mongodb.ObjectId(this._id)}, {$set: this})
     } else {
-      // console.log(this._id)
       dbOp =  db.collection('products').insertOne(this)
     }
     return dbOp
@@ -33,7 +30,6 @@ class Product {
     const db = getDb();
     return db.collection('products').find().toArray()
     .then(products => {
-      // console.log(products);
       return products;
     })
     .catch(err => console.log(err));
@@ -45,8 +41,16 @@ class Product {
     .find({_id: new mongodb.ObjectId(productId)})
     .next()
     .then(product => {
-      // console.log(product);
       return product;
+    })
+    .catch(err => console.log(err));
+  }
+
+  static deleteById(productId) {
+    const db = getDb();
+    return db.collection('products').deleteOne({_id: mongodb.ObjectId(productId)})
+    .then(() => {
+      // console.log('deleted!!')
     })
     .catch(err => console.log(err));
   }
