@@ -116,18 +116,9 @@ class User {
   }
 
   getOrders() {
-    // displaying the orders in the order page by fething the content from 'orders' collection
-
-    // to get the data from 'orders' collevtion. accessing the databse
     const db = getDb();
-    // we have to display the orders for particular user(by comaparing the id)
-    // in mongodb, we can check the nested properties by defining the path to them. in our case: in our document(user(object) -> _id)
-    // while doing nested properties, it nessary to give wrap it within single qoutes
     return db.collection('orders').find({'user.id': new mongodb.ObjectId(this._id)}).toArray()
-    // thus, it will give all orders for that user in an array as we can have more then one order from one user
-
   }
-
 }
 
 module.exports = User;

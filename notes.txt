@@ -1,22 +1,5 @@
 
-12.198
-model/user
-controller/shop
-routes/shop
-
-12.199
-model/user
-
 12.200
 model/user
 controller/shop
 view/shop/order
-
-//changing id
-<h1>Order - # <%= order.id %></h1>
-
-// no linking with orderItem
-<li class="orders__products-item"><%= product.title %> (<%= product.orderItem.quantity %>)</li>
-
-// printing username along with ordered products
-<%= order.user.username %>
