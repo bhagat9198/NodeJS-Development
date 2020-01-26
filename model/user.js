@@ -98,6 +98,7 @@ class User {
       const orders = {
         items: products,
         user: {
+          id: this._id,
           username: this.username,
           email: this.email
         }
@@ -120,8 +121,10 @@ class User {
     // to get the data from 'orders' collevtion. accessing the databse
     const db = getDb();
     // we have to display the orders for particular user(by comaparing the id)
-    // in mongodb, we can check the nested properties by defining the path to them. in our case: in our document(user -> _id)
-    return db.collection('orders').find({})
+    // in mongodb, we can check the nested properties by defining the path to them. in our case: in our document(user(object) -> _id)
+    // while doing nested properties, it nessary to give wrap it within single qoutes
+    return db.collection('orders').find({'user.id': new mongodb.ObjectId(this._id)}).toArray()
+    // thus, it will give all orders for that user in an array as we can have more then one order from one user
 
   }
 

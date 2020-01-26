@@ -80,8 +80,12 @@ exports.postCartDeleteProduct = (req, res, next) => {
 
 exports.getOrders = (req, res, next) => {
   req.user.getOrders()
-  .then(product => {
-
+  .then(orders => {
+    res.render('shop/orders', {
+      pageTitle: 'Orders',
+      path: '/orders',
+      orders: orders
+    });
   })
   .catch(err => console.log(err));
 
