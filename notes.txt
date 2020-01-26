@@ -12,8 +12,16 @@ model/user
 12.194
 model/user
 
+12.195
+model/user
+controller/shop
+views/shop/cart
 
+// "p.cartItem.quantity" this is wrong as there is no intermediate 'cartItem'. p is directly linked to quantity
+<h2>Quantity: <%= p.cartItem.quantity %></h2>
 
+// changing "p.id" to "p._id"
+<input type="hidden" value="<%= p._id %>" name="productId">
 
 
 

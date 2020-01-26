@@ -43,18 +43,31 @@ exports.getDetails = (req, res, next) => {
 
 
 exports.getCart = (req, res, next) => {
+
   req.user.getCart()
-    .then(cart => {
-      return cart.getProducts()
-    })
-    .then((products) => {
-      res.render('shop/cart', {
-        pageTitle: 'Cart',
-        path: '/cart',
-        products: products
-      });
-    })
-    .catch(err => console.log(err));
+  .then(products => {
+    res.render('shop/cart', {
+      pageTitle: 'Cart',
+      path: '/cart',
+      products: products
+    });
+  })
+  .catch(err => {
+    console.log(err);
+  });
+
+  // req.user.getCart()
+  //   .then(cart => {
+  //     return cart.getProducts()
+  //   })
+  //   .then((products) => {
+  //     res.render('shop/cart', {
+  //       pageTitle: 'Cart',
+  //       path: '/cart',
+  //       products: products
+  //     });
+  //   })
+  //   .catch(err => console.log(err));
 };
 
 
