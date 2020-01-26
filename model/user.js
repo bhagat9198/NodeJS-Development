@@ -79,6 +79,32 @@ class User {
   }
 
 
+  deleteItemsFromCart(productId) {
+    // first we have to get all the product ids which are in cart
+
+    // const updatedCart = [...this.cart.items]
+    // more cleaner way
+    // filter() is the method provided by vanilla JS, which define us to criteria on how we want to filter elements in that array(in this case 'items' array). then it will give out new array with all the filltered items
+    // there will be function within filter method with will do the filtering
+    const updatedCart = this.cart.items.filter(item => {
+      // if it return true, item will get stored in new array
+      // if it return false, it will be not included in new array
+      
+      // in our case, we want to keep all the product id, except the id, for which we are deleting the element. hece, "!=="
+      // for the products whose id didnt match will be stored in new array
+      return item.productId.toString() !== productId.toString();
+    });
+
+    // after deleting the particular id, updating the database.
+    // thus, accessing the databse
+    const db = getDb();
+    return db.collection('users').updateOne(
+      { _id: mongodb.ObjectId(this._id)},
+      // cart -> items -> array containing product ids and quantity
+      { $set : {cart: {items: updatedCart}}} 
+    );
+  }
+
 }
 
 module.exports = User;
