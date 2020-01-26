@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, 'public')));
 
 app.use((req, res, next) => {
-  User.findbyId('5e2bd8cb5df89909f06af4a4')
+  User.findbyId('5e2d6d49c6a2166930f9858e')
   .then((user) => {
     // here we are storing the user in request object
     // user we are storing it here will be just be an object with the properties. 

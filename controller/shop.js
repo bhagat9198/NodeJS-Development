@@ -73,7 +73,7 @@ exports.postCart = (req, res, next) => {
     // now we can see 'embedded document' in a cart document with an object which hold product data. 
     // thus now we have redeent data ie, product which is in 'products' model is in 'users' model also as a embedded document. Disadvatage: if we cange the product dta, then we have to change it in 'users' model. hence we have lot of redentet data. 
     // thus, going to cart model and only storing id
-    console.log(result)
+    // console.log(result)
   })
   .catch(err => console.log(err));
 
