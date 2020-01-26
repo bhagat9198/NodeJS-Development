@@ -113,6 +113,7 @@ class User {
         // items -> products and not just 'this.cart.items'
         items: products,
         user: {
+          id: this._id,
           username: this.username,
           email: this.email
         }
