@@ -91,36 +91,19 @@ class User {
     );
   }
 
-  getOder() {
+  addOder() {
     const db = getDb();
-    // till now we are only storing the product ids and their quantities but we also want to add user and prodyct details.
-    // const orders = {
-    //   items: this.cart.items,
-    //   user: {
-    //     username: this.username,
-    //     email: this.email
-    //   }
-    // }
-    // thus we have successfully added user details but product details are still left.
-    // we know that, getChrt() method is having allthe details of products. hence calling it
-    // returning it, as controller/shop have promised attached while calling this function
     return this.getCart()
     .then(products => {
-      // 'products' : array of products with all info
-      // 'products' will contain all the details of all the cart products
-      // thus, now creting orders here
       const orders = {
-        // items -> products and not just 'this.cart.items'
         items: products,
         user: {
           username: this.username,
           email: this.email
         }
       }
-      // once 'orders' is having all the details, saving it to database
       return db.collection('orders').insertOne(orders)
     })
-    // once, storing is done successfully, another promse to make the cart empty
     .then(orders => {
       this.cart = {items: []};
       db.collection('users').updateOne(
@@ -129,6 +112,17 @@ class User {
       );
     })
     .catch(err => console.log(err));   
+  }
+
+  getOrders() {
+    // displaying the orders in the order page by fething the content from 'orders' collection
+
+    // to get the data from 'orders' collevtion. accessing the databse
+    const db = getDb();
+    // we have to display the orders for particular user(by comaparing the id)
+    // in mongodb, we can check the nested properties by defining the path to them. in our case: in our document(user -> _id)
+    return db.collection('orders').find({})
+
   }
 
 }
