@@ -43,7 +43,6 @@ exports.getDetails = (req, res, next) => {
 
 
 exports.getCart = (req, res, next) => {
-
   req.user.getCart()
   .then(products => {
     res.render('shop/cart', {
@@ -55,19 +54,6 @@ exports.getCart = (req, res, next) => {
   .catch(err => {
     console.log(err);
   });
-
-  // req.user.getCart()
-  //   .then(cart => {
-  //     return cart.getProducts()
-  //   })
-  //   .then((products) => {
-  //     res.render('shop/cart', {
-  //       pageTitle: 'Cart',
-  //       path: '/cart',
-  //       products: products
-  //     });
-  //   })
-  //   .catch(err => console.log(err));
 };
 
 
@@ -75,18 +61,13 @@ exports.getCart = (req, res, next) => {
 
 exports.postCart = (req, res, next) => {
   const productID = req.body.productId
-
-  // finding whole product details based on product id
   Product.findById(productID)
   .then(product => {
-    // in 'app.js' we created full fletched user. thus now can use the user model methods
     return req.user.addToCart(product)
   })
   .then(result => {
-    // now we can see 'embedded document' in a cart document with an object which hold product data. 
-    // thus now we have redeent data ie, product which is in 'products' model is in 'users' model also as a embedded document. Disadvatage: if we cange the product dta, then we have to change it in 'users' model. hence we have lot of redentet data. 
-    // thus, going to cart model and only storing id
-    // console.log(result)
+    // redirecting it to cart page once 'add to cart' button is pressed
+    res.redirect('/cart');
   })
   .catch(err => console.log(err));
 
