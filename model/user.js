@@ -80,29 +80,41 @@ class User {
 
 
   deleteItemsFromCart(productId) {
-    // first we have to get all the product ids which are in cart
-
-    // const updatedCart = [...this.cart.items]
-    // more cleaner way
-    // filter() is the method provided by vanilla JS, which define us to criteria on how we want to filter elements in that array(in this case 'items' array). then it will give out new array with all the filltered items
-    // there will be function within filter method with will do the filtering
     const updatedCart = this.cart.items.filter(item => {
-      // if it return true, item will get stored in new array
-      // if it return false, it will be not included in new array
-      
-      // in our case, we want to keep all the product id, except the id, for which we are deleting the element. hece, "!=="
-      // for the products whose id didnt match will be stored in new array
       return item.productId.toString() !== productId.toString();
     });
 
-    // after deleting the particular id, updating the database.
-    // thus, accessing the databse
     const db = getDb();
     return db.collection('users').updateOne(
       { _id: mongodb.ObjectId(this._id)},
-      // cart -> items -> array containing product ids and quantity
       { $set : {cart: {items: updatedCart}}} 
     );
+  }
+
+  // adding funtionality to add products to orders
+  // we can put orders with particular user database, but orders history can get long so it will be difficult to manage. 
+  // thus creating new collection 'orders' but execution funtion in user's model
+  // again no need to put static keyword, as user is creating new object 
+  getOder() {
+    // getting all the products which are in cart
+    const orders = this.cart;
+
+    // after getting the orders, we have to store those products in 'orders' collection and deleting the items from cart
+    // accessing the database
+    const db = getDb();
+    // before clearing products from user cart, we need to store all those products in new collevtion 'orders'
+    return db.collection('orders').insertOne(this.cart)
+    .then(orders => {
+      // clearing the current user cart object
+      // this.cart.items = [];
+      // or 
+      this.cart = {items: []};
+      // now claering from the database
+      db.collection('users').updateOne(
+        { _id: mongodb.ObjectId(this._id)},
+        { $set : {cart: {items: []}}} 
+      );
+    })
   }
 
 }
