@@ -95,7 +95,7 @@ class User {
   // we can put orders with particular user database, but orders history can get long so it will be difficult to manage. 
   // thus creating new collection 'orders' but execution funtion in user's model
   // again no need to put static keyword, as user is creating new object 
-  getOder() {
+  addOder() {
     // getting all the products which are in cart
     const orders = this.cart;
 

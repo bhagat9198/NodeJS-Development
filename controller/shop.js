@@ -93,7 +93,7 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  req.user.getOder()
+  req.user.addOder()
   .then(() => {
     res.redirect('/');
   })
