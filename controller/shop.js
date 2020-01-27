@@ -1,7 +1,13 @@
 const Product = require('../model/product');
 
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll()
+  // there is no fechAll() inbuild function in mongoose, but we can use static method
+
+  // find() method when used with mongoose, works bit diffrently. 
+  // find() with mongodb gives us cursor, but it mongoose it just gives us all items in array format. 
+  // but if document is huge, we can use cursor(gives obe document at a time)
+  // Eg : Product.find().cursor().next()
+  Product.find()
   .then(products => {
     res.render("shop/index", {
       pageTitle: "Shop",
@@ -10,19 +16,40 @@ exports.getIndex = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
+
+  // Product.fetchAll()
+  // .then(products => {
+  //   res.render("shop/index", {
+  //     pageTitle: "Shop",
+  //     prods: products,
+  //     path: "/"
+  //   });
+  // })
+  // .catch(err => console.log(err));
 };
 
 
 exports.getProduct = (req, res, next) => {
-  Product.fetchAll()
-    .then(products => {
-      res.render("shop/product-list", {
-        pageTitle: "Shop Products",
-        prods: products,
-        path: "/products"
-      });
-    })
-    .catch(err => console.log(err));
+  Product.find()
+  .then(products => {
+    res.render("shop/index", {
+      pageTitle: "Shop",
+      prods: products,
+      path: "/products"
+    });
+  })
+  .catch(err => console.log(err));
+
+
+  // Product.fetchAll()
+  // .then(products => {
+  //   res.render("shop/product-list", {
+  //     pageTitle: "Shop Products",
+  //     prods: products,
+  //     path: "/products"
+  //   });
+  // })
+  // .catch(err => console.log(err));
 };
 
 exports.getDetails = (req, res, next) => {

@@ -21,9 +21,7 @@ const ProductSchema = new Schema({
   }
 })
 
-// importing the model
-// model() is the function we call, model is important for mongoose behind the sceans to connect a schema with the name. it mean that, model will accept two agruments 
-// 1st: name of schema which will be reflected in database 2nd: schema which is to be imported
+
 module.exports = mongoose.model('Product', ProductSchema);
 
 
