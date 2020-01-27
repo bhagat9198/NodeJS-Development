@@ -14,7 +14,7 @@ routes.get('/products/:productId', shopController.getDetails);
 
 // routes.get('/cart', shopController.getCart);
 
-// routes.post('/cart', shopController.postCart);
+routes.post('/cart', shopController.postCart);
 
 // routes.post('/cart-delete-item', shopController.postCartDeleteProduct);
 

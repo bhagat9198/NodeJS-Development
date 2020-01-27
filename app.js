@@ -19,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, 'public')));
 
 app.use((req, res, next) => {
-  User.findById('5e2ef63cea0a3b388c340753')
+  User.findById('5e2f196a2822d66dbc7f072d')
   .then(wholeUser => {
     req.user = wholeUser;
     next();
@@ -44,7 +44,9 @@ mongoose.connect('mongodb+srv://nodeApp:nodeApp@nodeapp-oke9f.mongodb.net/shop?a
     const user = new User({
       username: username,
       email: email,
-      items: []
+      cart: {
+        items: []
+      }
     });
     return user.save()
   }

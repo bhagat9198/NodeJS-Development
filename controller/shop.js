@@ -28,14 +28,8 @@ exports.getProduct = (req, res, next) => {
 
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
-  // console.log(typeof(productID));
-  // console.log(productID);
   Product.findById(mongoose.Types.ObjectId(productID))
-  // Product.find({_id: productID})
-  // Product.findById((productID).toString())
-  // Product.findById(productID)
   .then(product => {
-    // const product = products[0];
     res.render(
       'shop/product-detail',
       {
@@ -64,7 +58,9 @@ exports.getCart = (req, res, next) => {
 };
 
 exports.postCart = (req, res, next) => {
-  const productID = req.body.productId
+  const productID = req.body.productId;
+  // exactly the same, no change
+  // 'findById' is mongoose inbuild function
   Product.findById(productID)
   .then(product => {
     return req.user.addToCart(product)
