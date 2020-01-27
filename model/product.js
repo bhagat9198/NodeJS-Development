@@ -26,7 +26,7 @@ const ProductSchema = new Schema({
     // as our type is ObjectId, so we have to tell which model objectId it has to take. Name of the model should be exactly same which we write in mongoose.model() method
     // we are reffereing user model
     ref: 'User'
-    // thus, now our relation is setup
+    // thus, now our relation is setup.
   }
 })
 

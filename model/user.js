@@ -16,7 +16,7 @@ const UserSchema = new Schema({
     type: [{
       productId: {
         type: Schema.Types.ObjectId,
-        // setting up relation with Product model
+        // setting up relation with Product model.
         ref: 'Product',
         required: true
       },
