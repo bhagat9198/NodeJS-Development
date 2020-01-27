@@ -1,12 +1,3 @@
-13.214
-model/user
-app.js
-
-13.215
-model/product
-model/user
-controller/admin
-
 13.216
 controller/admin
 
@@ -14,4 +5,12 @@ controller/admin
 model/user
 controller/shop
 routes/shop
+
+13.218
+controller/shop
+views/shop/cart
+
+//as product title is present within object named productId, hence chaning.
+<h1><%= p.productId.title %></h1>
+
 

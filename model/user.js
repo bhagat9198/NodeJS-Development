@@ -26,14 +26,7 @@ const UserSchema = new Schema({
   }
 });
 
-// as before we will keep our database logic in model only where data will get saved based on certain conditions we specify
-
-// creating the function with help of mongoose
-// 'addToCart' is our function name
-// it has to be function expression, so that 'this' scope is within the schema. we cant use arrow funtion as that will cause 'this' keyword scope outside of schema
-// addToCart will accept the product which is to be stored in cart
 UserSchema.methods.addToCart = function(product) {
-  // using the previous logic but modfing it so that we use it with mongoose
   const cartProductIndex = this.cart.items.findIndex(cp => {
     return cp.productId.toString() === product._id.toString();
   });
@@ -42,12 +35,9 @@ UserSchema.methods.addToCart = function(product) {
 
   if (cartProductIndex >= 0) {
     newQuantity = this.cart.items[cartProductIndex].quantity + 1;
-    // updatedCartItems[cartProductIndex].quantity = newQuantity;
     this.cart.items[cartProductIndex].quantity = newQuantity;
   } else {
     updatedCartItems.push({
-      // productId: new mongodb.ObjectId(product._id),
-      // no need to wrap 'product._id' with ObjectId() as mongoose will do it for us
       productId: product._id,
       quantity: newQuantity
     });
@@ -58,23 +48,6 @@ UserSchema.methods.addToCart = function(product) {
   this.cart = updatedCart;
   return this.save();
 };
-
-  // saving it with mongoose
-
-
-
-  // no need of mongodb driver to store
-  // const db = getDb();
-  // return db
-  // .collection('users')
-  // .updateOne(
-  //   { _id: new mongodb.ObjectId(this._id) },
-  //   { $set: { cart: updatedCart } }
-  // );
-// }
-
-
-
 
 module.exports = mongoose.model('User', UserSchema);
 

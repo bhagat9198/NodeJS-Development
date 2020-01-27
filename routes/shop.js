@@ -12,7 +12,7 @@ routes.get('/products', shopController.getProduct);
 
 routes.get('/products/:productId', shopController.getDetails);
 
-// routes.get('/cart', shopController.getCart);
+routes.get('/cart', shopController.getCart);
 
 routes.post('/cart', shopController.postCart);
 
