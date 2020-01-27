@@ -44,18 +44,12 @@ exports.getDetails = (req, res, next) => {
 
 
 exports.getCart = (req, res, next) => {
-  // req.user.cart is a object within which we have product Ids and their quantites. so, we have to populate this with product info.
-
   req.user
   .populate('cart.items.productId')
-  // populate() doesnt give the promise, so using execPopulate() method after promise which will give us promise
   .execPopulate()
-  // it will give us user model data along with product details which are in cart
   .then(user => {
-    // product details will be present within productId as a object
-    // user -> cart -> items -> productId -> {product details}
     const products = user.cart.items
-    console.log(products);
+    // console.log(products);
     res.render('shop/cart', {
       pageTitle: 'Cart',
       path: '/cart',
@@ -65,19 +59,6 @@ exports.getCart = (req, res, next) => {
   .catch(err => {
     console.log(err);
   });
-
-
-  // req.user.getCart()
-  // .then(products => {
-  //   res.render('shop/cart', {
-  //     pageTitle: 'Cart',
-  //     path: '/cart',
-  //     products: products
-  //   });
-  // })
-  // .catch(err => {
-  //   console.log(err);
-  // });
 };
 
 exports.postCart = (req, res, next) => {
@@ -94,7 +75,7 @@ exports.postCart = (req, res, next) => {
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const productID = req.body.productId;
-
+  // no change
   req.user.deleteItemsFromCart(productID)
   .then((result) => {    
     res.redirect('/cart');
