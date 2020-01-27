@@ -1,12 +1,7 @@
+const mongoose = require('mongoose');
 const Product = require('../model/product');
 
 exports.getIndex = (req, res, next) => {
-  // there is no fechAll() inbuild function in mongoose, but we can use static method
-
-  // find() method when used with mongoose, works bit diffrently. 
-  // find() with mongodb gives us cursor, but it mongoose it just gives us all items in array format. 
-  // but if document is huge, we can use cursor(gives obe document at a time)
-  // Eg : Product.find().cursor().next()
   Product.find()
   .then(products => {
     res.render("shop/index", {
@@ -16,16 +11,6 @@ exports.getIndex = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
-
-  // Product.fetchAll()
-  // .then(products => {
-  //   res.render("shop/index", {
-  //     pageTitle: "Shop",
-  //     prods: products,
-  //     path: "/"
-  //   });
-  // })
-  // .catch(err => console.log(err));
 };
 
 
@@ -39,23 +24,17 @@ exports.getProduct = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
-
-
-  // Product.fetchAll()
-  // .then(products => {
-  //   res.render("shop/product-list", {
-  //     pageTitle: "Shop Products",
-  //     prods: products,
-  //     path: "/products"
-  //   });
-  // })
-  // .catch(err => console.log(err));
 };
 
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
-  Product.findById(productID)
-  .then(product => {
+  
+  // findById() is a method provided by mongoose
+  // 'productId' which is string passed to find() method will autmatically be converted in to ObjectId() by mongoose
+  // Product.findById({_id: mongoose.Types.ObjectId(productID)})
+  Product.find({_id: mongoose.Types.ObjectId(productID)})
+  .then(products => {
+    const product = products[0];
     res.render(
       'shop/product-detail',
       {
@@ -66,6 +45,19 @@ exports.getDetails = (req, res, next) => {
     );
   })
   .catch(err => console.log(err));
+
+  // Product.findById(productID)
+  // .then(product => {
+  //   res.render(
+  //     'shop/product-detail',
+  //     {
+  //       pageTitle: product.title,
+  //       product: product,
+  //       path: '/products'
+  //     }
+  //   );
+  // })
+  // .catch(err => console.log(err));
 };
 
 
