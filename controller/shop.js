@@ -1,5 +1,8 @@
 const mongoose = require('mongoose');
+
 const Product = require('../model/product');
+// importing the order model
+const Order = require('../model/order');
 
 exports.getIndex = (req, res, next) => {
   Product.find()
@@ -48,7 +51,7 @@ exports.getCart = (req, res, next) => {
   .populate('cart.items.productId')
   .execPopulate()
   .then(user => {
-    const products = user.cart.items
+    const products = user.cart.items;
     // console.log(products);
     res.render('shop/cart', {
       pageTitle: 'Cart',
@@ -84,23 +87,67 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  req.user.getOrders()
-  .then(orders => {
-    res.render('shop/orders', {
-      pageTitle: 'Orders',
-      path: '/orders',
-      orders: orders
-    });
-  })
-  .catch(err => console.log(err));
+
+  // req.user.getOrders()
+  // .then(orders => {
+  //   res.render('shop/orders', {
+  //     pageTitle: 'Orders',
+  //     path: '/orders',
+  //     orders: orders
+  //   });
+  // })
+  // .catch(err => console.log(err));
+
 };
 
 exports.postOrder = (req, res, next) => {
-  req.user.addOder()
-  .then(() => {
-    res.redirect('/');
+
+  // as we have defined our order schema. to use that model, we should call it by creating the object on to it and then initilising that object
+  // const order = new Order({
+  //   user: {
+  //     username: req.user.username,
+  //     // userId: req.user._id
+  //     // or
+  //     userId: req.user
+  //     // it will automatically take the userId from the user object
+  //   },
+  //   products: [
+  //     // product:  it should have all the product information
+  //     // quantity: it should have quantity of that product
+  //   ]
+  // })
+
+  // to get the whole product info:-
+  req.user
+  .populate('cart.items.productId')
+  .execPopulate()
+  .then(user => {
+    // as we need a object with detals of specific products and its quantity. thus we have to iterate over the array 'items' which contains the quantity and details
+    const products = user.cart.items.map(i => {
+      return {quantity: i.quantity, product: i.productId}
+    });
+    console.log(products);
+    const order = new Order({
+      user: {
+        username: req.user.username,
+        userId: req.user
+      },
+      products: products
+    });
+    return order.save()
+  })
+  .then(result => {
+    res.redirect('/cart');
   })
   .catch(err => console.log(err));
+
+
+
+  // req.user.addOder()
+  // .then(() => {
+  //   res.redirect('/');
+  // })
+  // .catch(err => console.log(err));
 
 };
 

@@ -50,13 +50,10 @@ UserSchema.methods.addToCart = function(product) {
 };
 
 UserSchema.methods.deleteItemsFromCart = function(productId) {
-  // previous logic
   const updatedCart = this.cart.items.filter(item => {
     return item.productId.toString() !== productId.toString();
   });
-
   this.cart.items = updatedCart;
-
   return this.save();
 };
 
