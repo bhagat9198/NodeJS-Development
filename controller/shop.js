@@ -104,12 +104,6 @@ exports.postOrder = (req, res, next) => {
   .execPopulate()
   .then(user => {
     const products = user.cart.items.map(i => {
-      // priviously, "product: i.productId" was giving us only producyId even though we need all product details which were shown in console.log
-      // so we created one seprated object where all product details will be stored.
-      // ...(spread operator): it will gives out all the data which is within it. atlast productId is an object containing all the data of product
-      // _doc property: even though in console.log of productId we cant see other data , but productId will have lot of metadata attach to it which is of no use to us. hence to omit all that unnessary metadata, we are using '_doc' property.
-      // works fine
-      // return {quantity: i.quantity, product: {...i.productId}};
       return {quantity: i.quantity, product: {...i.productId._doc}};
 
     });
@@ -124,18 +118,18 @@ exports.postOrder = (req, res, next) => {
     return order.save()
   })
   .then(result => {
+    // after saving to the products to order model, we have to delete the cart items which are stored in user model
+
+    // calling the claer method in users model
+    return req.user.claerCart();
+    // res.redirect('/cart');
+  })
+  .then(() => {
+    // once claerCart method is successfully completed
+    // redirecting it
     res.redirect('/cart');
   })
   .catch(err => console.log(err));
-
-
-
-  // req.user.addOder()
-  // .then(() => {
-  //   res.redirect('/');
-  // })
-  // .catch(err => console.log(err));
-
 };
 
 
