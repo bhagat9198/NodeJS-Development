@@ -1,20 +1,11 @@
-
-12.200
-model/user
-controller/shop
-view/shop/order
-
-13.207
-app.js
-delete util/database
-commenting out all the routes
-commenting models
-deleting order and order-list models
-
-npm install --save mongoose
-
-
 13.208
 model/product
+
+13.209
+model/product
+controller/admin
+routes/admin
+app.js
+
 
 

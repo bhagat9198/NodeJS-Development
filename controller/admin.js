@@ -7,15 +7,24 @@ exports.getAddProduct = (req, res, next) => {
     editing: false
   });
 };
-// storing the product along with user id 
+
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
-  const userId = req.user._id;
-  const product = new Product(title, imageUrl, price, description, null, userId);
-
+  // const userId = req.user._id;
+  // const product = new Product(title, imageUrl, price, description, null, userId);
+  // passing the values to Product model within one argument as a object
+  const product = new Product({
+    // left hand are the keys which are definied in 'Product' model
+    // right hand side are the values which are passed to 'product' model
+    title: title,
+    imageUrl: imageUrl,
+    price: price,
+    description: description
+  })
+  // save is the method which mongoose gives(we have not defined it in our product model). it doesnt give promise but we can still attach then() and catch() block to it
   product.save()
   .then(product => {
     res.redirect('/admin/products');
