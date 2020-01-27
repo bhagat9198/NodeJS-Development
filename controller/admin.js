@@ -15,11 +15,17 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
+  // saving userId while adding product
+  // const userId = req.user._id;
+  // req.user will also give only user._id to userId constant because of mongoose. as mongoose knows that both the models are related to each other.
+  const userId = req.user;
+
   const product = new Product({
     title: title,
     imageUrl: imageUrl,
     price: price,
-    description: description
+    description: description,
+    userId: userId
   })
   product.save()
   .then(product => {
@@ -70,8 +76,7 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const productID = req.body.productID;
-  
-  // Product.findByIdAndRemove([productID])
+
   Product.findByIdAndDelete(productID)
   .then(() => {
     res.redirect('/admin/products');
@@ -79,14 +84,6 @@ exports.postDeleteProduct = (req, res, next) => {
   .catch(err => {
     console.log(err);
   })
-
-  // Product.deleteById(productID)
-  // .then(() => {
-  //   res.redirect('/admin/products');
-  // })
-  // .catch(err => {
-  //   console.log(err);
-  // })
 };
 
 exports.getProducts = (req, res, next) => {

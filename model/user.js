@@ -1,4 +1,4 @@
-// creating user model with mongoose
+
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
@@ -16,6 +16,8 @@ const UserSchema = new Schema({
     type: [{
       productId: {
         type: Schema.Types.ObjectId,
+        // setting up relation with Product model
+        ref: 'Product',
         required: true
       },
       quantity: {
