@@ -1,3 +1,37 @@
+// creating user model with mongoose
+const mongoose = require('mongoose');
+
+const Schema = mongoose.Schema;
+
+const UserSchema = new Schema({
+  username: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true
+  },
+  items: {
+    type: [{
+      productId: {
+        type: Schema.Types.ObjectId,
+        required: true
+      },
+      quantity: {
+        type: Number,
+        required: true
+      }
+    }]
+  }
+})
+
+module.exports = mongoose.model('User', UserSchema);
+
+
+
+
+
 
 // const mongodb = require('mongodb');
 // const getDb = require('../util/database').getDb;
