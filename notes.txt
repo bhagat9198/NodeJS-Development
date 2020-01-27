@@ -14,3 +14,7 @@ routes/shop
 13.211
 controller/shop
 routes/shop
+
+// even though we are getting error, still it works and give product details page
+//dont know cause of this error
+Error: Argument passed in must be a single String of 12 bytes or a string of 24 hex characters
