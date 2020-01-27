@@ -12,3 +12,9 @@ commenting models
 deleting order and order-list models
 
 npm install --save mongoose
+
+
+13.208
+model/product
+
+
