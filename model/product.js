@@ -21,12 +21,7 @@ const ProductSchema = new Schema({
   },
   userId: {
     type: Schema.Types.ObjectId,
-    // setting up something special 'ref' configration
-    // ref congigration: it takes string where we tell mongoose that which other mongoose model is related to the data in that field.
-    // as our type is ObjectId, so we have to tell which model objectId it has to take. Name of the model should be exactly same which we write in mongoose.model() method
-    // we are reffereing user model
     ref: 'User'
-    // thus, now our relation is setup
   }
 })
 

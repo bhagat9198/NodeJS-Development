@@ -15,9 +15,6 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const description = req.body.description;
   const price = req.body.price;
-  // saving userId while adding product
-  // const userId = req.user._id;
-  // req.user will also give only user._id to userId constant because of mongoose. as mongoose knows that both the models are related to each other.
   const userId = req.user;
 
   const product = new Product({
@@ -88,7 +85,17 @@ exports.postDeleteProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
   Product.find()
+  // incase if we dont want all the fields to be displayed or retervied from database. to do that we can write queries, but mongoose gives us select() method
+  // select(): attritubtes we specify will be retervied from database. and to forcefully omit attributes(eg: _id which get retervied automatically) put '-' sign beforethe attribute name
+  // if there are more then one attribute, seprate them by space. all the attrbutes are inclosed in quotes
+  .select('title price -_id')
+  // we know that each product is assigned with user. we in product model we are only storing userId. but if we need other info of user while displaying product, either we can write queries or mongoose gives us 'populate()' method
+  // populate():it accepts a attribute which is reffered to other model and whos detail we want to see
+  // but if we only need selected info, in 2nd argument: we can pass the attributes which we want to see/work with
+  .populate('userId', 'username email -_id')
     .then(products => {
+      console.log(products);
+      
       res.render("admin/products", {
         path: "/admin/products",
         pageTitle: "Admin Add Products",
