@@ -28,13 +28,14 @@ exports.getProduct = (req, res, next) => {
 
 exports.getDetails = (req, res, next) => {
   const productID = req.params.productId;
-  
-  // findById() is a method provided by mongoose
-  // 'productId' which is string passed to find() method will autmatically be converted in to ObjectId() by mongoose
-  // Product.findById({_id: mongoose.Types.ObjectId(productID)})
-  Product.find({_id: mongoose.Types.ObjectId(productID)})
-  .then(products => {
-    const product = products[0];
+  // console.log(typeof(productID));
+  // console.log(productID);
+  Product.findById(mongoose.Types.ObjectId(productID))
+  // Product.find({_id: productID})
+  // Product.findById((productID).toString())
+  // Product.findById(productID)
+  .then(product => {
+    // const product = products[0];
     res.render(
       'shop/product-detail',
       {
@@ -45,19 +46,6 @@ exports.getDetails = (req, res, next) => {
     );
   })
   .catch(err => console.log(err));
-
-  // Product.findById(productID)
-  // .then(product => {
-  //   res.render(
-  //     'shop/product-detail',
-  //     {
-  //       pageTitle: product.title,
-  //       product: product,
-  //       path: '/products'
-  //     }
-  //   );
-  // })
-  // .catch(err => console.log(err));
 };
 
 

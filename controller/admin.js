@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const Product = require("../model/product");
 
 exports.getAddProduct = (req, res, next) => {
@@ -32,6 +34,8 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/');
   }
   const productID = req.params.productID;
+
+  // exactly the same. here "findById" method is by mongoose, not defined by us
   Product.findById(productID)
   .then(product => {
     res.render("admin/edit-product", {
@@ -42,6 +46,17 @@ exports.getEditProduct = (req, res, next) => {
     });
   })
   .catch(err => console.log(err));
+
+  // Product.findById(productID)
+  // .then(product => {
+  //   res.render("admin/edit-product", {
+  //     path: "/admin/edit-product",
+  //     pageTitle: "Edit Products",
+  //     editing: editMode,
+  //     product: product
+  //   });
+  // })
+  // .catch(err => console.log(err));
 };
 
 exports.postEditProduct = (req, res, next) => {
@@ -51,12 +66,29 @@ exports.postEditProduct = (req, res, next) => {
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
 
-  const updatedProduct = new Product(updatedTitle, updatedImageUrl, updatedPrice, upadatedDesciption,productID);
-  updatedProduct.save()
+  Product.findById(mongoose.Types.ObjectId(productID))
+  .then(product => {
+    // here automatically mongoose will take current product which was found out from "findById()". and to that product, we are updating its attributes
+    product.title = updatedTitle;
+    product.price = updatedPrice;
+    product.imageUrl = updatedImageUrl;
+    product.description = upadatedDesciption;
+
+    // "save()" is the method which is provided by mongoose
+    return product.save()
+  })
+  // promise of save() method
   .then(() => {
     res.redirect('/admin/products');
   })
   .catch(err => console.log(err));
+
+  // const updatedProduct = new Product(updatedTitle, updatedImageUrl, updatedPrice, upadatedDesciption,productID);
+  // updatedProduct.save()
+  // .then(() => {
+  //   res.redirect('/admin/products');
+  // })
+  // .catch(err => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {
@@ -72,15 +104,24 @@ exports.postDeleteProduct = (req, res, next) => {
 
 exports.getProducts = (req, res, next) => {
 
-  Product.fetchAll()
-  .then(products => {
-    res.render("admin/products", {
-      path: "/admin/products",
-      pageTitle: "Admin Add Products",
-      prods: products,
-    });
-  })
-  .catch(err => console.log(err));
+  Product.find()
+    .then(products => {
+      res.render("admin/products", {
+        path: "/admin/products",
+        pageTitle: "Admin Add Products",
+        prods: products,
+      });
+    })
+
+  // Product.fetchAll()
+  // .then(products => {
+  //   res.render("admin/products", {
+  //     path: "/admin/products",
+  //     pageTitle: "Admin Add Products",
+  //     prods: products,
+  //   });
+  // })
+  // .catch(err => console.log(err));
 };
 
 
