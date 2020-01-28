@@ -19,7 +19,6 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, 'public')));
 
-// reason we put this middleware above: before we go to any other routes, we are creating user on every request which passes throught it. as it is at the top, user attribute will be created here and then req will go through routes till the time response is not sent. 
 app.use((req, res, next) => {
   User.findById('5e2f196a2822d66dbc7f072d')
   .then(wholeUser => {

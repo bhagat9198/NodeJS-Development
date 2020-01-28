@@ -1,29 +1,40 @@
 exports.getLogin = (req, res, next) => {
+  // if cookie is get in broswer inseption -> application -> cookies and there we can see the cookie key and value
+
+  // to see, if we are reciving cookie from the server
+  // req.get(): will take header name. to find the haeder name inspect -> network -> haeders
+  // console.log(req.get('cookie'));
+  // output: "loggedIn=true"
+  // making use of the cookie
+
+  const isLoggedIn = req.get('cookie')
+  // .split(';')[1] // if we are having more then one cookie spliting it and then specifing the index
+  .trim()
+  .split('=')[1]; //taking ony the value of cookie (loggedIn=true)
+
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
-    // as we have done in path for '404'page, we have to pass 'isLoggedIn' attribute to each ejs page, so that they can get to know user is logged In or not.
-
-    // note: here "req.isLoggedIn = undefined" ie false. this is becasue, req.isLoggedIn is not set till the time it doest go "postLogin"
-    // setting up this attributes to all other pages 
-    isLoggedIn: req.isLoggedIn
+    // isLoggedIn: req.isLoggedIn
+    isLoggedIn: isLoggedIn
   });
 };
 
-// here we are dummy authentication ie without checking email and password, we are redirecting it to home page thinking email amd apssword are correct. hece, dummy authentication.
 exports.postLogin = (req, res, next) => {
-  // now, after user is logged in , we have to store that information. 
-  // one way to store and that info is avaliable to other pages is to put it in request object as attribute
-  req.isLoggedIn= true;
-  // thus, we craeted an attribute which is 'isLoggedIn' marked as true. but to we dont specify to other pages, it will be marked as 'undefined' ie false. hece till the time user dont login, 'isLoggedIn' will be false and once he did a login 'isLoggedIn' will true.
-  
-  // after user is loggedIn we have to highlight 'Add Products' and 'Admin Products'
+  // thus, storing data in req is not ideal as req and req data will die of as soon as response is sent.
+
+  // other aletrnative: creating one global file/variable so that it can be shared amoung all the request.
+  // this is also not correct, as that file/variable will be shared amoung shared amoung all the req of different users (at last its server). this is also something which we dont want. 
+
+  // thus, thats were cookies will help us. with cookies we can store data in the broswer of a single user and store data in that browser which is customised to that user and does not affect other users
+
+  // setting a cookie. setting cookie is done by setting up header
+  // setHeader: it accepts key, value pair
+  // 'Set-Cookie': key name
+  // 'loggedIn=true' : loggedIn is cookie name and 'true' is assigned to it with help of assignment operator
+  res.setHeader('Set-Cookie', 'loggedIn=true');
+  // thus, as soon as we set this, cookie will get stored in broswer and with every request it will be sent to server
+  req.isLoggedIn = true;
   res.redirect('/');
 };
 
-// after setting up all the things, those 2 links didint get highlighted. WHY?
-// req.isLoggedIn = undefined. HOW?
-// once the response have been sent, request will die off and new req will be genererted. so as soon as page is redirected, req object will not have any addational info which we attached to it.
-// thus, storing info in the request is not a good idea. 
-// as every request is treated indivdual. this is not accidental but intentially. this is becasue req should not look other req data. then it doesnt matter if taht req is comming from same IP.
-// go to app to explain
