@@ -70,7 +70,7 @@ exports.postCart = (req, res, next) => {
     return req.user.addToCart(product)
   })
   .then(result => {
-    res.redirect('/cart');
+    res.redirect('/orders');
   })
   .catch(err => console.log(err));
 }
@@ -85,6 +85,34 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
+  // we have find all orders for the particular user
+  // finding all the order
+  // setting up path "'user.userId'" 
+  Order.find({'user.userId': req.user._id})
+  .then(orders => {
+    console.log(orders);
+      // [
+      //   {
+      //     user: { username: 'test', userId: 5e2f196a2822d66dbc7f072d },
+      //     _id: 5e2f4bef2a570b829011e26c,
+      //     products: [ [Object] ],
+      //     __v: 0
+      //   },
+      //   {
+      //     user: { username: 'test', userId: 5e2f196a2822d66dbc7f072d },
+      //     _id: 5e2fb1bb67817a87ac167643,
+      //     products: [ [Object] ],
+      //     __v: 0
+      //   }
+      // ]
+    res.render('shop/orders', {
+      pageTitle: 'Orders',
+      path: '/orders',
+      orders: orders
+    });
+  })
+  .catch(err => console.log(err));
+
 
   // req.user.getOrders()
   // .then(orders => {
@@ -105,7 +133,6 @@ exports.postOrder = (req, res, next) => {
   .then(user => {
     const products = user.cart.items.map(i => {
       return {quantity: i.quantity, product: {...i.productId._doc}};
-
     });
     console.log(products);
     const order = new Order({
@@ -118,19 +145,14 @@ exports.postOrder = (req, res, next) => {
     return order.save()
   })
   .then(result => {
-    // after saving to the products to order model, we have to delete the cart items which are stored in user model
-
-    // calling the claer method in users model
     return req.user.claerCart();
-    // res.redirect('/cart');
   })
   .then(() => {
-    // once claerCart method is successfully completed
-    // redirecting it
     res.redirect('/cart');
   })
   .catch(err => console.log(err));
 };
+
 
 
 
