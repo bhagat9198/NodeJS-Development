@@ -1,27 +1,11 @@
-
-13.220
-model/order
-controller/shop
-routes/shop
-
-13.221
-controller/shop
-
 13.222
 model/user
 controller/shop
-
 
 13.223
 controller/shop
 views/shop/order
 
-<ul class="orders__products">
-  // as there is there is 'products' array within 'orders'
-  // and to get the product info, we are looping over internal array
-  <% order.products.forEach(p => { %>
-    // within the internal array, there is 'product' object which is contating the product attributes such as title of product
-    // but quantity is within the internal array and not within the object within the internal array
-    <li class="orders__products-item"><%= p.product.title %> (<%= p.quantity %>)</li>
-  <% }); %>
-</ul>
+
+
+
