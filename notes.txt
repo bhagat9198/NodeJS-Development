@@ -6,6 +6,16 @@ controller/shop
 controller/shop
 views/shop/order
 
+14.228
+views/includes/navigation
+public/css/main
+these two files are given in material
+
+admin add product and admin products links are missing and we have 'login' link on right hand side.
+why?
+because for now we want to hace dummy login page 
+thus here authentication would be great where we store data of particular user and then using cookies and sessions .
+thus, doing dummy authentication 
 
 
 
