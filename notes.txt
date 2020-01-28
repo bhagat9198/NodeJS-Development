@@ -1,11 +1,3 @@
-13.223
-controller/shop
-views/shop/order
-
-14.228
-views/includes/navigation
-public/css/main
-these two files are given in material
 
 14.229
 views/includes/navigation
@@ -15,8 +7,12 @@ routes/auth
 app.js
 controller/auth
 
-all the material is provided
-
-
+14.230
+controller/auth
+routes/auth
+controller/error
+controller/admin
+controller/shop
+views/includes/navigation
 
 
