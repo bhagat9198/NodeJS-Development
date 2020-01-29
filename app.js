@@ -3,6 +3,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+// requring express-session
+const session = require('express-session')
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -18,6 +20,22 @@ app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, 'public')));
+// initlising session middle here so it will be used in every incoming request
+// executing as a function and within it passing JS object which will hold our arguments
+app.use(session({
+  // secret: used in signing the hash which stores our id in the cookie. value to secret is a string which should be long
+  secret:'nodeApp',
+  // "resave: false" this means that session will not be saved on every request which is done. thus, it should change only when something is changed, hence increasing performance  
+  resave: false,
+  // "saveUninitialized: false" because this will also ensures that no session gets saved for the request where it doesnt need to get saved as nothing was changed
+  saveUninitialized: false
+  // we can set up cookies, but if it is not given default values will be taken
+  // cookie: {
+  //   maxAge: 10,
+  //   expires: httpDateFormate
+  // }
+}));
+// thus, our session is configured and raedy to use
 
 app.use((req, res, next) => {
   User.findById('5e2f196a2822d66dbc7f072d')
