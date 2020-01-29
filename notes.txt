@@ -1,8 +1,3 @@
-14.232
-controller/auth
-
-14.233
-controller/auth
 
 14.234
 what is session?
@@ -10,4 +5,5 @@ what is session?
 14.235
 app.js
 
-npm install --save express-session
+14.236
+controller/auth
