@@ -35,32 +35,10 @@ app.use(session({
   })
 );
 
-// what can be done?
-// we will re-add that middleware 
 app.use((req, res, next) => {
-  // finding the user, who is currently in session
-  // User.findById(req.session.user._id)
-  // .then(user => {
-  //   // here we will not store anything in session because is alraedy something which will be managed for us automatically. and for incoming request, we register the middleware, which will lokk for session cookie. if it finds one, it will look for a fitting session in the database and load the data from there. 
-
-  //   // thus, till the time, we come here, our session data will be loaded. now this means that now we just want to usr that session to load our real user, to create our mongoose user model.
-  //   // HOW?
-  //   // here we will craete a user, based on user stored in session.
-  //   req.user = user;
-  //   // thus, now our 'req.user' will have user model. hence in 'shop' and 'admin' file changing 'req/session.user' to 'req.user' as revious.  
-  //   // our model will start working again.
-
-  //   next();
-  // })
-
-
-
-  // once the user looged out, it will give out error, as it will serach for id of user which does not exists.
   if(!req.session.user) {
-    // thus, if no user logged in, go to next middleware
     return next();
   }
-  // else, find the user id
   User.findById(req.session.user._id)
   .then(user => {
     req.user = user;
@@ -68,15 +46,6 @@ app.use((req, res, next) => {
   })
   .catch(err => console.log(err));
 });
-
-// app.use((req, res, next) => {
-//   User.findById('5e2f196a2822d66dbc7f072d')
-//   .then(wholeUser => {
-//     req.user = wholeUser;
-//     next();
-//   })
-//   .catch(err => console.log(err));
-// }); 
 
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);

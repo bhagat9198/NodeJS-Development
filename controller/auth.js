@@ -8,17 +8,23 @@ exports.getLogin = (req, res, next) => {
   });
 };
 
+// after logging in, we can see that all view didnt uplaod (navbar icons) which will show up only after logging in. thus, we have to refresh the page to load all the icons.
 exports.postLogin = (req, res, next) => {
   User.findById('5e2f196a2822d66dbc7f072d')
   .then(user => {
-    // what happened here?
-    // it will stored in session as user object. and it is just the data of user
-    // with every new request, session middleware does not go ahead and fetch the user with the help of mongoose. it fetch the session data, from mongodb database but for that it uses mongodb 'store' and mongodb store does not know about our mongoose models. 
-    // thus, when it fetches, it only fetches data and not the methods which are with models.
-    // app.js
+    // reason for this is that, 
+    // when we do postlogin, we do set our session and when we redirect, the session middleware created that session. ie, it writes into mongodb as we are using mongodb session store and it sets the cookie.
+    // so writing the data to mongodb, can take some time(millseconds) but redirect if fired in independent of that, so redirect can happen before cookie is set.
     req.session.user = user;
     req.session.isLoggedIn = true;
-    res.redirect('/');
+
+    // thus, to be sure that redirect happens once the session is set, we can use save method
+    req.session.save(err => {
+      if(!err) {
+        // if no errors, redirect the page
+        res.redirect('/');
+      }
+    })
   })
   .catch(err => console.log(err));
 };

@@ -49,7 +49,6 @@ exports.getDetails = (req, res, next) => {
 
 
 exports.getCart = (req, res, next) => {
-  // this will not mean that it exists only for this request, the mongoose model is but its get the data taht is stored in the session and therefore, the data that continues to follow over multiple request
   req.user
   .populate('cart.items.productId')
   .execPopulate()
@@ -68,12 +67,6 @@ exports.getCart = (req, res, next) => {
   });
 };
 
-
-// "TypeError: req.session.user.addToCart is not a function"
-// earlier setup, we stored the user directly inside req object. and for every request, we used to fetch user in middleway of app.js
-// we fetch the userfrom the database and mongoose used to gives us fuller user object, not just the data in database but also all the methods defined in user model. and all that was stored in "req.user".active
-// with session it works bit different. with the session, we are not fetching this for every request, instead we are storing the user in our session upon logging in
-// controller/auth 
 exports.postCart = (req, res, next) => {
   const productID = req.body.productId;
   Product.findById(productID)
