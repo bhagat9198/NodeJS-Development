@@ -1,6 +1,3 @@
-14.238
-app.js
-
 14.239
 controller/shop
 controller/admin
@@ -14,14 +11,13 @@ views/includes/navigation
 views/shop/index
 views/shop/product-details
 views/shop/product-list
-//putting contditions and displaying/hiding correct links
 
-after we are logout(or destroying the session), we are getting error in opening cart and order pages.
-
-this is becuase without a valid session, where we reach out to user will fail becuase user object is depended on session object and session itself is not present
-
-first thing: hide those things/ funtionalities which require session or user.
-
+14.241
+controller/shop
+controller/auth
+app
+controller/auth
+app
 
 
 

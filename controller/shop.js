@@ -24,7 +24,6 @@ exports.getProduct = (req, res, next) => {
       pageTitle: "Shop",
       prods: products,
       path: "/products",
-      // replacing "req.isLoggedIn" with "req.session.isLoggedIn" (13 places)
       isLoggedIn: req.session.isLoggedIn
     });
   })
@@ -50,7 +49,8 @@ exports.getDetails = (req, res, next) => {
 
 
 exports.getCart = (req, res, next) => {
-  req.session.user
+  // this will not mean that it exists only for this request, the mongoose model is but its get the data taht is stored in the session and therefore, the data that continues to follow over multiple request
+  req.user
   .populate('cart.items.productId')
   .execPopulate()
   .then(user => {
@@ -68,21 +68,27 @@ exports.getCart = (req, res, next) => {
   });
 };
 
+
+// "TypeError: req.session.user.addToCart is not a function"
+// earlier setup, we stored the user directly inside req object. and for every request, we used to fetch user in middleway of app.js
+// we fetch the userfrom the database and mongoose used to gives us fuller user object, not just the data in database but also all the methods defined in user model. and all that was stored in "req.user".active
+// with session it works bit different. with the session, we are not fetching this for every request, instead we are storing the user in our session upon logging in
+// controller/auth 
 exports.postCart = (req, res, next) => {
   const productID = req.body.productId;
   Product.findById(productID)
   .then(product => {
-    return req.session.user.addToCart(product)
+    return req.user.addToCart(product)
   })
   .then(result => {
-    res.redirect('/orders');
+    res.redirect('/cart');
   })
   .catch(err => console.log(err));
 }
 
 exports.postCartDeleteProduct = (req, res, next) => {
   const productID = req.body.productId;
-  req.session.user.deleteItemsFromCart(productID)
+  req.user.deleteItemsFromCart(productID)
   .then((result) => {    
     res.redirect('/cart');
   })
@@ -90,7 +96,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
 };
 
 exports.getOrders = (req, res, next) => {
-  Order.find({'user.userId': req.session.user._id})
+  Order.find({'user.userId': req.user._id})
   .then(orders => {
     // console.log(orders);
     res.render('shop/orders', {
@@ -104,7 +110,7 @@ exports.getOrders = (req, res, next) => {
 };
 
 exports.postOrder = (req, res, next) => {
-  req.session.user
+  req.user
   .populate('cart.items.productId')
   .execPopulate()
   .then(user => {
@@ -114,15 +120,15 @@ exports.postOrder = (req, res, next) => {
     console.log(products);
     const order = new Order({
       user: {
-        username: req.user.session.username,
-        userId: req.session.user
+        username: req.user.username,
+        userId: req.user
       },
       products: products
     });
     return order.save()
   })
   .then(result => {
-    return req.session.user.clearCart();
+    return req.user.clearCart();
   })
   .then(() => {
     res.redirect('/cart');
