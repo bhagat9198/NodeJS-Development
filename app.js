@@ -28,18 +28,12 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(rootDir, 'public')));
 app.use(session({
-  // cookie which will be created here is by session. this will be known as session cookie.
-  // but the cookie which was inilized earlier is not as session, its was just a cookie.
-  // hence there is diffrence between session cookie and cookie.
   secret:'nodeApp',
   resave: false,
   saveUninitialized: false,
   store: store,
-  // we can define our own cookie and attributes of cookies
-  // cookie: {
-  //   secure: true
-  // }
-}));
+  })
+);
 
 
 app.use((req, res, next) => {

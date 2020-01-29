@@ -57,7 +57,7 @@ UserSchema.methods.deleteItemsFromCart = function(productId) {
   return this.save();
 };
 
-UserSchema.methods.claerCart = function() {
+UserSchema.methods.clearCart = function() {
   this.cart.items = [];
   // this.cart = {
     // items : []

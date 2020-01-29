@@ -10,3 +10,15 @@ app
 
 14.238
 app.js
+
+
+14.239
+controller/shop
+controller/admin
+controller/error
+// replacing "req.isLoggedIn" with "req.session.isLoggedIn" (13 places)
+// replacing "req.user" with "req.session.user"
+
+views/includes/navigation
+routes/auth
+controller/auth
