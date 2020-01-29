@@ -1,24 +1,27 @@
-14.235
-app.js
-
-14.236
-controller/auth
-
-14.267
-controller/auth
-app
-
 14.238
 app.js
-
 
 14.239
 controller/shop
 controller/admin
 controller/error
-// replacing "req.isLoggedIn" with "req.session.isLoggedIn" (13 places)
-// replacing "req.user" with "req.session.user"
-
 views/includes/navigation
 routes/auth
 controller/auth
+
+14.240
+views/includes/navigation
+views/shop/index
+views/shop/product-details
+views/shop/product-list
+//putting contditions and displaying/hiding correct links
+
+after we are logout(or destroying the session), we are getting error in opening cart and order pages.
+
+this is becuase without a valid session, where we reach out to user will fail becuase user object is depended on session object and session itself is not present
+
+first thing: hide those things/ funtionalities which require session or user.
+
+
+
+
