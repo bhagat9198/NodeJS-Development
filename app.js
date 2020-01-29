@@ -3,6 +3,7 @@ const path =  require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+// changing the name
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const rootDir = require('./util/path');
@@ -15,6 +16,7 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(path.join(rootDir, 'public')));
 
+// as there is only one import, so just variable name
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 

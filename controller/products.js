@@ -11,6 +11,8 @@ exports.postAddProduct = (req, res, next) => {
 };
 
 exports.getproduct = (req, res, next) => {
+  // revoving dependencies if we are having of other pages
+
   res.render('shop', {pageTitle: 'Shop', prods : products, path : '/'});
   // console.log('shop.js ', products);
 };
