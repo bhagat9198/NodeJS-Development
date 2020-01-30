@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const Product = require("../model/product");
 
 exports.getAddProduct = (req, res, next) => {
+  // one easy way to check for route is checking for if 'isLoggedIn' session key is set to true or not. it will be only set, if user is logged in.
+  if(!req.session.isLoggedIn) {
+    return res.redirect('/login');
+  }
   res.render("admin/edit-product", {
     path: "/admin/add-product",
     pageTitle: "Add Products",
@@ -10,6 +14,7 @@ exports.getAddProduct = (req, res, next) => {
     isAuthenticated: req.session.isLoggedIn
   });
 };
+
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;

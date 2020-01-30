@@ -1,14 +1,12 @@
-15.250
-views/auth/signup : changing '/login' to '/signup'
-model/user : changing the model
-app.js
-
-15.251
-controller/auth
-
-15.252
-controller/auth
-
 15.253
 controller/auth
+
+15.254
+controller/admin
+
+
+
+
+
+
 
