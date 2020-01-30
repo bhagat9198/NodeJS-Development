@@ -4,7 +4,11 @@ controller/auth
 15.254
 controller/admin
 
-
+15.255
+controller/admin
+middleware/is-auth
+routes/admin
+routes/shop
 
 
 

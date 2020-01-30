@@ -3,10 +3,12 @@ const mongoose = require('mongoose');
 const Product = require("../model/product");
 
 exports.getAddProduct = (req, res, next) => {
-  // one easy way to check for route is checking for if 'isLoggedIn' session key is set to true or not. it will be only set, if user is logged in.
-  if(!req.session.isLoggedIn) {
-    return res.redirect('/login');
-  }
+  // this is working fine, but we have to put this condition on every middleware which is quite difficult.
+  // thus, we have asy way to do it ie creating one middleware and importing it whereever nessary.  
+  // if(!req.session.isLoggedIn) {
+  //   return res.redirect('/login');
+  // }
+  
   res.render("admin/edit-product", {
     path: "/admin/add-product",
     pageTitle: "Add Products",
