@@ -54,25 +54,27 @@ app.use(errorController.get404);
 
 
 mongoose.connect(MONGODB_URI,{ useUnifiedTopology: true ,useNewUrlParser: true })
-.then(result => {
+// as we are creating our own user, no need of dummy user now.
+// .then(result => {
+//   console.log('CONNECTED');
+//   return User.findOne()
+// })
+// .then(user => {
+  // if(!user) {
+  //   const username = 'test';
+  //   const email = 'test@test.com';
+  //   const user = new User({
+  //     username: username,
+  //     email: email,
+  //     cart: {
+  //       items: []
+  //     }
+  //   });
+  //   return user.save()
+  // }
+// })
+.then(user => {
   console.log('CONNECTED');
-  return User.findOne()
-})
-.then(user => {
-  if(!user) {
-    const username = 'test';
-    const email = 'test@test.com';
-    const user = new User({
-      username: username,
-      email: email,
-      cart: {
-        items: []
-      }
-    });
-    return user.save()
-  }
-})
-.then(user => {
   app.listen(3000);
 })
 .catch(err => console.log(err));

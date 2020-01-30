@@ -1,28 +1,3 @@
-14.239
-controller/shop
-controller/admin
-controller/error
-views/includes/navigation
-routes/auth
-controller/auth
-
-14.240
-views/includes/navigation
-views/shop/index
-views/shop/product-details
-views/shop/product-list
-
-14.241
-controller/shop
-controller/auth
-app
-controller/auth
-app
-
-
-14.142
-controller/auth
-
 15.249
 controller/shop
 controller/admin
@@ -30,11 +5,15 @@ controller/error
 views/shop/index
 views/shop/product-details
 views/shop/product-list
-//changed "isLoggedIn" to "isAuthenticated" in all above files
-
-
 controller/auth :edited 2 routes
 routes/auth :edited 2 routes
 views/includes/navigation : :edited
-views/auth/sognup : added
+views/auth/signup : added
+
+15.250
+views/auth/signup : changing '/login' to '/signup'
+model/user : changing the model
+app.js
+
+
 
