@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const Product = require('../model/product');
 const Order = require('../model/order');
 
+// if we are on home page and we are logged in and from there we want to logout. as we know logout will make post request. thus we have to put csrf token in "getIndex" function and in "logout" page
 exports.getIndex = (req, res, next) => {
   Product.find()
   .then(products => {
@@ -10,8 +11,12 @@ exports.getIndex = (req, res, next) => {
       pageTitle: "Shop",
       prods: products,
       path: "/",
-      isAuthenticated: req.session.isLoggedIn
+      isAuthenticated: req.session.isLoggedIn,
+      // "csrfToken()" function will be automatically attached to request when req passes over csrf middleware
+      csrfToken: req.csrfToken()
     });
+    // thus, once we pass csrf token. then we can do any non-get request from index page provided that html tag is taking csrf value.
+    // views/includes/navigation
   })
   .catch(err => console.log(err));
 };
