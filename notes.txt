@@ -15,5 +15,8 @@ views/auth/signup : changing '/login' to '/signup'
 model/user : changing the model
 app.js
 
+12.251
+controller/auth
 
+npm install --save bcryptjs
 

@@ -1,3 +1,6 @@
+// requring bycrypt
+const bcrypt = require('bcryptjs');
+
 const User = require('../model/user');
 
 exports.getLogin = (req, res, next) => {
@@ -33,28 +36,31 @@ exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-
-  // to create teh user, we will be checking if emial is dupliacte of not.
-  // to check this, we ca do it in 2 ways:-
-  // 1st: when using mongodb, we can create an index in the mongo databaseon the 'email' field and give that index a unique property. this can be done if you know, how mongodb works.
-  // 2nd: try to find the user with that email.
   User.findOne({email: email})
   .then(userData => {
     if(userData) {
-      // thus, email already exists
       return res.redirect('/signup')
     }
-    // if email doesnt exisits, store the user in database
+    // we are having huge security flow, ie storing the password in plain text
+    // thus, to hash it. we are using bcrypt package.
+    // using bcrypt
+    // brcypt has many method. hash() takes 2 argument, 1st: string to be hashed 2nd: number of times or string with which it has to be hashed
+    // bcrypt.hash(password, 6)
+    // '12' times is considered as good security. more the hashing, more time it will take. 
+    // it will give out hashed password which cant be decrypted back.
+    // its happens asynchronusly thus, it returns the promise. and once hashing is done, in promise we can store out user data. 
+    
+    return bcrypt.hash(password,6)
+  })
+  .then(hashedPassword => {
     const user = new User({
       email: email,
-      password: password,
+      password: hashedPassword,
       cart: {items: []}
     })
-    // object is created, now saving
     return user.save();
   })
   .then(() => {
-    // once user is successfully saved
     res.redirect('/login');
   })
   .catch(err => console.log(err));
