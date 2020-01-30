@@ -1,4 +1,3 @@
-// requring bycrypt
 const bcrypt = require('bcryptjs');
 
 const User = require('../model/user');
@@ -39,30 +38,27 @@ exports.postSignup = (req, res, next) => {
   User.findOne({email: email})
   .then(userData => {
     if(userData) {
+      // if we add signing up with exisiting email, we are getting an error. " password: MongooseError [ValidatorError]: Path `password` is required."
+
+      // this is because, our condition is within 'if' block, hence after returning, it movoes to next "then" block where we are storing hashed password.
+      // so, instaed of putting then() bloack outside, we will put it within this block. so after return, it should go to catch block if there is any errors.
       return res.redirect('/signup')
     }
-    // we are having huge security flow, ie storing the password in plain text
-    // thus, to hash it. we are using bcrypt package.
-    // using bcrypt
-    // brcypt has many method. hash() takes 2 argument, 1st: string to be hashed 2nd: number of times or string with which it has to be hashed
-    // bcrypt.hash(password, 6)
-    // '12' times is considered as good security. more the hashing, more time it will take. 
-    // it will give out hashed password which cant be decrypted back.
-    // its happens asynchronusly thus, it returns the promise. and once hashing is done, in promise we can store out user data. 
-    
     return bcrypt.hash(password,6)
-  })
-  .then(hashedPassword => {
-    const user = new User({
-      email: email,
-      password: hashedPassword,
-      cart: {items: []}
+    // nested then blocks
+    .then(hashedPassword => {
+      const user = new User({
+        email: email,
+        password: hashedPassword,
+        cart: {items: []}
+      })
+      return user.save();
     })
-    return user.save();
+    .then(() => {
+      res.redirect('/login');
+    })
   })
-  .then(() => {
-    res.redirect('/login');
-  })
+  
   .catch(err => console.log(err));
 };
 
