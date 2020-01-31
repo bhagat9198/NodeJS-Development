@@ -13,4 +13,5 @@ routes.get('/add-product', adminController.getAddProduct);
 routes.post('/add-product', adminController.postAddProduct);
 
 routes.get('/products',adminController.getProducts)
+
 module.exports = routes;
