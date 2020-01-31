@@ -1,33 +1,10 @@
-15.253
-controller/auth
-
-15.254
-controller/admin
-
 15.255
 controller/admin
 middleware/is-auth
 routes/admin
 routes/shop
 
-15.257
-app.js
-controller/shop
-views/include/navigation
-
-$ npm install csurf --save
-its a package allows nodejs to generate csrf tokens. basically a token is a string value which we embed into our forms, so into our pages for every request that does something on the backend that changes the user state.
-so anything like ordering something, anything taht does something sensitive which we want to protect.
-so we can include our tokens into teh views and on server, this package will check if the incoming request does have that valid token. 
-
-how does it protect?
-well a fake site can send request to our backend and may use our session. but the request will be missing the token and they cant guess the token because its random hashed value  and only one value is valid.
-
-token cant be steal also because a new token is generated for every page we render.
 
 
-//pustting csrf token in logout as it makes POST request
-//value "csrfToken" passed by index page
-// its nessary to give the name to the field. and name should be "_csrf" as csrf middleware is configured to this name only. if we give, some other name, it will not work.
-<input type="hidden" name="_csrf" value="<%= csrfToken %>">
+
 

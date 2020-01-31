@@ -6,10 +6,6 @@ const mongoose = require('mongoose');
 const session = require('express-session')
 const MongoDbStore = require('connect-mongodb-session')(session);
 
-// using csurf token
-// first we have to require it
-const csrf = require('csurf');
-
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
@@ -26,14 +22,6 @@ const store = new MongoDbStore({
   collection: 'sessions',
 });
 
-// inilising csrf: executing it like a funtion
-// we can configure it, by sending object in argument
-// eg: storing the secret taht is used for assigning the token, so for hashing them, but we will leave it to default. reffer to docs for more info
-// const csrfProtection = csrf({key: value});
-
-// thus, now its just another middleware
-const csrfProtection = csrf();
-
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -46,15 +34,6 @@ app.use(session({
   store: store,
   })
 );
-
-// using csrf middleware
-// it should be used once the session has been created, as it will use that session.
-app.use(csrfProtection);
-// thus csrf protection is enabled but now we have to modify our views to use it
-
-// now with every non get request, csrf tocken will be checked. if csrf token is not found, we will get an error "ForbiddenError: invalid csrf token".
-// hence, it is nessary to put csrf token for every non get request.
-// controller/shop
 
 app.use((req, res, next) => {
   if(!req.session.user) {
@@ -75,6 +54,25 @@ app.use(errorController.get404);
 
 
 mongoose.connect(MONGODB_URI,{ useUnifiedTopology: true ,useNewUrlParser: true })
+// as we are creating our own user, no need of dummy user now.
+// .then(result => {
+//   console.log('CONNECTED');
+//   return User.findOne()
+// })
+// .then(user => {
+  // if(!user) {
+  //   const username = 'test';
+  //   const email = 'test@test.com';
+  //   const user = new User({
+  //     username: username,
+  //     email: email,
+  //     cart: {
+  //       items: []
+  //     }
+  //   });
+  //   return user.save()
+  // }
+// })
 .then(user => {
   console.log('CONNECTED');
   app.listen(3000);
