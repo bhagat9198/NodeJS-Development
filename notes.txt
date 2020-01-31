@@ -3,7 +3,7 @@ views/auth/signup
 public/css/main : at last .user-message    .user-message--error
 
 15.262
-views/auth/signup
+controller/auth
 
 
 
