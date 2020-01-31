@@ -3,31 +3,28 @@ const bcrypt = require('bcryptjs');
 const User = require('../model/user');
 
 exports.getLogin = (req, res, next) => {
+  let message = req.flash('error');
+  if(message.length > 0) {
+    message = message[0];
+    console.log(message);
+  } else {
+    message = null;
+  }
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
-    
+    errorMessage: message
   });
 };
 
-// even if we load the signup page, we can see the error red bar at the top.
-// thus, it means that 'errorMessage' is not set to undefined even when no error message is passed by flash.
 exports.getSignup = (req, res, next) => {
-  // console.log(req.flash('error'));  
-  // []
-  // empty error is passed when no error is passed by flash. hence we can see the red bar at top everytime we load the page.
-  // ['Invalid email or password']
-  // this will occure when flash() will pop out error.
-  // solution:
   let message = req.flash('error');
-  console.log(message);
+  // console.log(message);
   
   if(message.length > 0) {
     message = message[0];
-    // collecting the error at very first index
     console.log(message);
   } else {
-    // if no error is there, then making the message null. this is done so that the condition which is there in 'views' will get false and reb bar will not be shown if no error are there.
     message = null;
   }
   res.render('auth/signup', {
@@ -43,6 +40,7 @@ exports.postLogin = (req, res, next) => {
 
   User.findOne({email: email})
   .then(user => {
+    req.flash('error','Email or Password is incorrect!!');
     if(!user) {
       return res.redirect('/login');
     }
@@ -56,6 +54,7 @@ exports.postLogin = (req, res, next) => {
           res.redirect('/');
         });
       } else {
+        req.flash('error','Email or Password is incorrect!!');
         return res.redirect('/login');
       }
     })
@@ -71,7 +70,7 @@ exports.postSignup = (req, res, next) => {
   User.findOne({email: email})
   .then(userData => {
     if(userData) {
-      req.flash('error','Invalid email or password');
+      req.flash('error','Email all ready exists. Please take another one');
       return res.redirect('/signup')
     }
     return bcrypt.hash(password,6)
