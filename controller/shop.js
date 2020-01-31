@@ -11,9 +11,9 @@ exports.getIndex = (req, res, next) => {
       pageTitle: "Shop",
       prods: products,
       path: "/",
-      isAuthenticated: req.session.isLoggedIn,
+      // isAuthenticated: req.session.isLoggedIn,
       // "csrfToken()" function will be automatically attached to request when req passes over csrf middleware
-      csrfToken: req.csrfToken()
+      // csrfToken: req.csrfToken()
     });
     // thus, once we pass csrf token. then we can do any non-get request from index page provided that html tag is taking csrf value.
     // views/includes/navigation
@@ -29,7 +29,7 @@ exports.getProduct = (req, res, next) => {
       pageTitle: "Shop",
       prods: products,
       path: "/products",
-      isAuthenticated: req.session.isLoggedIn
+      // isAuthenticated: req.session.isLoggedIn
     });
   })
   .catch(err => console.log(err));
@@ -45,7 +45,7 @@ exports.getDetails = (req, res, next) => {
         pageTitle: product.title,
         product: product,
         path: '/products',
-        isAuthenticated: req.session.isLoggedIn
+        // isAuthenticated: req.session.isLoggedIn
       }
     );
   })
@@ -64,7 +64,7 @@ exports.getCart = (req, res, next) => {
       pageTitle: 'Cart',
       path: '/cart',
       products: products,
-      isAuthenticated: req.session.isLoggedIn
+      // isAuthenticated: req.session.isLoggedIn
     });
   })
   .catch(err => {
@@ -101,7 +101,7 @@ exports.getOrders = (req, res, next) => {
       pageTitle: 'Orders',
       path: '/orders',
       orders: orders,
-      isAuthenticated: req.session.isLoggedIn
+      // isAuthenticated: req.session.isLoggedIn
     });
   })
   .catch(err => console.log(err));

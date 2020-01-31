@@ -1,3 +1,4 @@
+
 const path = require('path');
 
 const express = require('express');
@@ -5,9 +6,6 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const session = require('express-session')
 const MongoDbStore = require('connect-mongodb-session')(session);
-
-// using csurf token
-// first we have to require it
 const csrf = require('csurf');
 
 const adminRoutes = require('./routes/admin');
@@ -26,12 +24,6 @@ const store = new MongoDbStore({
   collection: 'sessions',
 });
 
-// inilising csrf: executing it like a funtion
-// we can configure it, by sending object in argument
-// eg: storing the secret taht is used for assigning the token, so for hashing them, but we will leave it to default. reffer to docs for more info
-// const csrfProtection = csrf({key: value});
-
-// thus, now its just another middleware
 const csrfProtection = csrf();
 
 app.set('view engine', 'ejs');
@@ -47,14 +39,18 @@ app.use(session({
   })
 );
 
-// using csrf middleware
-// it should be used once the session has been created, as it will use that session.
 app.use(csrfProtection);
-// thus csrf protection is enabled but now we have to modify our views to use it
 
-// now with every non get request, csrf tocken will be checked. if csrf token is not found, we will get an error "ForbiddenError: invalid csrf token".
-// hence, it is nessary to put csrf token for every non get request.
-// controller/shop
+// we have added csrf token on index page, but now we have to add it on every page we render. which means that passing agruments on every page which is quite difficult.
+// same goes to "isAuthenticated"
+// passing one more middleware but before our routes middleware so that every request pass through it.
+app.use((req, res, next) => {
+  // using special feature provided by express, we can acccess specail field on 'res' ie 'locals'. this alllows us to set local variables that are passed to views. locals simply beacuse they will only exists for the views which are rendered
+  res.locals.isAuthenticated = req.session.isLoggedIn;
+  res.locals.csrfToken = req.csrfToken();  
+  // calling next middleware
+  next();
+});
 
 app.use((req, res, next) => {
   if(!req.session.user) {
@@ -80,3 +76,4 @@ mongoose.connect(MONGODB_URI,{ useUnifiedTopology: true ,useNewUrlParser: true }
   app.listen(3000);
 })
 .catch(err => console.log(err));
+
