@@ -1,11 +1,12 @@
-15.261
-views/auth/signup
-public/css/main : at last .user-message    .user-message--error
-
-15.262
-controller/auth
-
 15.263
 controller/auth
 views/auth/login
 
+16.267
+
+its important to understand that node and express, these are languages or framework runtimes taht we use for writing our server side logic but with nodeJS we cant cant very complex create mail server(we can but it takes lots of resources).
+handling mails is totally different from handling incomming request and responses. this totally different technologies, something totally diffreent happen behind the sceans.
+thus, its very unlikely that we carete our own mail server because its very complex task.
+craeting the mail server taht is capable of handling thousands of email at the same time and sending them, so on. provinding security to it and all that stuff is very complex.
+
+hece, we usr 3rd party mail servers for that 
