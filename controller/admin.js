@@ -3,16 +3,11 @@ const mongoose = require('mongoose');
 const Product = require("../model/product");
 
 exports.getAddProduct = (req, res, next) => {
-  // this is working fine, but we have to put this condition on every middleware which is quite difficult.
-  // thus, we have asy way to do it ie creating one middleware and importing it whereever nessary.  
-  // if(!req.session.isLoggedIn) {
-  //   return res.redirect('/login');
-  // }
-  
   res.render("admin/edit-product", {
     path: "/admin/add-product",
     pageTitle: "Add Products",
     editing: false,
+    isAuthenticated: req.session.isLoggedIn
   });
 };
 
@@ -51,6 +46,7 @@ exports.getEditProduct = (req, res, next) => {
       pageTitle: "Edit Products",
       editing: editMode,
       product: product,
+      isAuthenticated: req.session.isLoggedIn
     });
   })
   .catch(err => console.log(err));
@@ -97,6 +93,7 @@ exports.getProducts = (req, res, next) => {
         path: "/admin/products",
         pageTitle: "Admin Add Products",
         prods: products,
+        isAuthenticated: req.session.isLoggedIn
       });
     })
 };
