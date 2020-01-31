@@ -1,16 +1,9 @@
-15.259
-controller/shop
-model/order
-
-15.260
-app.js
-controller/auth
-views/auth/signup
-
-
 15.261
 views/auth/signup
 public/css/main : at last .user-message    .user-message--error
 
-out error message is coming, but it alwats reamin there. correct next session
+15.262
+views/auth/signup
+
+
 
