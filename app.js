@@ -1,4 +1,3 @@
-
 const path = require('path');
 
 const express = require('express');
@@ -41,14 +40,9 @@ app.use(session({
 
 app.use(csrfProtection);
 
-// we have added csrf token on index page, but now we have to add it on every page we render. which means that passing agruments on every page which is quite difficult.
-// same goes to "isAuthenticated"
-// passing one more middleware but before our routes middleware so that every request pass through it.
 app.use((req, res, next) => {
-  // using special feature provided by express, we can acccess specail field on 'res' ie 'locals'. this alllows us to set local variables that are passed to views. locals simply beacuse they will only exists for the views which are rendered
   res.locals.isAuthenticated = req.session.isLoggedIn;
   res.locals.csrfToken = req.csrfToken();  
-  // calling next middleware
   next();
 });
 
