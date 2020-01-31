@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 const session = require('express-session')
 const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
+// requring flash in order to use it
+const flash = require('connect-flash');
 
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
@@ -39,6 +41,10 @@ app.use(session({
 );
 
 app.use(csrfProtection);
+
+// inilising flash as a function. it will be inilised once the session has been inilised as it will be using the session.
+app.use(flash());
+// thus, once this middleware is inilised, we can use it anywhere on the request object
 
 app.use((req, res, next) => {
   res.locals.isAuthenticated = req.session.isLoggedIn;

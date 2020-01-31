@@ -6,6 +6,7 @@ exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
+    
   });
 };
 
@@ -13,6 +14,8 @@ exports.getSignup = (req, res, next) => {
   res.render('auth/signup', {
     path: '/signup',
     pageTitle: 'Signup',
+    // pulling out the error which we want to display by simply providing messageKey 
+    errorMessage: req.flash('error')
   });
 };
 
@@ -43,6 +46,7 @@ exports.postLogin = (req, res, next) => {
   .catch(err => console.log(err));
 };
 
+//displaying error message whe we are dont find user with registered email and password 
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
@@ -50,6 +54,11 @@ exports.postSignup = (req, res, next) => {
   User.findOne({email: email})
   .then(userData => {
     if(userData) {
+      // if we dont find the user with the mail, we want to diplay the message once it is redirected.
+
+      // takes two arguments, 'messageKey','Messahevalue'
+      req.flash('error','Invalid email or password');
+      // thus, now this message is in session and it will be there utill we use it.
       return res.redirect('/signup')
     }
     return bcrypt.hash(password,6)

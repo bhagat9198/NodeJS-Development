@@ -106,10 +106,7 @@ exports.postOrder = (req, res, next) => {
     console.log(products);
     const order = new Order({
       user: {
-        // username: req.user.username,
-        // we are storing a name, but now our logic has been changed. we are storing the email instaed of name.
         email: req.user.email,
-        // changing our user model also, converting name to email field.
         userId: req.user
       },
       products: products

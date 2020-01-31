@@ -15,3 +15,23 @@ views/shop/addToCart
 controller/shop
 model/order
 
+12.260
+app.js
+controller/auth
+views/auth/signup
+
+now working on user expirence. for eg when user signup or login and he entered wrong creditionals(wrong email or wrong password). at that time eroor message should be displayed when its redirected.
+
+but till now its not happeneing. PROBLEM in doing that?
+when the res is redirected, new req will come in event loop, hence we cant store the data in request object. 
+and we cant give arguments while rendering the page as we dont know weather that page has been redirected because of error or it was simply get request.
+
+SOLUTION!!
+thus to solve this problem, we store some databefore we redirect which we use it in brand new request taht is triggered by redirect. HOW? 
+as we know to store data multiple request, we need session. so we can use session for that but we dont want to store the error message in session permanately.
+
+we want to add something to error message, flash it and afterwards we pull out that data from session as it is not required. hence for other request, that error message will be not part of request
+to do this, 
+npm install --save connect-flash
+
+

@@ -10,7 +10,6 @@ const OrderSchema = new Schema({
     },
   ],
   user: {
-    // username: {
       email: {
       type: String,
       required: true
