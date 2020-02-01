@@ -1,4 +1,3 @@
 9.121
 views/admin/products
-routes/admin
 controller/admin
