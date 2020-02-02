@@ -1,20 +1,9 @@
-15.263
-controller/auth
-views/auth/login
-
-16.267
-
-
 16.268
 controller/auth
-sendgrid.env
 
-echo "export SENDGRID_API_KEY='YOUR_API_KEY'" > sendgrid.env
-echo "sendgrid.env" >> .gitignore
-npm install --save @sendgrid/mail
+16.269
+controller/auth
 
-we will use sendgrid as its free for limited emails. 
-alternatives: mailChimp, AWS, SCS,  
-// npm install --save nodemailer nodemailer-sendgrid-transport
-from above npm packages were vulnerable
+npm install --save nodemailer nodemailer-sendgrid-transport
+
 

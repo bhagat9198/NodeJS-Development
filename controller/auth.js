@@ -1,6 +1,21 @@
 const bcrypt = require('bcryptjs');
 
+// requring 3party packages
+const nodemailer = require('nodemailer');
+const sendGridTransport = require('nodemailer-sendgrid-transport');
+
 const User = require('../model/user');
+
+// in this setup we tell nodemailer how our emails will be delivered. as we know, nodejs will not do own its own, we need 3party.
+// calling "sendGridTransport()" as function as after executing it will give us configration that nodemailer can use to use sendgrid.
+const transporter = nodemailer.createTransport(sendGridTransport({
+  auth: {
+    // this api key we get it from from our account
+    api_key: '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'
+    // instead of api key, we can set up out username and password of our sendgrid account.
+  }
+}));
+// once its configure, we can set our mail
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
@@ -20,25 +35,13 @@ exports.getLogin = (req, res, next) => {
 exports.getSignup = (req, res, next) => {
   let message = req.flash('error');
   // console.log(message);
-  
   if(message.length > 0) {
     message = message[0];
     console.log(message);
   } else {
     message = null;
   }
-  // using Twilio SendGrid's v3 Node.js Library
-  // https://github.com/sendgrid/sendgrid-nodejs
-  // const sgMail = require('@sendgrid/mail');
-  // sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-  // const msg = {
-  //   to: 'test@example.com',
-  //   from: 'test@example.com',
-  //   subject: 'Sending with Twilio SendGrid is Fun',
-  //   text: 'and easy to do anywhere, even with Node.js',
-  //   html: '<strong>and easy to do anywhere, even with Node.js</strong>',
-  // };
-  // sgMail.send(msg).then(()=> {}).catch(err => console.log(err));
+  
   res.render('auth/signup', {
     path: '/signup',
     pageTitle: 'Signup',
@@ -96,6 +99,17 @@ exports.postSignup = (req, res, next) => {
     })
     .then(() => {
       res.redirect('/login');
+      // once signup is successful, we can set our mail
+      // it takes JS object where we configure our mail
+      return transporter.sendMail({
+        to: email,
+        from: 'nodeApp@nodeApp.com',
+        subject: 'First signup mail',
+        html: '<h1>DONE</h1>'
+      })
+      //  it will give us then and catch block, only using catch block to catch the errors 
+      .catch(err => console.log(err));
+
     })
   })
   
