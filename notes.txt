@@ -6,4 +6,7 @@ controller/auth
 
 npm install --save nodemailer nodemailer-sendgrid-transport
 
+16.269.1
+controller/auth
 
+npm install --save mailgun-js

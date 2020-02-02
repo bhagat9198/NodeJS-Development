@@ -14,7 +14,6 @@
     "nodemon": "^2.0.2"
   },
   "dependencies": {
-    "@sendgrid/mail": "^6.5.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
@@ -28,8 +27,6 @@
     "mongodb": "^3.5.2",
     "mongoose": "^5.8.9",
     "mysql2": "^2.1.0",
-    "nodemailer": "^6.4.2",
-    "nodemailer-sendgrid-transport": "^0.2.0",
     "pug": "^2.0.4",
     "sequelize": "^5.21.3"
   }
