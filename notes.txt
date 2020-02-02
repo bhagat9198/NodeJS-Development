@@ -4,9 +4,9 @@ controller/auth
 16.269
 controller/auth
 
-npm install --save nodemailer nodemailer-sendgrid-transport
-
 16.269.1
 controller/auth
 
-npm install --save mailgun-js
+//Sending mail should be put in non-blocking way. As sending mail is totally different thing and sending mail can take time. 
+//Thus, if we block our execution of other code till the time email is not send, then our app can lag which we don’t want .
+//For large apps where there is large number of mails has to be send, we can write server side scripts which will run without blocking our server req, res cycle.
