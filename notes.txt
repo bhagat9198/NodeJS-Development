@@ -10,3 +10,6 @@ controller/auth
 //Sending mail should be put in non-blocking way. As sending mail is totally different thing and sending mail can take time. 
 //Thus, if we block our execution of other code till the time email is not send, then our app can lag which we don’t want .
 //For large apps where there is large number of mails has to be send, we can write server side scripts which will run without blocking our server req, res cycle.
+
+// we have put the api keys in 'private folder' and importing to 'auth' controller when we need.
+//this is done so that we dont post the api to github or give to someone else while sharing the folder.

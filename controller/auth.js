@@ -1,14 +1,8 @@
 const bcrypt = require('bcryptjs');
-// requring
-const mailgun = require("mailgun-js");
 
 const User = require('../model/user');
-
-// hint: only write the domain name, no need to write whole url which is provided by mailgun
-// "https://api.mailgun.net/v3/sandboxa1ff2659fff04877819942182d01de45.mailgun.org" => "sandboxa1ff2659fff04877819942182d01de45.mailgun.org"
-const DOMAIN = 'sandboxa1ff2659fff04877819942182d01de45.mailgun.org';
-// api key provided by mailgun
-const mg = mailgun({apiKey: '3e1a6927f22da77a66fa85afe053ca3e-074fa10c-95f80510', domain: DOMAIN});
+// importing
+const api = require('../private/api');
 
 exports.getLogin = (req, res, next) => {
   let message = req.flash('error');
@@ -100,11 +94,13 @@ exports.postSignup = (req, res, next) => {
         subject: 'Mailgun Email',
         text: 'Successful Signup!!'
       };
+      
+      //importing it from 'private/api' folder
       // sendimg the message
-      mg.messages().send(data, function (error, body) {
+      api.mg.messages().send(data, function (error, body) {
         console.log('Email Body');
         console.log(body);
-      });
+      });  
     })
   })
   .catch(err => console.log(err));
