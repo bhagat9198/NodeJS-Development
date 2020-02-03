@@ -107,7 +107,9 @@ exports.postLogout = (req, res, next) => {
   });
 };
 
+// adding 
 exports.getReset = (req, res, next) => {
+  //  if in case we want to show some errors
   let message = req.flash('error');
   if(message.length > 0) {
     message = message[0];

@@ -14,6 +14,7 @@ router.get('/signup', authController.getSignup);
 
 router.post('/signup', authController.postSignup);
 
+// adding the route
 router.get('/reset', authController.getReset);
 
 module.exports = router;

@@ -1,6 +1,6 @@
 17.273
-views/auth/reset
-views/auth/login
+views/auth/reset : creating new  page
+views/auth/login : adding password reset link
 controller/auth
 routes/auth
 
