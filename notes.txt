@@ -1,0 +1,17 @@
+17.273
+views/auth/reset
+views/auth/login
+controller/auth
+routes/auth
+
+now our idea is that if user forget its password then he will enter his email and then user will receive password reset link.
+
+
+
+
+
+
+
+
+
+
