@@ -1,7 +1,6 @@
 const bcrypt = require('bcryptjs');
 
 const User = require('../model/user');
-// importing
 const api = require('../private/api');
 
 exports.getLogin = (req, res, next) => {
@@ -21,8 +20,6 @@ exports.getLogin = (req, res, next) => {
 
 exports.getSignup = (req, res, next) => {
   let message = req.flash('error');
-  // console.log(message);
-  
   if(message.length > 0) {
     message = message[0];
     console.log(message);
@@ -87,16 +84,13 @@ exports.postSignup = (req, res, next) => {
     })
     .then(() => {
       res.redirect('/login');
-      // setting up mail content
       const data = {
         from: 'node@node.com',
         to: email,
         subject: 'Mailgun Email',
         text: 'Successful Signup!!'
       };
-      
-      //importing it from 'private/api' folder
-      // sendimg the message
+
       api.mg.messages().send(data, function (error, body) {
         console.log('Email Body');
         console.log(body);
