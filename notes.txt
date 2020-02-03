@@ -9,22 +9,9 @@ controller/auth
 model/user
 
 
-
-npm install --save crypto
-
-as the user will write hi email, then user should recieve the link that allows user to reset the password.
-
-for that first we need to create a unique token that also has some expiry date which we store in db so that link on which user click includes that token and we can verify that user get the link from us. hence improving the security, else we dont have any security mechanism.
-
-so we need that token to pust in email we are sending so that users can reset the password
-
-
-
-
-
-
-
-
+17.275
+routes/auth
+controller.auth
 
 
 
