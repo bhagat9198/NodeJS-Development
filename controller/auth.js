@@ -168,3 +168,38 @@ exports.postReset = (req, res, next) => {
     .catch(err => console.log(err));
   })
 }
+
+// setting 
+module.exports.getNewPassword = (req, res, next) => {
+
+  // getting token from the url
+  const token = req.params.token;
+  // before rendering the get page, we have to check if the token which is receive is valid or not.
+  // if token is valid, we have to check if it not expire. if both the conditions are met, page should be rendered. hence all logic within this function
+
+  // as no user is logged in and nor we dont which user wants to reset the password. hence we will check all th users by the 'resetToken' field. 'resetToken' to equal to 'token' which is in params
+  // "$gt" means 'greater than'. it means that 'resetTokenExpire' date should be greater than current date ie "Date.now()"
+  User.findOne({resetToken: token, resetTokenExpire: {$gt: Date.now()}})
+  // if both the conditions are true
+  .then(user => {
+    // now we will get that one user info
+
+    // displaying flash if we get
+    let message = req.flash('error');
+    if(message.length > 0) {
+      message = message[0];
+      console.log(message);
+    } else {
+      message = null;
+    }
+    
+    res.render('auth/new-password', {
+      path: '/new-password',
+      pageTitle: 'New Password',
+      errorMessage: message,
+      // passing userId in agruments as it will help in post request
+      userId: user._id.toString()
+    });
+  })
+  .catch(err => console.log(err));
+}

@@ -13,5 +13,12 @@ model/user
 routes/auth
 controller.auth
 
+17.276
+views/auth/new-password
+controller/auth
+routes/auth
+
+
+
 
 
