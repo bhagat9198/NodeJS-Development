@@ -85,14 +85,17 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.find()
-    .then(products => {
-      res.render("admin/products", {
-        path: "/admin/products",
-        pageTitle: "Admin Add Products",
-        prods: products,
-      });
-    })
+  // we only want to show the products which were created by the logged in user only. and no other products
+  // hence adding the filter to "find"
+  // we are getting "user" object, as we adding in middleware of 'app.js'
+  Product.find({userId: req.user._id})
+  .then(products => {
+    res.render("admin/products", {
+      path: "/admin/products",
+      pageTitle: "Admin Add Products",
+      prods: products,
+    });
+  })
 };
 
 

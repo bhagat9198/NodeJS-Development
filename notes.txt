@@ -13,4 +13,12 @@ Eg: now let me login with this user here, test@test.com. Here I might be able to
 Authorization means that I restrict the permissions of a logged in user, so every user might be able to add anything to the cart including products created by that user but you might not be able to delete and edit products which were not created by you.
 
 
-17.
+17.279
+controller/auth
+
+thus, we want that user who have added the product can only edit or delete the product and other users cant do anything other then seeing.
+
+how to implement this?
+we are stroing userId in the product whne it is getting created. thus, we have to check that currently logged in user is the user who have added that product before we allow any editd or deleting that product.
+
+
