@@ -60,7 +60,6 @@ exports.postEditProduct = (req, res, next) => {
 
   Product.findById(mongoose.Types.ObjectId(productID))
   .then(product => {
-    // before saving, checking if user._id is same productId
     if(product.userId.toString() !== req.user._id.toString()) {
       return res.redirect('/');
     }
@@ -69,7 +68,6 @@ exports.postEditProduct = (req, res, next) => {
     product.imageUrl = updatedImageUrl;
     product.description = upadatedDesciption;
     return product.save()
-    // chaning "then" block
     .then(() => {
       res.redirect('/admin/products');
     })
@@ -80,8 +78,6 @@ exports.postEditProduct = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next) => {
   const productID = req.body.productID;
 
-  // Product.findByIdAndDelete(productID)
-  // checking productId and userId before deleting. both the conditions should be true in order to delete product.
   Product.deleteOne({_id: productID, userId: req.user._id})
   .then(() => {
     res.redirect('/admin/products');
@@ -92,7 +88,6 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  // checking for user before rendering the page
   Product.find({userId: req.user._id})
   .then(products => {
     res.render("admin/products", {

@@ -4,7 +4,6 @@ controller/auth
 17.280
 controller/admin
 
-although the products are not seen of other user who added in admin/products. but still other user can access that product through url and then delete or edit it.
-
-thus, adding the protection in "post" routes so 
+17.281
+no-change
 
