@@ -60,14 +60,19 @@ exports.postEditProduct = (req, res, next) => {
 
   Product.findById(mongoose.Types.ObjectId(productID))
   .then(product => {
+    // before saving, checking if user._id is same productId
+    if(product.userId.toString() !== req.user._id.toString()) {
+      return res.redirect('/');
+    }
     product.title = updatedTitle;
     product.price = updatedPrice;
     product.imageUrl = updatedImageUrl;
     product.description = upadatedDesciption;
     return product.save()
-  })
-  .then(() => {
-    res.redirect('/admin/products');
+    // chaning "then" block
+    .then(() => {
+      res.redirect('/admin/products');
+    })
   })
   .catch(err => console.log(err));
 };
@@ -75,7 +80,9 @@ exports.postEditProduct = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next) => {
   const productID = req.body.productID;
 
-  Product.findByIdAndDelete(productID)
+  // Product.findByIdAndDelete(productID)
+  // checking productId and userId before deleting. both the conditions should be true in order to delete product.
+  Product.deleteOne({_id: productID, userId: req.user._id})
   .then(() => {
     res.redirect('/admin/products');
   })
@@ -85,9 +92,7 @@ exports.postDeleteProduct = (req, res, next) => {
 };
 
 exports.getProducts = (req, res, next) => {
-  // we only want to show the products which were created by the logged in user only. and no other products
-  // hence adding the filter to "find"
-  // we are getting "user" object, as we adding in middleware of 'app.js'
+  // checking for user before rendering the page
   Product.find({userId: req.user._id})
   .then(products => {
     res.render("admin/products", {

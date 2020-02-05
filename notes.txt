@@ -1,24 +1,10 @@
-17.277
-routes/auth
-controller/auth
-views/auth/new-password
-
-17.278
-
-
-let's now work on authorization
-with that I mean that not every authenticated user is allowed to do everything.
-Eg: now let me login with this user here, test@test.com. Here I might be able to add a product and I can delete products but right now, I can delete all products no matter if I created them or if someone else created them and the same is true for editing them.
-
-Authorization means that I restrict the permissions of a logged in user, so every user might be able to add anything to the cart including products created by that user but you might not be able to delete and edit products which were not created by you.
-
-
 17.279
 controller/auth
 
-thus, we want that user who have added the product can only edit or delete the product and other users cant do anything other then seeing.
+17.280
+controller/admin
 
-how to implement this?
-we are stroing userId in the product whne it is getting created. thus, we have to check that currently logged in user is the user who have added that product before we allow any editd or deleting that product.
+although the products are not seen of other user who added in admin/products. but still other user can access that product through url and then delete or edit it.
 
+thus, adding the protection in "post" routes so 
 
