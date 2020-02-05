@@ -169,22 +169,10 @@ exports.postReset = (req, res, next) => {
   })
 }
 
-// setting 
 module.exports.getNewPassword = (req, res, next) => {
-
-  // getting token from the url
   const token = req.params.token;
-  // before rendering the get page, we have to check if the token which is receive is valid or not.
-  // if token is valid, we have to check if it not expire. if both the conditions are met, page should be rendered. hence all logic within this function
-
-  // as no user is logged in and nor we dont which user wants to reset the password. hence we will check all th users by the 'resetToken' field. 'resetToken' to equal to 'token' which is in params
-  // "$gt" means 'greater than'. it means that 'resetTokenExpire' date should be greater than current date ie "Date.now()"
   User.findOne({resetToken: token, resetTokenExpire: {$gt: Date.now()}})
-  // if both the conditions are true
   .then(user => {
-    // now we will get that one user info
-
-    // displaying flash if we get
     let message = req.flash('error');
     if(message.length > 0) {
       message = message[0];
@@ -197,9 +185,52 @@ module.exports.getNewPassword = (req, res, next) => {
       path: '/new-password',
       pageTitle: 'New Password',
       errorMessage: message,
-      // passing userId in agruments as it will help in post request
-      userId: user._id.toString()
+      userId: user._id.toString(),
+      // needed for postNewPassword
+      passwordToken: token
     });
   })
   .catch(err => console.log(err));
 }
+
+
+module.exports.postNewPassword = (req, res, next) => {
+  const newPassword = req.body.password;
+  const userId = req.body.userId;
+  // we need token now also because otherwise people could start entering random tokens in url and still reach to password reset page and then reset users passwords and ids by changing id's in hidden field.
+  const passwordToken = req.body.passwordToken;
+
+  let resetUser;
+
+  User.findOne({
+    resetToken: passwordToken,
+    resetTokenExpire: {$gt : Date.now()},
+    _id: userId
+  })
+  .then(user => {
+    // once all the conditions are matched, we have to store the password.
+    // password should be stored in hashed format
+    resetUser = user;
+
+    return bcrypt.hash(newPassword, 12);
+  })
+  .then(hashedPassword => {
+    // once the password is encrypted, it should be stored.
+    // to store the password, we should have access to user model of that particular user but its scope is not in this "then" block. hence, using above model
+
+    // "resetUser" have particular info.
+    resetUser.password = hashedPassword;
+    // as password is updated, making the token and expire time null.
+    resetUser.resetToken = undefined;
+    resetUser.resetTokenExpire = undefined;
+    // saving the password.
+    return resetUser.save();
+  })
+  .then(result => {
+    // once password saved successfully.
+    res.redirect('/login');
+  })
+  .catch(err => console.log(err));
+}
+
+

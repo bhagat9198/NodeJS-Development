@@ -18,6 +18,9 @@ router.get('/reset', authController.getReset);
 
 router.post('/reset', authController.postReset);
 
-// setting up route, this route has been assigned while setting up the mail. ie "http://localhost:3000/reset/${token}"
 router.get('/reset/:token', authController.getNewPassword);
+
+//
+router.post('/new-password', authController.postNewPassword);
+
 module.exports = router;
