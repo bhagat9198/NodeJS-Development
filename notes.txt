@@ -1,16 +1,16 @@
-17.275
-routes/auth
-controller.auth
-
-17.276
-views/auth/new-password
-controller/auth
-routes/auth
-
 17.277
 routes/auth
 controller/auth
 views/auth/new-password
 
+17.278
 
 
+let's now work on authorization
+with that I mean that not every authenticated user is allowed to do everything.
+Eg: now let me login with this user here, test@test.com. Here I might be able to add a product and I can delete products but right now, I can delete all products no matter if I created them or if someone else created them and the same is true for editing them.
+
+Authorization means that I restrict the permissions of a logged in user, so every user might be able to add anything to the cart including products created by that user but you might not be able to delete and edit products which were not created by you.
+
+
+17.

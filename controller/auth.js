@@ -173,6 +173,7 @@ module.exports.getNewPassword = (req, res, next) => {
   const token = req.params.token;
   User.findOne({resetToken: token, resetTokenExpire: {$gt: Date.now()}})
   .then(user => {
+    // console.log(user);
     let message = req.flash('error');
     if(message.length > 0) {
       message = message[0];
@@ -180,13 +181,12 @@ module.exports.getNewPassword = (req, res, next) => {
     } else {
       message = null;
     }
-    
+    // console.log(user._id.toString());
     res.render('auth/new-password', {
       path: '/new-password',
       pageTitle: 'New Password',
       errorMessage: message,
       userId: user._id.toString(),
-      // needed for postNewPassword
       passwordToken: token
     });
   })
@@ -197,7 +197,6 @@ module.exports.getNewPassword = (req, res, next) => {
 module.exports.postNewPassword = (req, res, next) => {
   const newPassword = req.body.password;
   const userId = req.body.userId;
-  // we need token now also because otherwise people could start entering random tokens in url and still reach to password reset page and then reset users passwords and ids by changing id's in hidden field.
   const passwordToken = req.body.passwordToken;
 
   let resetUser;
@@ -208,26 +207,16 @@ module.exports.postNewPassword = (req, res, next) => {
     _id: userId
   })
   .then(user => {
-    // once all the conditions are matched, we have to store the password.
-    // password should be stored in hashed format
     resetUser = user;
-
     return bcrypt.hash(newPassword, 12);
   })
   .then(hashedPassword => {
-    // once the password is encrypted, it should be stored.
-    // to store the password, we should have access to user model of that particular user but its scope is not in this "then" block. hence, using above model
-
-    // "resetUser" have particular info.
     resetUser.password = hashedPassword;
-    // as password is updated, making the token and expire time null.
     resetUser.resetToken = undefined;
     resetUser.resetTokenExpire = undefined;
-    // saving the password.
     return resetUser.save();
   })
   .then(result => {
-    // once password saved successfully.
     res.redirect('/login');
   })
   .catch(err => console.log(err));
