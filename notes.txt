@@ -12,6 +12,6 @@ routes/auth
 18.289
 routes/auth
 
-"express-validator" is jusr a wrapper around "validator" which helps in returning next middleware. 
-thus, express-validator is huge package.
+18.290
+routes/auth
 

@@ -1,17 +1,11 @@
 const express = require('express');
-// requring the subpackage from the 'express-validator' as its a very big package
-// we will use "check" package, which is the package we use for all the validation logic.
-// const expValidator = require('express-validator/check')
-// "expValidator" will ab object . we need specific attribute of an object. thus using destructuring.
-// "check" is the function
-const { check } = require('express-validator/check')
-
+// "check": its checks the body, params, cookie, query parameters and so on. we can just add just 'body' or 'param', 'header' etc to check the certain set of features of incoming request
+const { check, body } = require('express-validator/check')
 
 const authController = require('../controller/auth');
 
 const router = express.Router();
 
-// we want to validate over "post" rotes as from post roures we are getting the data when user enters data in the form
 router.get('/login', authController.getLogin);
 
 router.post('/login', authController.postLogin);
@@ -20,24 +14,34 @@ router.post('/logout', authController.postLogout);
 
 router.get('/signup', authController.getSignup);
 
-// we can even create our custom validators also.
-// we want 
 router.post('/signup', 
-  check('email')
-  .isEmail()
-  .withMessage('Please enter a valid Email')
-  // creating custom validator. validator is created in a function
-  // "value" : its value which we are checking. in our case its 'email'. and also passing req object
-  .custom((value, {req}) => {
-    if(value === 'test@test.com') {
-      // throwing an error
-      throw new Error('This email address is forbidden');
-    } 
-    // if all the validations are passed, else it will stuck here 
-    return true;
-  }), authController.postSignup);
+  // just putting the array, so that we can get to know that within array is our validators.
+  [
+    check('email')
+    .isEmail()
+    .withMessage('Please enter a valid Email')
+    .custom((value, {req}) => {
+      if(value === 'test@test.com') {
+        throw new Error('This email address is forbidden');
+      } 
+      return true;
+    }),
+    // body('password')
+    // .isLength({min: 5})
+    // .withMessage('Password sould contain atlest 5 characters and should not have any speacial symbols')
+    // .isAlphanumeric()
+    // .withMessage('Password sould contain atlest 5 characters and should not have any speacial symbols')
 
-router.post('/signup', check('email').isEmail().withMessage('Invalid Email') , authController.postSignup);
+    // thus checking the name field only in "body" of request
+    body('password',
+    // as we are displaying same message for both the conditions. its waste of writing same message twice.
+    // thus, writing the message which should be displayed as 2nd argument. 
+    'Password sould contain atlest 5 characters and should not have any speacial symbols')
+    .isLength({min: 5})
+    .withMessage()
+    .isAlphanumeric()
+  ], authController.postSignup)
+  
 
 router.get('/reset', authController.getReset);
 
