@@ -73,31 +73,22 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
 
-  // we added our middleware for this function
-  // extrating the errors by calling "validationResult" functiopn on the request. and in request, errors have been stored by prior middleware 'routes/auth'
   const errors = validationResult(req);
-  // once errors are collected, checking if we have any errors or not. "isEmpty" will return 'true' or 'false'
-
-  // displaying errors
-  // gives us an object 
-  // console.log(errors);
-  // extracting 'errors' field from the object
-  // console.log(errors.errors);
-  // same as above, array method will give out array which is in object
   console.log(errors.array());
   
-  
-
   if(!errors.isEmpty()) {
-    // if errors are not empty, ie we have some errors
-    // 422 : code to show that validation failed
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
-      // errorMessage: message
-      // passing the error value to view
-      // errors will be inside an array
-      errorMessage: errors.array()
+      // errors: [
+      //   {
+      //     value: 'a',
+      //     msg: 'Invalid value',
+      //     param: 'email',
+      //     location: 'body'
+      //   }
+      // ]
+      errorMessage: errors.array()[0].msg
     });
   }
   User.findOne({email: email})

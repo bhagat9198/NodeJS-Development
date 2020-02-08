@@ -1,19 +1,13 @@
-18.285
-no-change
-
-why to validate?
-
-18.286
-no-change
-
-how to validate user input?
-
 18.287
 routes/auth
 controller/auth
 views/auth/signup 
 
-npm install --save express-validator
 
-adding "novalidate" field : thus no browser will no check the validation
-<form class="login-form" action="/signup" method="POST"> => <form class="login-form" action="/signup" method="POST" novalidate>
+18.288
+controller/auth
+routes/auth
+
+
+
+

@@ -20,12 +20,11 @@ router.post('/logout', authController.postLogout);
 
 router.get('/signup', authController.getSignup);
 
-// validating email.
-// adding a "check()" middleware which in return another middleware.
-//  "check()" or ""check([])"" we can pass field we want to check or array of fields we want to check.
-// "email" is the field name we have given in 'signup' form. thus, it will check the value which is comming from the email field name.
-// "check('email')" is object upon which which we will call a method. this method wiull return a middleware. thus on "check('email')" object, we can call any method to do all kinds of checks. "isEmail()" is the package which will check the value from 'email' name field.
-router.post('/signup', check('email').isEmail() , authController.postSignup);
+// "withMessage()" print out the message we want.  it always refferes to field just before it ie left hand side.
+// as we can add multiple checks and with each check, with each check we can display our own custom message
+router.post('/signup', check('email').isAlphanumeric().withMessage('Cant use special characters other then @ sign').isEmail().withMessage('Please enter a valid Email'), authController.postSignup);
+
+router.post('/signup', check('email').isEmail().withMessage('Invalid Email') , authController.postSignup);
 
 router.get('/reset', authController.getReset);
 
@@ -33,7 +32,6 @@ router.post('/reset', authController.postReset);
 
 router.get('/reset/:token', authController.getNewPassword);
 
-//
 router.post('/new-password', authController.postNewPassword);
 
 module.exports = router;
