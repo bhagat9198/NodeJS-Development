@@ -20,9 +20,22 @@ router.post('/logout', authController.postLogout);
 
 router.get('/signup', authController.getSignup);
 
-// "withMessage()" print out the message we want.  it always refferes to field just before it ie left hand side.
-// as we can add multiple checks and with each check, with each check we can display our own custom message
-router.post('/signup', check('email').isAlphanumeric().withMessage('Cant use special characters other then @ sign').isEmail().withMessage('Please enter a valid Email'), authController.postSignup);
+// we can even create our custom validators also.
+// we want 
+router.post('/signup', 
+  check('email')
+  .isEmail()
+  .withMessage('Please enter a valid Email')
+  // creating custom validator. validator is created in a function
+  // "value" : its value which we are checking. in our case its 'email'. and also passing req object
+  .custom((value, {req}) => {
+    if(value === 'test@test.com') {
+      // throwing an error
+      throw new Error('This email address is forbidden');
+    } 
+    // if all the validations are passed, else it will stuck here 
+    return true;
+  }), authController.postSignup);
 
 router.post('/signup', check('email').isEmail().withMessage('Invalid Email') , authController.postSignup);
 
