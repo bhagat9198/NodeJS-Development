@@ -26,20 +26,20 @@ router.post('/signup',
       } 
       return true;
     }),
-    // body('password')
-    // .isLength({min: 5})
-    // .withMessage('Password sould contain atlest 5 characters and should not have any speacial symbols')
-    // .isAlphanumeric()
-    // .withMessage('Password sould contain atlest 5 characters and should not have any speacial symbols')
-
-    // thus checking the name field only in "body" of request
     body('password',
-    // as we are displaying same message for both the conditions. its waste of writing same message twice.
-    // thus, writing the message which should be displayed as 2nd argument. 
     'Password sould contain atlest 5 characters and should not have any speacial symbols')
     .isLength({min: 5})
     .withMessage()
-    .isAlphanumeric()
+    .isAlphanumeric(),
+
+    body('confirmPassword')
+    .custom((value, {req}) => {
+      if(value !== req.body.password) {
+        throw new Error('Password didnt match')
+      }
+      // if the all the condtions are true, passing the true value no next middleware
+      return true;
+    })
   ], authController.postSignup)
   
 
