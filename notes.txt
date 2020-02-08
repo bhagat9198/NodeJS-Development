@@ -1,25 +1,19 @@
-17.281
-no-change
-
 18.285
 no-change
 
 why to validate?
-Well if we have a user interacting with our website, then we typically have a lot of forms on any web application we build and all the data which is passed from form is getting stored in our backend.
-Now on our backend so our nodejs code, we then typically interact with a database or maybe we write the data into a normal file but in the end we take that data which we receive and we want to store it.
-
-Now this is exactly the part which can be dangerous or problematic though. Right now in the app we got no kind of data validation, so if a user in our current application would try to login with something that is not a valid email address, we would allow that,we're not preventing the user from entering something incorrect.
-
-thus, we will put validation in code and this validation can then either succeed and allow the data to be written to the database or to a file or allow it to be handled by the rest of our node code or we reject the input and thenbasically return some information to the user prompting the user to correct the error. 
-
 
 18.286
 no-change
 
 how to validate user input?
 
-we can validate on the client side with the help of javascript, so before any request is sent.It can definitely improve the user experience and therefore you might want to consider using it but it is optional because since we use client side javascript, so javascript code that runs in the browser,the user can see that code, the user could change that code and the user can of course disable javascript.So this is not a protection that secures you against incorrect data being sent to your server, this is not a secure solution.
+18.287
+routes/auth
+controller/auth
+views/auth/signup 
 
-next option is to validate on the server side.We have to do that because this code can't be seen or changed by the user, the user can't disable us using that code because it happens on the server, not in the browser and this is the crucial part where we have to add validation, where we really have to filter out invalidvalues,so this is a must have, it's absolutely required
+npm install --save express-validator
 
-some database engines and for most database engines actually, like for example mongodb,there is also a built in validation which you can turn on It's also optional because this can be a last resort but if you have good server side validation in place as you should have, then this might not be required because there is not really a scenario where invalid data could reach your database because you filter it out in that server side validation already ready.
+adding "novalidate" field : thus no browser will no check the validation
+<form class="login-form" action="/signup" method="POST"> => <form class="login-form" action="/signup" method="POST" novalidate>
