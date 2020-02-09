@@ -56,8 +56,6 @@ exports.postLogin = (req, res, next) => {
   User.findOne({email: email})
   .then(user => {
     if(!user) {
-      // req.flash('error','Email or Password is incorrect!!');
-      // ----
       return res.status(422).render('auth/login', {
         path: '/login',
         pageTitle: 'Login',

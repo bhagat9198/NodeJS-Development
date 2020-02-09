@@ -6,3 +6,14 @@ public/css/forms - line 25
 18.295
 controller/auth
 views/auth/login
+
+
+18.296
+routes/auth
+
+
+sanitizing the data: cleaning our data ie removing unwanted data.
+
+thus, we have to make sure the data we are getting is not only validated but also free from noise or we can say stored in uniform way.
+
+cross side scripting attacks sanition is security feature

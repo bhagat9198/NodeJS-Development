@@ -9,7 +9,17 @@ const router = express.Router();
 
 router.get('/login', authController.getLogin);
 
-router.post('/login', authController.postLogin);
+router.post('/login', 
+  // checking sanitization
+  [
+    check('email')
+    .isEmail()
+    .withMessage('Please enter a valid Email')
+    .normalizeEmail(),
+    check('password')
+    .trim()
+  ],
+  authController.postLogin);
 
 router.post('/logout', authController.postLogout);
 
@@ -20,6 +30,10 @@ router.post('/signup',
     check('email')
     .isEmail()
     .withMessage('Please enter a valid Email')
+    // santization
+    // doing nornailzation-  making sure email is stored in lowercase and no excess whitespace at the end
+    // its a build in sanitizer
+    .normalizeEmail()
     .custom((value, {req}) => {
       return User.findOne({email: value})
       .then(userData => {
@@ -32,9 +46,11 @@ router.post('/signup',
     'Password sould contain atlest 5 characters and should not have any speacial symbols')
     .isLength({min: 5})
     .withMessage()
-    .isAlphanumeric(),
-
+    .isAlphanumeric()
+    // removing any whitesapce is there at the end
+    .trim(),
     body('confirmPassword')
+    .trim()
     .custom((value, {req}) => {
       if(value !== req.body.password) {
         throw new Error('Password didnt match')
