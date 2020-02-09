@@ -21,7 +21,8 @@ const server = http.createServer((req, res) => {
         console.log(chunk);
         body.push(chunk);
     });
-    req.on('end', () => {
+    // we have to return else code after "if" will be executed. causing error.
+    return req.on('end', () => {
         const parsedBody = Buffer.concat(body).toString();
         console.log(parsedBody); 
         const message = parsedBody.split('=')[1];
