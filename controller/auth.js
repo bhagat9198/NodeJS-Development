@@ -91,6 +91,7 @@ exports.postSignup = (req, res, next) => {
         password: password,
         confirmPassword: req.body.confirmPassword
       },
+      // passing validation array
       validationError: errors.array()
     });
   }
