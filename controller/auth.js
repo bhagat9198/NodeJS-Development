@@ -71,10 +71,11 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
+  // no need here, doing validation in routes/auth
+  // const confirmPassword = req.body.confirmPassword;
 
   const errors = validationResult(req);
-  console.log(errors.array());
+  // console.log(errors.array());
   
   if(!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
@@ -83,13 +84,14 @@ exports.postSignup = (req, res, next) => {
       errorMessage: errors.array()[0].msg
     });
   }
-  User.findOne({email: email})
-  .then(userData => {
-    if(userData) {
-      req.flash('error','Email all ready exists. Please take another one');
-      return res.redirect('/signup')
-    }
-    return bcrypt.hash(password,6)
+  // User.findOne({email: email})
+  // .then(userData => {
+  //   if(userData) {
+  //     req.flash('error','Email all ready exists. Please take another one');
+  //     return res.redirect('/signup')
+  //   }
+    // return bcrypt.hash(password,6)
+    bcrypt.hash(password,6)
     .then(hashedPassword => {
       const user = new User({
         email: email,
@@ -112,8 +114,8 @@ exports.postSignup = (req, res, next) => {
         console.log(body);
       });  
     })
-  })
-  .catch(err => console.log(err));
+  // })
+  // .catch(err => console.log(err));
 };
 
 exports.postLogout = (req, res, next) => {
@@ -127,7 +129,7 @@ exports.getReset = (req, res, next) => {
   let message = req.flash('error');
   if(message.length > 0) {
     message = message[0];
-    console.log(message);
+    // console.log(message);
   } else {
     message = null;
   }
@@ -163,10 +165,8 @@ exports.postReset = (req, res, next) => {
       res.redirect('/reset');
       const data = {
         from: 'node@node.com',
-        // entering the email
         to: req.body.email,
         subject: 'Reset Password',
-        // changing 'text' -> 'html'
         html: `
           <p>You requested for password reset. </p>
           <p> Your link for password reset is <a href="http://localhost:3000/reset/${token}"><b>this</b></a></p>

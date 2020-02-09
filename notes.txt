@@ -1,19 +1,13 @@
 18.287
-routes/auth
-controller/auth
-views/auth/signup 
-
-
-18.288
-controller/auth
-routes/auth
-
-
-18.289
-routes/auth
-
 18.290
 routes/auth
 
 18.291
 routes/auth
+
+18.292
+controller/auth
+routes/auth
+
+
+
