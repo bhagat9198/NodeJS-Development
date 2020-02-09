@@ -21,13 +21,10 @@ const server = http.createServer((req, res) => {
         console.log(chunk);
         body.push(chunk);
     });
-    // we have to return else code after "if" will be executed. causing error.
     return req.on('end', () => {
         const parsedBody = Buffer.concat(body).toString();
         console.log(parsedBody); 
         const message = parsedBody.split('=')[1];
-        // fs.writeFileSync('message.txt', message);
-        // once writing to file is done, callback will be executed.
         fs.writeFile('message.txt', message, err => {
           res.statusCode = 302; 
           res.setHeader('Content-Type','text/html');
