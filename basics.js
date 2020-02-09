@@ -1,15 +1,25 @@
 const http = require('http');
 
 const server = http.createServer((req, res) => {
-    console.log(req.url, req.method, req.headers);
+    // console.log(req.url, req.method, req.headers);
 
-    // sending responses
-    // we cant write all html data within "write()" as it take small chuck of data at a time.
+    const url = req.url;
+    if(url === '/') {
+        res.write('<html>');
+        res.write('<head><title>My App</title></head>');
+        res.write('<body><form method="POST" action="/message">');
+        res.write('<input type="text" name="box">')
+        res.write('<button type="submit">Add Item</button>');
+        res.write('</form></body>');
+        res.write('<html>');
+        // res.end();
+        return res.end();
+    }
+
     res.write('<html>');
     res.write('<head><title>My App</title></head>');
-    res.write('<body><h1>Hello World</h1></body>');
+    res.write('<body><h1>Hello from NodeJs</h1></body>');
     res.write('</html>');
-    // to tell the server that we have finished writing our response. else server will keep waiting for more response
     res.end();
 
 });
