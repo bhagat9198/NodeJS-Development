@@ -1,16 +1,9 @@
 const http = require('http');
 
-// // creating a seprate function
-// const creatingServer = (req, res) => {
-//     console.log(req);
-// }
-
-// // calling function from a function
-// const server = http.createServer(creatingServer);
-
-
 const server = http.createServer((req, res) => {
-    console.log(req);
+    console.log(req.url, req.method, req.headers);
+    // terminating the manually. "process" is global keyword
+    process.exit();
 });
 
 server.listen(3000);
