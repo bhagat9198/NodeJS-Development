@@ -36,13 +36,12 @@ exports.getSignup = (req, res, next) => {
     path: '/signup',
     pageTitle: 'Signup',
     errorMessage: message,
-    // as in post signup we are passing 'oldInput' agrument, its nessary to pass here also 
-    // passing empty strings as in statrting fields should be all empty
     oldInput: {
       email: '',
       password: '',
       confirmPassword: ''
-    }
+    },
+    validationError: []
   });
 };
 
@@ -80,20 +79,19 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
 
   const errors = validationResult(req);
+  console.log(errors.array());
   
   if(!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
       errorMessage: errors.array()[0].msg,
-      // if the user entered wrong data, we want user data should remain there when they are redirected back to signup.
-      // this to give better user expirence
-      // passing agrument of the collected data
       oldInput: {
         email: email,
         password: password,
         confirmPassword: req.body.confirmPassword
-      }
+      },
+      validationError: errors.array()
     });
   }
   bcrypt.hash(password,6)
@@ -132,7 +130,6 @@ exports.getReset = (req, res, next) => {
   let message = req.flash('error');
   if(message.length > 0) {
     message = message[0];
-    // console.log(message);
   } else {
     message = null;
   }
@@ -154,7 +151,6 @@ exports.postReset = (req, res, next) => {
     User.findOne({email: req.body.email})
     .then(user => {
       if(!user) {
-        // displaying flash message
         req.flash('error', 'Invalid Email');
         return res.redirect('/reset');
       }
