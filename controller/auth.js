@@ -35,7 +35,14 @@ exports.getSignup = (req, res, next) => {
   res.render('auth/signup', {
     path: '/signup',
     pageTitle: 'Signup',
-    errorMessage: message
+    errorMessage: message,
+    // as in post signup we are passing 'oldInput' agrument, its nessary to pass here also 
+    // passing empty strings as in statrting fields should be all empty
+    oldInput: {
+      email: '',
+      password: '',
+      confirmPassword: ''
+    }
   });
 };
 
@@ -71,51 +78,47 @@ exports.postLogin = (req, res, next) => {
 exports.postSignup = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
-  // no need here, doing validation in routes/auth
-  // const confirmPassword = req.body.confirmPassword;
 
   const errors = validationResult(req);
-  // console.log(errors.array());
   
   if(!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
       path: '/signup',
       pageTitle: 'Signup',
-      errorMessage: errors.array()[0].msg
+      errorMessage: errors.array()[0].msg,
+      // if the user entered wrong data, we want user data should remain there when they are redirected back to signup.
+      // this to give better user expirence
+      // passing agrument of the collected data
+      oldInput: {
+        email: email,
+        password: password,
+        confirmPassword: req.body.confirmPassword
+      }
     });
   }
-  // User.findOne({email: email})
-  // .then(userData => {
-  //   if(userData) {
-  //     req.flash('error','Email all ready exists. Please take another one');
-  //     return res.redirect('/signup')
-  //   }
-    // return bcrypt.hash(password,6)
-    bcrypt.hash(password,6)
-    .then(hashedPassword => {
-      const user = new User({
-        email: email,
-        password: hashedPassword,
-        cart: {items: []}
-      })
-      return user.save();
+  bcrypt.hash(password,6)
+  .then(hashedPassword => {
+    const user = new User({
+      email: email,
+      password: hashedPassword,
+      cart: {items: []}
     })
-    .then(() => {
-      res.redirect('/login');
-      const data = {
-        from: 'node@node.com',
-        to: email,
-        subject: 'Mailgun Email',
-        text: 'Successful Signup!!'
-      };
+    return user.save();
+  })
+  .then(() => {
+    res.redirect('/login');
+    const data = {
+      from: 'node@node.com',
+      to: email,
+      subject: 'Mailgun Email',
+      text: 'Successful Signup!!'
+    };
 
-      api.mg.messages().send(data, function (error, body) {
-        console.log('Email Body');
-        console.log(body);
-      });  
-    })
-  // })
-  // .catch(err => console.log(err));
+    api.mg.messages().send(data, function (error, body) {
+      console.log('Email Body');
+      console.log(body);
+    });  
+  })
 };
 
 exports.postLogout = (req, res, next) => {
