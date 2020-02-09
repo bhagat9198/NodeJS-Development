@@ -1,8 +1,7 @@
 const http = require('http');
+const fs = require('fs');
 
 const server = http.createServer((req, res) => {
-    // console.log(req.url, req.method, req.headers);
-
     const url = req.url;
     if(url === '/') {
         res.write('<html>');
@@ -13,6 +12,18 @@ const server = http.createServer((req, res) => {
         res.write('</form></body>');
         res.write('<html>');
         // res.end();
+        return res.end();
+    }
+
+    if(url === '/message' && req.method === 'POST') {
+        // using file system to write down in file
+        // fs.writeFile()
+        // 1st arg: telling where to write 2nd arg: what to write down in file
+        fs.writeFileSync('message.txt', 'Dummy Text');
+        res.statusCode = 302; //302 code is for re-directing
+        res.setHeader('Content-Type','text/html');
+        res.setHeader('Location','/');
+        res.write('<h1>Message received</h1>');
         return res.end();
     }
 
