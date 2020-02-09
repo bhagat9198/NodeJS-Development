@@ -1,12 +1,10 @@
 const http = require('http');
 
-// creting a function
-const creatingServer = (req, res) => {
-    console.log(req);
-}
+// const creatingServer = (req, res) => {
+//     console.log(req);
+// }
 
-// calling a function
-const server = http.createServer(creatingServer);
+// const server = http.createServer(creatingServer);
 
 
 const server = http.createServer((req, res) => {
@@ -14,3 +12,4 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(3000);
+
