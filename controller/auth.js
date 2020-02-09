@@ -1,9 +1,6 @@
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
-// using destructing and requring particular property
 const { validationResult } = require('express-validator/check');
-// again "validationResult" will be function will allows us to gathher all the errors which can be thrown by prior middleware which is in 'routes/auth' 
-
 
 const User = require('../model/user');
 const api = require('../private/api');
@@ -19,7 +16,14 @@ exports.getLogin = (req, res, next) => {
   res.render('auth/login', {
     path: '/login',
     pageTitle: 'Login',
-    errorMessage: message
+    errorMessage: message,
+    // ---
+    oldInput: {
+      email: '',
+      password: '',
+      confirmPassword: ''
+    },
+    validationError: []
   });
 };
 
@@ -51,25 +55,44 @@ exports.postLogin = (req, res, next) => {
 
   User.findOne({email: email})
   .then(user => {
-    req.flash('error','Email or Password is incorrect!!');
     if(!user) {
-      return res.redirect('/login');
+      // req.flash('error','Email or Password is incorrect!!');
+      // ----
+      return res.status(422).render('auth/login', {
+        path: '/login',
+        pageTitle: 'Login',
+        errorMessage: 'Email or Password is incorrect!!',
+        oldInput: {
+          email: email,
+          password: password
+        },
+        validationError: [{param: 'email'}]
+      });
     }
-    bcrypt.compare(password, user.password)
-    .then(doMatch => {
-      if(doMatch) {
-        req.session.isLoggedIn = true;
-        req.session.user = user;
-        return req.session.save(err => {
-          console.log(err);
-          res.redirect('/');
-        });
-      } else {
-        req.flash('error','Email or Password is incorrect!!');
-        return res.redirect('/login');
-      }
-    })
-    .catch(err => console.log(err));
+  bcrypt.compare(password, user.password)
+  .then(doMatch => {
+    if(doMatch) {
+      req.session.isLoggedIn = true;
+      req.session.user = user;
+      return req.session.save(err => {
+        console.log(err);
+        res.redirect('/');
+      });
+    } else {
+      // ----
+      return res.status(422).render('auth/login', {
+        path: '/login',
+        pageTitle: 'Login',
+        errorMessage: 'Email or Password is incorrect!!',
+        oldInput: {
+          email: email,
+          password: password
+        },
+        validationError: [{param: 'email'}]
+      });
+    }
+  })
+  .catch(err => console.log(err));
   })
   .catch(err => console.log(err));
 };
@@ -79,7 +102,7 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
 
   const errors = validationResult(req);
-  console.log(errors.array());
+  // console.log(errors.array());
   
   if(!errors.isEmpty()) {
     return res.status(422).render('auth/signup', {
@@ -91,7 +114,6 @@ exports.postSignup = (req, res, next) => {
         password: password,
         confirmPassword: req.body.confirmPassword
       },
-      // passing validation array
       validationError: errors.array()
     });
   }
