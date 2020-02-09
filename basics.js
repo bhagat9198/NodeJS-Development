@@ -1,47 +1,11 @@
 const http = require('http');
-const fs = require('fs');
+// requring user defined file
+const routes = require('./routes');
 
-const server = http.createServer((req, res) => {
-  const url = req.url;
-  if(url === '/') {
-      res.write('<html>');
-      res.write('<head><title>My App</title></head>');
-      res.write('<body><form method="POST" action="/message">');
-      res.write('<input type="text" name="box">')
-      res.write('<button type="submit">Add Item</button>');
-      res.write('</form></body>');
-      res.write('<html>');
-      // res.end();
-      return res.end();
-  }
+// assing routes object
+console.log(routes.something);
 
-  if(url === '/message' && req.method === 'POST') {
-    const body =[];
-    req.on('data', (chunk) => {
-        console.log(chunk);
-        body.push(chunk);
-    });
-    return req.on('end', () => {
-        const parsedBody = Buffer.concat(body).toString();
-        console.log(parsedBody); 
-        const message = parsedBody.split('=')[1];
-        fs.writeFile('message.txt', message, err => {
-          res.statusCode = 302; 
-          res.setHeader('Content-Type','text/html');
-          res.setHeader('Location','/');
-          return res.end();
-        })
-    })
-    
-  }
-
-  res.write('<html>');
-  res.write('<head><title>My App</title></head>');
-  res.write('<body><h1>Hello from NodeJs</h1></body>');
-  res.write('</html>');
-  res.end();
-
-});
+const server = http.createServer(routes.handler);
 
 server.listen(3000);
 
