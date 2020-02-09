@@ -19,20 +19,22 @@ const server = http.createServer((req, res) => {
     const body =[];
     req.on('data', (chunk) => {
         console.log(chunk);
-        // <Buffer 62 6f 78 3d 68 65 6c 6c 6f>
         body.push(chunk);
     });
     req.on('end', () => {
         const parsedBody = Buffer.concat(body).toString();
         console.log(parsedBody); 
-        // box=hello
         const message = parsedBody.split('=')[1];
-        fs.writeFileSync('message.txt', message);
+        // fs.writeFileSync('message.txt', message);
+        // once writing to file is done, callback will be executed.
+        fs.writeFile('message.txt', message, err => {
+          res.statusCode = 302; 
+          res.setHeader('Content-Type','text/html');
+          res.setHeader('Location','/');
+          return res.end();
+        })
     })
-    res.statusCode = 302; 
-    res.setHeader('Content-Type','text/html');
-    res.setHeader('Location','/');
-    return res.end();
+    
   }
 
   res.write('<html>');
