@@ -10,7 +10,6 @@ exports.getAddProduct = (req, res, next) => {
     path: "/admin/add-product",
     pageTitle: "Add Products",
     editing: false,
-    // ---
     hasError: false,
     errorMessage: null,
     validationError: []
@@ -25,7 +24,6 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const userId = req.user;
 
-  // ---
   const errors = validationResult(req);
   console.log(errors.array());
   
@@ -91,8 +89,7 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
-
-  // ----
+  // --
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -105,8 +102,9 @@ exports.postEditProduct = (req, res, next) => {
         title: updatedTitle,
         imageUrl: updatedImageUrl,
         price: updatedPrice,
-        description: updatedDesc,
-        _id: prodId
+        description: upadatedDesciption,
+        // we have to pass productId also, so that edited product can be submitted again
+        _id: productID
       },
       errorMessage: errors.array()[0].msg,
       validationError: errors.array()

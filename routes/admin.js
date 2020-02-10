@@ -13,7 +13,6 @@ const routes = express.Router();
 routes.get('/add-product', isAuth, adminController.getAddProduct);
 
 routes.post('/add-product', 
-  //--- 
   [
     body('title')
       .isString()
@@ -35,10 +34,10 @@ routes.get('/products', isAuth,adminController.getProducts)
 routes.get('/edit-product/:productID', isAuth, adminController.getEditProduct);
 
 routes.post('/edit-product',
-  // ----
   [
     body('title')
-      .isAlphanumeric()
+    // .isAlphanumeric => isString
+      .isString()
       .trim()
       .isLength({min: 3}),
     body('price')
