@@ -8,10 +8,9 @@ const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use('/admin',adminRoutes);
+app.use(adminRoutes);
 app.use(shopRoutes);
 
-// adding response for invalid URL
 app.use((req, res, next) => {
   res.send('<h1>Page Not Found</h1>');
 })
