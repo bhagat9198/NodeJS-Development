@@ -12,8 +12,11 @@ views/auth/login
 routes/auth
 
 
-sanitizing the data: cleaning our data ie removing unwanted data.
+18.297
+routes/admin
+controller/admin
+views/admin/edit product : adding classes and errormessages
+public/css/forms : at last
 
-thus, we have to make sure the data we are getting is not only validated but also free from noise or we can say stored in uniform way.
 
-cross side scripting attacks sanition is security feature
+

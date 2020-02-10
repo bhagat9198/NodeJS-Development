@@ -1,4 +1,6 @@
 const path = require('path');
+//requiring
+const {body} = require('express-validator/check');
 
 const express = require('express');
 
@@ -10,13 +12,46 @@ const routes = express.Router();
 
 routes.get('/add-product', isAuth, adminController.getAddProduct);
 
-routes.post('/add-product', isAuth, adminController.postAddProduct);
+routes.post('/add-product', 
+  //--- 
+  [
+    body('title')
+      .isString()
+      .trim()
+      .isLength({min: 3}),
+    body('price')
+      .trim()
+      .isFloat(),
+    body('imageUrl')
+      .isURL()
+      .trim(),
+    body('description') 
+      .isLength({min: 5, max: 400})
+      .trim()
+  ], isAuth, adminController.postAddProduct);
 
 routes.get('/products', isAuth,adminController.getProducts)
 
 routes.get('/edit-product/:productID', isAuth, adminController.getEditProduct);
 
-routes.post('/edit-product', isAuth, adminController.postEditProduct);
+routes.post('/edit-product',
+  // ----
+  [
+    body('title')
+      .isAlphanumeric()
+      .trim()
+      .isLength({min: 3}),
+    body('price')
+      .trim()
+      .isNumeric(),
+    body('imageUrl')
+      .isURL()
+      .trim(),
+    body('description')
+      .isLength({min: 5, max: 400})
+      .trim()
+  ],
+  isAuth, adminController.postEditProduct);
 
 routes.post('/delete-product', isAuth, adminController.postDeleteProduct);
 

@@ -26,3 +26,10 @@
   border-color: red;
 }
 
+.form-control textarea.invalid {
+  border-color: red;
+}
+
+.form-control number.invalid {
+  border-color: red;
+}

@@ -1,12 +1,19 @@
 const mongoose = require('mongoose');
 
+// requering
+const {validationResult} = require('express-validator')
+ 
 const Product = require("../model/product");
 
 exports.getAddProduct = (req, res, next) => {
-  res.render("admin/edit-product", {
+  return res.render("admin/edit-product", {
     path: "/admin/add-product",
     pageTitle: "Add Products",
     editing: false,
+    // ---
+    hasError: false,
+    errorMessage: null,
+    validationError: []
   });
 };
 
@@ -18,13 +25,36 @@ exports.postAddProduct = (req, res, next) => {
   const price = req.body.price;
   const userId = req.user;
 
+  // ---
+  const errors = validationResult(req);
+  console.log(errors.array());
+  
+  if (!errors.isEmpty()) {
+    console.log(errors.array());
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Add Product',
+      path: '/admin/edit-product',
+      editing: false,
+      hasError: true,
+      product: {
+        title: title,
+        imageUrl: imageUrl,
+        price: price,
+        description: description
+      },
+      errorMessage: errors.array()[0].msg,
+      validationError: errors.array()
+    });
+  }
+
   const product = new Product({
     title: title,
     imageUrl: imageUrl,
     price: price,
     description: description,
-    userId: userId
+    userId: userId,
   })
+
   product.save()
   .then(product => {
     res.redirect('/admin/products');
@@ -38,13 +68,17 @@ exports.getEditProduct = (req, res, next) => {
     res.redirect('/');
   }
   const productID = req.params.productID;
-  Product.findById(productID)
+  return Product.findById(productID)
   .then(product => {
-    res.render("admin/edit-product", {
+    return res.render("admin/edit-product", {
       path: "/admin/edit-product",
       pageTitle: "Edit Products",
       editing: editMode,
       product: product,
+      // ----
+      hasError: false,
+      errorMessage: null,
+      validationError: []
     });
   })
   .catch(err => console.log(err));
@@ -57,6 +91,27 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
+
+  // ----
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    return res.status(422).render('admin/edit-product', {
+      pageTitle: 'Edit Product',
+      path: '/admin/edit-product',
+      editing: true,
+      hasError: true,
+      product: {
+        title: updatedTitle,
+        imageUrl: updatedImageUrl,
+        price: updatedPrice,
+        description: updatedDesc,
+        _id: prodId
+      },
+      errorMessage: errors.array()[0].msg,
+      validationError: errors.array()
+    });
+  }
 
   Product.findById(mongoose.Types.ObjectId(productID))
   .then(product => {

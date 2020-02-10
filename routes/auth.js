@@ -13,11 +13,11 @@ router.post('/login',
   // checking sanitization
   [
     check('email')
-    .isEmail()
-    .withMessage('Please enter a valid Email')
-    .normalizeEmail(),
+      .isEmail()
+      .withMessage('Please enter a valid Email')
+      .normalizeEmail(),
     check('password')
-    .trim()
+      .trim()
   ],
   authController.postLogin);
 
@@ -28,35 +28,31 @@ router.get('/signup', authController.getSignup);
 router.post('/signup', 
   [
     check('email')
-    .isEmail()
-    .withMessage('Please enter a valid Email')
-    // santization
-    // doing nornailzation-  making sure email is stored in lowercase and no excess whitespace at the end
-    // its a build in sanitizer
-    .normalizeEmail()
-    .custom((value, {req}) => {
-      return User.findOne({email: value})
-      .then(userData => {
-        if(userData) {
-          return Promise.reject('Email all ready exists. Please take another one');
-        }
-      })
-    }),
+      .isEmail()
+      .withMessage('Please enter a valid Email')
+      .normalizeEmail()
+      .custom((value, {req}) => {
+        return User.findOne({email: value})
+        .then(userData => {
+          if(userData) {
+            return Promise.reject('Email all ready exists. Please take another one');
+          }
+        }) 
+      }),
     body('password',
-    'Password sould contain atlest 5 characters and should not have any speacial symbols')
-    .isLength({min: 5})
-    .withMessage()
-    .isAlphanumeric()
-    // removing any whitesapce is there at the end
-    .trim(),
+      'Password sould contain atlest 5 characters and should not have any speacial symbols')
+      .isLength({min: 5})
+      .withMessage()
+      .isAlphanumeric()
+      .trim(),
     body('confirmPassword')
-    .trim()
-    .custom((value, {req}) => {
-      if(value !== req.body.password) {
-        throw new Error('Password didnt match')
-      }
-      return true;
-    })
+      .trim()
+      .custom((value, {req}) => {
+        if(value !== req.body.password) {
+          throw new Error('Password didnt match')
+        }
+        return true;
+      })
   ], authController.postSignup)
   
 
