@@ -6,12 +6,12 @@ const routes = express.Router();
 // router works same way as "app"
 
 // /admin/add-product => GET
-routes.get('/add-products', (req, res, next) => {
+routes.get('/admin/add-products', (req, res, next) => {
   res.send('<form action="/admin/add-products" method="POST"><input type="text" name="title"><button type="submit">Add</button></form>');
 });
 
 // /admin/add-products => POST
-routes.post('/add-products', (req, res, next) => {
+routes.post('/admin/add-products', (req, res, next) => {
   console.log(req.body);
   res.redirect('/');
 });
