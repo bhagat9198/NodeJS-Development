@@ -67,32 +67,34 @@ exports.postLogin = (req, res, next) => {
         validationError: [{param: 'email'}]
       });
     }
-  bcrypt.compare(password, user.password)
-  .then(doMatch => {
-    if(doMatch) {
-      req.session.isLoggedIn = true;
-      req.session.user = user;
-      return req.session.save(err => {
-        console.log(err);
-        res.redirect('/');
-      });
-    } else {
-      // ----
-      return res.status(422).render('auth/login', {
-        path: '/login',
-        pageTitle: 'Login',
-        errorMessage: 'Email or Password is incorrect!!',
-        oldInput: {
-          email: email,
-          password: password
-        },
-        validationError: [{param: 'email'}]
-      });
-    }
+    bcrypt.compare(password, user.password)
+    .then(doMatch => {
+      if(doMatch) {
+        req.session.isLoggedIn = true;
+        req.session.user = user;
+        return req.session.save(err => {
+          console.log(err);
+          res.redirect('/');
+        });
+      } else {
+        return res.status(422).render('auth/login', {
+          path: '/login',
+          pageTitle: 'Login',
+          errorMessage: 'Email or Password is incorrect!!',
+          oldInput: {
+            email: email,
+            password: password
+          },
+          validationError: [{param: 'email'}]
+        });
+      }
+    })
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
   })
-  .catch(err => console.log(err));
-  })
-  .catch(err => console.log(err));
 };
 
 exports.postSignup = (req, res, next) => {
@@ -198,7 +200,11 @@ exports.postReset = (req, res, next) => {
         console.log(body);
       });  
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+      const error = new Error(err);
+      error.httpStatusCode = 500;
+      return next(error);
+    });
   })
 }
 
@@ -223,7 +229,11 @@ module.exports.getNewPassword = (req, res, next) => {
       passwordToken: token
     });
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 }
 
 
@@ -252,7 +262,11 @@ module.exports.postNewPassword = (req, res, next) => {
   .then(result => {
     res.redirect('/login');
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 }
 
 

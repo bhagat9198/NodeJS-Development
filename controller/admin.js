@@ -44,7 +44,7 @@ exports.postAddProduct = (req, res, next) => {
   }
 
   const product = new Product({
-    _id: mongoose.Types.ObjectId('5e3ae39c2c388743d00e436a'),
+    // _id: mongoose.Types.ObjectId('5e3ae39c2c388743d00e436a'),
     title: title,
     imageUrl: imageUrl,
     price: price,
@@ -57,18 +57,9 @@ exports.postAddProduct = (req, res, next) => {
     res.redirect('/admin/products');
   })
   .catch(err => {
-    // similarly, in ever catch block we have redirect to 500 page. but its tedious.
-    // res.redirect('/500'); 
-
-    // throwing the new error
     const error = new Error(err);
-    // as "error" is object, we can append properties to it 
     error.httpStatusCode = 500;
-
-    // till now we have executed "next()" without parameter. thus there it means req will pass to next middleware.
-    // but when we pass 'error' as agrument which contains the error. then request will pass to next middleware which accepts the error.
     return next(error);
-    // app.js
   });
 };
 
@@ -90,7 +81,11 @@ exports.getEditProduct = (req, res, next) => {
       validationError: []
     });
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 
 };
 
@@ -134,7 +129,11 @@ exports.postEditProduct = (req, res, next) => {
       res.redirect('/admin/products');
     })
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 exports.postDeleteProduct = (req, res, next) => {
@@ -145,8 +144,10 @@ exports.postDeleteProduct = (req, res, next) => {
     res.redirect('/admin/products');
   })
   .catch(err => {
-    console.log(err);
-  })
+    const error = new Error(err);
+    error.httpStatusCode = 500;
+    return next(error);
+  });
 };
 
 exports.getProducts = (req, res, next) => {

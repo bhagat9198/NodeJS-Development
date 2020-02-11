@@ -54,7 +54,14 @@ app.use((req, res, next) => {
     return next();
   }
   User.findById(req.session.user._id)
+
+  // but if throw error outside of async code, we will reach the error handling middleware
+  throw new Error('Dummy Error outside of async code!!!!')
+  // the reason for that in sync code (outside of callbacks and promises) when we throw error, express will get to know and execute error handling middleware
   .then(user => {
+    // throwing the error so that it reaches the catch block
+    throw new Error('Dummy Error!!!!!')
+
     if(!user) {
       return next();
     }
@@ -62,7 +69,15 @@ app.use((req, res, next) => {
     next();
   })
   .catch(err => {
-    throw new Error(err);
+    // we though we have error handling middleware, instaed of going to error handling middleware, our code is crashing.
+    // throw new Error(err);
+
+    // this is because we are inside async code ie inside a promise(then or catch block). so we throw errors in async code, we will not reach the error handling middleware
+
+    // but inside of promises and callbacks, it will not work 
+    // so,
+    next(new Error(err))
+    // thus, we have wrap our error with next()
   }); 
 });
 
@@ -74,17 +89,15 @@ app.use('/500', errorController.get500);
 
 app.use(errorController.get404);
 
-// craeting the middleware which accepts error
-// till now we have seen the middleware with 3 agrs(req, res, next)
-// but there is speacial middleware with 4 arguments,this known as error handling middleware
 app.use((error, req, res, next) => {
-  // we have statuscode also attach to the error object. if we rendering so other webpage then we can use that
-  // res.status(error.httpStatusCode).render(...);
+  // res.redirect('/500');
+  // as we have put an error in attaching user in request. it will be in infinite loop(redirect and new request(and this will agin cause error and then redirect)). 
 
-  res.redirect('/500');
+  res.status(500).render('500', 
+  { pageTitle: "500",
+    path: 'Server Error',
+ });
 });
-
-// if we have more then one error handling middleware, then those middleware will execute from top to down as usual.
 
 mongoose.connect(MONGODB_URI,{ useUnifiedTopology: true ,useNewUrlParser: true })
 .then(user => {

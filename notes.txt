@@ -1,19 +1,12 @@
-19.304
-playgroud-errors.js
-routes/auth
-
-19.305
-app.js
-
-19.306
-controller/admin
-views/505.ejs
-controller/error
-app.js
-
 19.307
 controller/admin
 app.js
 
+19.308
+controller/admin
+controller/auth
+controller/shop
+changed all the catch blocks - redirecting error handling middleware
 
-
+19.309
+app.js
