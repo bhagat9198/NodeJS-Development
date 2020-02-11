@@ -49,6 +49,7 @@ router.post('/signup',
       .trim()
       .custom((value, {req}) => {
         if(value !== req.body.password) {
+          // here error thrown is handled by validator behined the sceans. thus not using "catch" block.
           throw new Error('Password didnt match')
         }
         return true;

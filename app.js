@@ -55,10 +55,19 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id)
   .then(user => {
+    // to be more precise
+    if(!user) {
+      return next();
+    }
     req.user = user;
     next();
   })
-  .catch(err => console.log(err));
+  // here catch block will not get fired if user is not found. it will be only fired when there are some techincal issues like database not found or not enough permissions to access it.
+  // .catch(err => console.log(err));
+  .catch(err => {
+  // instead of consoile log, we will throw real error. because expressjs will manage it behined the sceans
+    throw new Error(err);
+  }); 
 });
 
 app.use('/admin', adminRoutes);
