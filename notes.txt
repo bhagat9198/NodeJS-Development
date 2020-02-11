@@ -6,3 +6,7 @@ routes/shop
 5.68
 views/shop.html
 views/add-product.html
+
+5.69
+routes/admin
+routes/shop
