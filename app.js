@@ -74,6 +74,17 @@ app.use('/500', errorController.get500);
 
 app.use(errorController.get404);
 
+// craeting the middleware which accepts error
+// till now we have seen the middleware with 3 agrs(req, res, next)
+// but there is speacial middleware with 4 arguments,this known as error handling middleware
+app.use((error, req, res, next) => {
+  // we have statuscode also attach to the error object. if we rendering so other webpage then we can use that
+  // res.status(error.httpStatusCode).render(...);
+
+  res.redirect('/500');
+});
+
+// if we have more then one error handling middleware, then those middleware will execute from top to down as usual.
 
 mongoose.connect(MONGODB_URI,{ useUnifiedTopology: true ,useNewUrlParser: true })
 .then(user => {
