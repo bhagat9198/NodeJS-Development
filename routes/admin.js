@@ -36,7 +36,6 @@ routes.get('/edit-product/:productID', isAuth, adminController.getEditProduct);
 routes.post('/edit-product',
   [
     body('title')
-    // .isAlphanumeric => isString
       .isString()
       .trim()
       .isLength({min: 3}),

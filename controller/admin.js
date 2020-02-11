@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-
-// requering
 const {validationResult} = require('express-validator')
  
 const Product = require("../model/product");
@@ -31,7 +29,7 @@ exports.postAddProduct = (req, res, next) => {
     console.log(errors.array());
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
-      path: '/admin/edit-product',
+      path: '/admin/add-product',
       editing: false,
       hasError: true,
       product: {
@@ -46,6 +44,9 @@ exports.postAddProduct = (req, res, next) => {
   }
 
   const product = new Product({
+    // explit creating an error
+    // creating an other object by taking previous object _id
+    _id: mongoose.Types.ObjectId('5e3ae39c2c388743d00e436a'),
     title: title,
     imageUrl: imageUrl,
     price: price,
@@ -57,7 +58,32 @@ exports.postAddProduct = (req, res, next) => {
   .then(product => {
     res.redirect('/admin/products');
   })
-  .catch(err => console.log(err));
+  // handling the error
+  .catch(err => {
+    // console.log(err)
+
+    // we can redirect the user to same page with some error message
+    // 500 : code for server side error
+    // return res.status(500).render('admin/edit-product', {
+    //   pageTitle: 'Add Product',
+    //   path: '/admin/add-product',
+    //   editing: false,
+    //   hasError: true,
+    //   product: {
+    //     title: title,
+    //     imageUrl: imageUrl,
+    //     price: price,
+    //     description: description
+    //   },
+    //   errorMessage: 'Server side error. Please add the product again!',
+    //   validationError: []
+    // });
+
+
+    // but we know error can take some time, we can redirect them different page like server error page
+    res.redirect('/500'); 
+    
+  });
 };
 
 exports.getEditProduct = (req, res, next) => {
@@ -73,7 +99,6 @@ exports.getEditProduct = (req, res, next) => {
       pageTitle: "Edit Products",
       editing: editMode,
       product: product,
-      // ----
       hasError: false,
       errorMessage: null,
       validationError: []
@@ -89,7 +114,6 @@ exports.postEditProduct = (req, res, next) => {
   const updatedImageUrl = req.body.imageUrl;
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
-  // --
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -103,7 +127,6 @@ exports.postEditProduct = (req, res, next) => {
         imageUrl: updatedImageUrl,
         price: updatedPrice,
         description: upadatedDesciption,
-        // we have to pass productId also, so that edited product can be submitted again
         _id: productID
       },
       errorMessage: errors.array()[0].msg,

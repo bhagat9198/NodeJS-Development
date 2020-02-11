@@ -1,35 +1,17 @@
-18.297
-routes/admin
-controller/admin
-views/admin/edit product : adding classes and errormessages
-public/css/forms : at last
-
-18.298
-routes/admin
-controller/admin
-
-
-19.302
-technical errors => happens at backend and nothing much can be done as server can be down or database failer. best thing will be show the error page or sending e-mail to the administrators as soon as it happen.
-
-expected errors => not a technical terms but these are errors which can happen if write bad code.
-eg: we also have errors in our code where we interact with a user object in a place where it just can't exist or at least not in all circumstances.
-
-We should not show a message to the user because these errors are not the users or the networks fault they are our fault.
-
-
-There are areas where the error is thrown an error or is a technical object in a node application. So there is a built in error object which we can throw. That's also a javascript language features. Basically all programming languages have such a feature.
-
-2 ways to hadle errors:
-try catch : sync code
-then catch : async code
-in both cases, in catch block we can put our logic to handle our error or simply rediecting to some other page so that our code does not break
-
-
 19.304
 playgroud-errors.js
 routes/auth
 
-
 19.305
 app.js
+
+19.306
+controller/admin
+views/505.ejs
+controller/error
+app.js
+
+
+
+
+
