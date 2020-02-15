@@ -17,13 +17,21 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  const imageUrl = req.body.imageUrl;
+  // const imageUrl = req.body.imageUrl;
+  const imageUrl = req.body.image;
   const description = req.body.description;
   const price = req.body.price;
   const userId = req.user;
 
+  console.log(imageUrl);
+  // thus, we will get the filename in console, and product will be saved with the name of the image. but we will not see the image.
+  // this is becasue, we are using bodyParser and in it, we are using urlencoder. urlencoded data is basicly a text data.
+
+  // so when form is submitted without a file(image), all other data(text, number,url) is encoded in text. this we can get to know by going to network tab "Content-Type: application/x-www-form-urlencoded". thus, it means that all the data which is recieved is in text formate and so it cant extract our file as file is bineray data.
+  // hence, if we want extract binary data then we have to use different parser.
+
   const errors = validationResult(req);
-  console.log(errors.array());
+  // console.log(errors.array());
   
   if (!errors.isEmpty()) {
     console.log(errors.array());

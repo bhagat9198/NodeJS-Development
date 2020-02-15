@@ -15,17 +15,20 @@ routes.get('/add-product', isAuth, adminController.getAddProduct);
 routes.post('/add-product', 
   [
     body('title')
+      .not().isEmpty()
       .isString()
       .trim()
       .isLength({min: 3}),
     body('price')
+      .not().isEmpty()
       .trim()
       .isFloat(),
-    body('imageUrl')
-      .isURL()
-      .trim(),
+    // body('imageUrl')
+      // .not().isEmpty(),
+      // .isURL()
+      // .trim(),
     body('description') 
-      .isLength({min: 5, max: 400})
+      .isLength({min: 0, max: 400})
       .trim()
   ], isAuth, adminController.postAddProduct);
 
@@ -38,13 +41,16 @@ routes.post('/edit-product',
     body('title')
       .isString()
       .trim()
-      .isLength({min: 3}),
+      .isLength({min: 3})
+      .not().isEmpty(),
     body('price')
       .trim()
-      .isNumeric(),
+      .isNumeric()
+      .not().isEmpty(),
     body('imageUrl')
-      .isURL()
-      .trim(),
+      .not().isEmpty(),
+    //   .isURL()
+    //   .trim(),
     body('description')
       .isLength({min: 5, max: 400})
       .trim()
