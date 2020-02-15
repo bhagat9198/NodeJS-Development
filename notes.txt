@@ -11,7 +11,8 @@ views/admin/edit-product
 app.js
 controller/admin
 
-
+20.318
+app.js
 
 
 
