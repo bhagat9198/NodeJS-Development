@@ -17,21 +17,39 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  // const imageUrl = req.body.imageUrl;
-  const imageUrl = req.body.image;
+  // const imageUrl = req.body.image;
+  const imageUrl = req.file;
   const description = req.body.description;
   const price = req.body.price;
   const userId = req.user;
 
   console.log(imageUrl);
-  // thus, we will get the filename in console, and product will be saved with the name of the image. but we will not see the image.
-  // this is becasue, we are using bodyParser and in it, we are using urlencoder. urlencoded data is basicly a text data.
+  // thus it gives all the data
+  // {
+  //   fieldname: 'image', <- form field name
+  //   originalname: 'lostbook.jpg', <- name of the image
+  //   encoding: '7bit',
+  //   mimetype: 'image/jpeg',  <- type of the file(jpeg/img/jpg)
+  //   buffer: <Buffer ff d8 ff e0 00 10 4a 46 49 46 00 01 01 00 00 01 00 01 00 00 ff db 00 43 00 06 04 05 06 05 04 06 06 05 06 07 07 06 08 0a 10 0a 0a 09 09 0a 14 0e 0f 0c ...  <- stream of buffer
+  // 35973 more bytes>,
+  //   size: 36023
+  // }
 
-  // so when form is submitted without a file(image), all other data(text, number,url) is encoded in text. this we can get to know by going to network tab "Content-Type: application/x-www-form-urlencoded". thus, it means that all the data which is recieved is in text formate and so it cant extract our file as file is bineray data.
-  // hence, if we want extract binary data then we have to use different parser.
+  // after adding 'dest' agrument to mutler method. 'images' folder will be created as we give destination as 'images'. now we cant see buffer as it is storing the file thus buffer is automatically convereted in bineray data.
+  // {
+  //   fieldname: 'image',
+  //   originalname: 'lostbook.jpg',
+  //   encoding: '7bit',
+  //   mimetype: 'image/jpeg',
+  //   destination: 'images',
+  //   filename: '58752e01558540d0294dc03296123c18', <- random hash value
+  //   path: 'images\\58752e01558540d0294dc03296123c18',
+  //   size: 36023
+  // }
+
+  // image which is stored in "images" folder is saved without extenstion. thus adding the extension manually. in my case its 'jpg'.
 
   const errors = validationResult(req);
-  // console.log(errors.array());
   
   if (!errors.isEmpty()) {
     console.log(errors.array());
@@ -52,7 +70,6 @@ exports.postAddProduct = (req, res, next) => {
   }
 
   const product = new Product({
-    // _id: mongoose.Types.ObjectId('5e3ae39c2c388743d00e436a'),
     title: title,
     imageUrl: imageUrl,
     price: price,

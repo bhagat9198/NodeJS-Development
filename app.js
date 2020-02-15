@@ -8,6 +8,9 @@ const MongoDbStore = require('connect-mongodb-session')(session);
 const csrf = require('csurf');
 const flash = require('connect-flash');
 
+// requering multer which will act on form whch has "enctype="multipart/form-data"
+const multer = require('multer');
+
 const adminRoutes = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
@@ -28,6 +31,11 @@ const csrfProtection = csrf();
 
 app.set('view engine', 'ejs');
 app.set('views', 'views');
+
+// using multer, it is also executed as middleware. it is executed as function and then we have tell if we are expecting sigle or multiple files at a time by the method. within the method, we have to define the field name from which we want to extract the data. in our case in form "name = image"
+// app.use(multer().single('image'));
+
+app.use(multer({dest: 'images'}).single('image'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));

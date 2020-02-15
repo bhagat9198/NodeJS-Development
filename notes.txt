@@ -7,14 +7,9 @@ controller/admin
 routes/admin
 views/admin/edit-product
 
-npm install --save multer
-
-adding :enctype="multipart/form-data"
-<form class="product-form" action="/admin/<% if (editing) { %>edit-product<% } else { %>add-product<% } %>" method="POST" novalidate enctype="multipart/form-data">
-this we tell the server that incoming data is not plain text but have mixed data(file + text)
-
-it is by default even if dont put which means that incoming data will have only plain text.
-enctype="application/x-www-form-urlencoded"
+20.317
+app.js
+controller/admin
 
 
 
