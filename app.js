@@ -54,12 +54,8 @@ app.use((req, res, next) => {
     return next();
   }
   User.findById(req.session.user._id)
-
-  // but if throw error outside of async code, we will reach the error handling middleware
   throw new Error('Dummy Error outside of async code!!!!')
-  // the reason for that in sync code (outside of callbacks and promises) when we throw error, express will get to know and execute error handling middleware
   .then(user => {
-    // throwing the error so that it reaches the catch block
     throw new Error('Dummy Error!!!!!')
 
     if(!user) {
@@ -69,15 +65,7 @@ app.use((req, res, next) => {
     next();
   })
   .catch(err => {
-    // we though we have error handling middleware, instaed of going to error handling middleware, our code is crashing.
-    // throw new Error(err);
-
-    // this is because we are inside async code ie inside a promise(then or catch block). so we throw errors in async code, we will not reach the error handling middleware
-
-    // but inside of promises and callbacks, it will not work 
-    // so,
     next(new Error(err))
-    // thus, we have wrap our error with next()
   }); 
 });
 
@@ -90,9 +78,6 @@ app.use('/500', errorController.get500);
 app.use(errorController.get404);
 
 app.use((error, req, res, next) => {
-  // res.redirect('/500');
-  // as we have put an error in attaching user in request. it will be in infinite loop(redirect and new request(and this will agin cause error and then redirect)). 
-
   res.status(500).render('500', 
   { pageTitle: "500",
     path: 'Server Error',
