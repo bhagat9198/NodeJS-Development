@@ -35,45 +35,30 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 
-// const fileStorage = multer.diskStorage({
-//   // inbuild key arrribute
-//   destination: (req, file, cb) => {
-//     // configuringing as the function.
-    
-//     // calling the callback, so that it can be executed. 
-//     // 1st arg: returing null if get an error while storing a file. thus returing 'null'
-//     // 2nd arg: if we dont get any error, storing the file in "images" folder
-//     cb(null, 'images');
-//   },
-//   filename: (req, file, cb) => {
-//     // null: returning if we get an error
-//     // else saving the file
-//     // we will not able to use "file.filename" because we are seeting up filename manually. so multer will not set 'filename' automatically.
-//     // as we are using "file.originalname", extension of the file will be set automtically. 
-//     // cb(null, `${file.filename} ${file.originalname}`); //undefined filehash
-//     // cb(null, Date().toString() + '-' + file.originalname); //error
-//     // cb(null, file.fieldname + '-' + file.originalname); //undefined-filehash   
-//   }
-// });
-
-
-fileStorage = multer.diskStorage({
+const fileStorage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, 'images');
   },
   filename: function(req, file, cb) {
-    // creating the unique id by using current date
     // cb(null, Date.now()+'-'+file.originalname);
-
-    // using 3party package to create unique id
     cb(null, uniqid()+'-'+file.originalname);
   }
 });
 
+// restricting the user to upload only images and not other file type(txt, pdf, etc)
+const fileFilter = (req, file, cb) => {
+  if(file.mimetype === 'image/jpg' ||
+     file.mimetype === 'image/jpeg' ||
+     file.mimetype === 'image/png') 
+  {
+    cb(null, true);
+  } else {
+    cb(null, false)
+  }
+}
 
-// app.use(multer({dest: 'images'}).single('image'));
-// "storage" key has many attributes then "dest". thus passing it as argument and calling the function
-app.use(multer({storage: fileStorage}).single('image'));
+// calling the above function
+app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(rootDir, 'public')));

@@ -1,12 +1,3 @@
-20.315
-views/admin/edit-product
-
-
-20.316
-controller/admin
-routes/admin
-views/admin/edit-product
-
 20.317
 app.js
 controller/admin
@@ -14,6 +5,8 @@ controller/admin
 20.318
 app.js
 
+20.319
+app.js
 
 
 
