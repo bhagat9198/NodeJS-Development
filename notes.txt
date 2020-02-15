@@ -1,5 +1,2 @@
-19.309
-app.js
-
 20.315
 views/admin/edit-product

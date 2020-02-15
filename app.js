@@ -54,9 +54,7 @@ app.use((req, res, next) => {
     return next();
   }
   User.findById(req.session.user._id)
-  // throw new Error('Dummy Error outside of async code!!!!')
   .then(user => {
-    // throw new Error('Dummy Error!!!!!')
     if(!user) {
       return next();
     }
