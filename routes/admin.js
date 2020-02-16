@@ -28,7 +28,7 @@ routes.post('/add-product',
       // .isURL()
       // .trim(),
     body('description') 
-      .isLength({min: 0, max: 400})
+      .isLength({min: 1, max: 400})
       .trim()
   ], isAuth, adminController.postAddProduct);
 
@@ -47,8 +47,9 @@ routes.post('/edit-product',
       .trim()
       .isNumeric()
       .not().isEmpty(),
-    body('imageUrl')
-      .not().isEmpty(),
+    // commenting out
+    // body('imageUrl')
+    //   .not().isEmpty(),
     //   .isURL()
     //   .trim(),
     body('description')

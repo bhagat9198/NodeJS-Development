@@ -40,12 +40,10 @@ const fileStorage = multer.diskStorage({
     cb(null, 'images');
   },
   filename: function(req, file, cb) {
-    // cb(null, Date.now()+'-'+file.originalname);
     cb(null, uniqid()+'-'+file.originalname);
   }
 });
 
-// restricting the user to upload only images and not other file type(txt, pdf, etc)
 const fileFilter = (req, file, cb) => {
   if(file.mimetype === 'image/jpg' ||
      file.mimetype === 'image/jpeg' ||
@@ -57,7 +55,6 @@ const fileFilter = (req, file, cb) => {
   }
 }
 
-// calling the above function
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 
 app.use(bodyParser.urlencoded({ extended: true }));

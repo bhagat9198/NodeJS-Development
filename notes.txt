@@ -1,14 +1,16 @@
-20.317
-app.js
-controller/admin
-
 20.318
 app.js
 
 20.319
 app.js
 
+20.320
+controller/admin
+routes/admin 
 
+
+
+deleting all the products ffrrom mongodb compass
 
 
 
