@@ -1,7 +1,11 @@
+const fs = require('fs');
+const path = require('path');
+
 const mongoose = require('mongoose');
 
 const Product = require('../model/product');
 const Order = require('../model/order');
+const rootDir = require('../util/path');
 
 exports.getIndex = (req, res, next) => {
   Product.find()
@@ -152,7 +156,27 @@ exports.postOrder = (req, res, next) => {
   });
 };
 
+exports.getInvoice = (req, res, next) => {
+  // taking orderId from params
+  const orderId = req.params.orderId;
+  // craeting filename
+  const fileName = 'invoice-'+orderId+'.pdf';
+  // giving path to the file
+  const filePath = path.join(rootDir, 'data', 'invoices',fileName);
 
+  // if we have to send the file to user, then first file will be read by fil system
+  fs.readFile(filePath, (err, data) => {
+    if(err) {
+      return next(err);
+    }
+    // if no error while reading, send the file.
+    res.send(data);
+
+    // file will get downloded as soon as user click on 'invoice' link with no file extension and with weird name. to open that file, we have to manully give the extension '.pdf' as we know file which is downloaded is pdf. 
+
+    // thus, now we are not sending the file publically/statically but only when user is authenticated.
+  });
+}
 
 
 

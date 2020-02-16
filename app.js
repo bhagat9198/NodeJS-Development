@@ -54,21 +54,7 @@ const fileFilter = (req, file, cb) => {
 
 app.use(multer({storage: fileStorage, fileFilter: fileFilter}).single('image'));
 app.use(bodyParser.urlencoded({ extended: true }));
-
-// statically servering the folder simply means that request to that file in that folder will be handled automtically and files will be returned. so all the heavy lifting is done behind the sceans by express.
 app.use(express.static(path.join(rootDir, 'public')));
-
-// there are number of ways through which we can serve the images to the pages of our application.
-// one way is to statically server the images so that anyone any page which make request to image can get the image automatically. 
-// app.use(express.static(path.join(rootDir, 'images')));
-
-// thus, images are still not shown. the reason is that image path get appeneded to current path. fo eg: if we are on admin/product then image path becaome: admin/products/images/image.png.
-// as we know, images folder is in root folder. so we have to make the path of the image absoultue ie images path should be: images/image.png. 
-// this can be done by putting '/' infront of imagepath in enj files. so that path becomes absolute.
-// <img src="<%= product.imageUrl %>" alt="<%= product.title %>"> => <img src="/<%= product.imageUrl %>" alt="<%= product.title %>">
-
-
-// as we know, static folder servers files as if files are in root folder. but as we know files are in images folder. thus adding the path to middleware. saying that if path is "images"then give out file name.
 app.use('/images',express.static(path.join(rootDir, 'images')));
 
 app.use(session({

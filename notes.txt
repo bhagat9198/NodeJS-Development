@@ -9,8 +9,15 @@ views/admin/products
 views/shop/index
 views/shop/products
 views/shop/product-details
-in all the views, putting "/" infront of image path.
 
+20.323
+views/shop/orders
+data/invoice - created and inserted one pdf having name "invoice-orderId"
+routes/shop
+controller/shop
+
+
+<li class="orders__products-item"><%= p.product.title %> (<%= p.quantity %>) - <a href="/order/<%= order._id %>">Invoice</a> 
 
 
 

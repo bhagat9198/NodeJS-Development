@@ -23,4 +23,7 @@ routes.get('/orders', isAuth, shopController.getOrders);
 
 routes.post('/create-order', isAuth, shopController.postOrder);
 
+// adding new dynamic route
+routes.get('/order/:orderId', isAuth, shopController.getInvoice);
+
 module.exports = routes;
