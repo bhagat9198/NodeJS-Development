@@ -47,11 +47,6 @@ routes.post('/edit-product',
       .trim()
       .isNumeric()
       .not().isEmpty(),
-    // commenting out
-    // body('imageUrl')
-    //   .not().isEmpty(),
-    //   .isURL()
-    //   .trim(),
     body('description')
       .isLength({min: 5, max: 400})
       .trim()

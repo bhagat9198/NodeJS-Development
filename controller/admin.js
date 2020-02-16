@@ -17,16 +17,12 @@ exports.getAddProduct = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const title = req.body.title;
-  // changing constant
   const image = req.file;
   const description = req.body.description;
   const price = req.body.price;
   const userId = req.user;
 
-  // console.log(imageUrl);
-  // "image" can be valid object if attach file is image but it can be undefined if attach file is pdf, txt, etc... 
   if(!image) {
-    // if file uploaded is invalid
     return res.status(422).render('admin/edit-product', {
       pageTitle: 'Add Product',
       path: '/admin/add-product',
@@ -34,8 +30,6 @@ exports.postAddProduct = (req, res, next) => {
       hasError: true,
       product: {
         title: title,
-        // removing imageUrl argument from all the render functions
-        // imageUrl: imageUrl,
         price: price,
         description: description
       },
@@ -43,11 +37,7 @@ exports.postAddProduct = (req, res, next) => {
       validationError: [{param: 'imageUrl'}]
     });
   }
-  // if file is valid image type.
-  // files should not be stored in database as they are too big. files should be stored in file sytem. so database should just now the path where file is stored.
-  // hence, giving the path.
   const imageUrl = image.path;
-  // thus, saving works and path of the file is stored in the database."images\99klklkfuok6oqb0kp-lostbook.jpg".
   const errors = validationResult(req);
   
   if (!errors.isEmpty()) {
@@ -59,7 +49,6 @@ exports.postAddProduct = (req, res, next) => {
       hasError: true,
       product: {
         title: title,
-        // imageUrl: imageUrl,
         price: price,
         description: description
       },
@@ -117,7 +106,6 @@ exports.getEditProduct = (req, res, next) => {
 exports.postEditProduct = (req, res, next) => {
   const productID = req.body.productID;
   const updatedTitle = req.body.title;
-  // const updatedImageUrl = req.body.imageUrl;
   const image = req.file;
   const updatedPrice = req.body.price;
   const upadatedDesciption = req.body.description;
@@ -134,7 +122,6 @@ exports.postEditProduct = (req, res, next) => {
       hasError: true,
       product: {
         title: updatedTitle,
-        // imageUrl: updatedImageUrl,
         price: updatedPrice,
         description: upadatedDesciption,
         _id: productID
@@ -151,8 +138,6 @@ exports.postEditProduct = (req, res, next) => {
     }
     product.title = updatedTitle;
     product.price = updatedPrice;
-
-    // we have to update image only iif new image have been uploaded and new file should be image
     if(image) {
     product.imageUrl = image.path;
     }

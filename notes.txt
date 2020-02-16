@@ -1,16 +1,19 @@
-20.318
-app.js
-
-20.319
-app.js
-
 20.320
 controller/admin
 routes/admin 
 
 
+20.322
+app.js
+views/admin/products
+views/shop/index
+views/shop/products
+views/shop/product-details
+in all the views, putting "/" infront of image path.
 
-deleting all the products ffrrom mongodb compass
+
+
+
 
 
 
