@@ -1,3 +1,15 @@
 9.121
 views/admin/editproducts
 controller/admin
+
+
+        <!-- as we are passing editing value, we can use it to display different html content based on condition. -->
+        <!-- syntax:  <% if(condition)
+                          {%> htmlContent 
+                            <%= renderingDynamicValue %>
+                          <%}
+                           else
+                          {%> htmlContent
+                            <%= renderingDynamicValue %>
+                          <%}
+                      %>  -->
