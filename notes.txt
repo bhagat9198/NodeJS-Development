@@ -1,4 +1,4 @@
 9.123
-controller/admmin
-views/admin/editproduct
-routes/admin
+controller/admin : edit and add product method
+views/admin/editproduct : correction in form action
+model/products
